@@ -9,6 +9,9 @@
 // Side effect: wires warmPad -> Volume(-6dB) -> Destination
 import { masterVolume } from './engine/effects.js';
 
+// Preset persistence and URL sharing
+import { patchFromURL, loadPatch } from './engine/preset-storage.js';
+
 // Side effect: sets up overlay click handler and initial state
 import './ui/overlay.js';
 
@@ -66,6 +69,13 @@ if (helpBtn && helpPanel) {
       helpPanel.hidden = true;
     }
   });
+}
+
+// Restore shared patch from URL hash (e.g. #patch=<base64>)
+// Run after all panel inits so loadPatch has a fully wired audio chain.
+const urlPatch = patchFromURL();
+if (urlPatch) {
+  loadPatch(urlPatch);
 }
 
 console.log('Tydal ready');

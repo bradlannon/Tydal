@@ -10,6 +10,14 @@
 
 import { setSynthParam } from '../engine/instruments.js';
 import { applyPreset, getPresetNames } from '../engine/presets.js';
+import {
+  captureCurrentPatch,
+  savePatch,
+  loadPatch,
+  listPatches,
+  deletePatch,
+  patchToURL,
+} from '../engine/preset-storage.js';
 
 /**
  * initSynthPanel(containerEl)
@@ -180,4 +188,123 @@ export function initSynthPanel(containerEl) {
     setSynthParam({ filter: { Q: Number(resonanceSlider.value) } });
   });
   body.appendChild(makeRow('Resonance', resonanceSlider));
+
+  // ---------------------------------------------------------------------------
+  // User Patches — Save / Load / Delete / Share
+  // ---------------------------------------------------------------------------
+
+  // Patch select dropdown (populated from localStorage)
+  const userPatchSelect = document.createElement('select');
+  userPatchSelect.className = 'panel-select';
+
+  // Delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'panel-btn panel-btn--small';
+  deleteBtn.textContent = 'Del';
+  deleteBtn.title = 'Delete selected patch';
+
+  /**
+   * Rebuild the user patch dropdown from localStorage.
+   * Called after save or delete.
+   */
+  function refreshPatchList() {
+    const patches = listPatches();
+    userPatchSelect.innerHTML = '';
+
+    if (patches.length === 0) {
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = '— no saved patches —';
+      opt.disabled = true;
+      userPatchSelect.appendChild(opt);
+      deleteBtn.disabled = true;
+    } else {
+      patches.forEach((patch, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = patch.name || `Patch ${i + 1}`;
+        userPatchSelect.appendChild(opt);
+      });
+      deleteBtn.disabled = false;
+    }
+  }
+
+  // Load patch on dropdown change
+  userPatchSelect.addEventListener('change', () => {
+    const idx = parseInt(userPatchSelect.value, 10);
+    if (isNaN(idx)) return;
+    const patches = listPatches();
+    if (patches[idx]) {
+      loadPatch(patches[idx]);
+    }
+  });
+
+  // Delete button handler
+  deleteBtn.addEventListener('click', () => {
+    const idx = parseInt(userPatchSelect.value, 10);
+    if (isNaN(idx)) return;
+    deletePatch(idx);
+    refreshPatchList();
+  });
+
+  // Load/select row: dropdown + delete button side by side
+  const loadRow = document.createElement('div');
+  loadRow.className = 'panel-row';
+  const loadLabel = document.createElement('span');
+  loadLabel.className = 'panel-label';
+  loadLabel.textContent = 'My Patch';
+  const loadControls = document.createElement('div');
+  loadControls.className = 'panel-patch-controls';
+  loadControls.appendChild(userPatchSelect);
+  loadControls.appendChild(deleteBtn);
+  loadRow.appendChild(loadLabel);
+  loadRow.appendChild(loadControls);
+  body.appendChild(loadRow);
+
+  // Save button
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'panel-btn';
+  saveBtn.textContent = 'Save';
+  saveBtn.addEventListener('click', () => {
+    const name = window.prompt('Patch name:', 'My Patch');
+    if (name === null) return; // user cancelled
+    const patch = captureCurrentPatch(name.trim() || 'My Patch');
+    savePatch(patch);
+    refreshPatchList();
+  });
+
+  // Share button
+  const shareBtn = document.createElement('button');
+  shareBtn.className = 'panel-btn';
+  shareBtn.textContent = 'Share';
+  shareBtn.addEventListener('click', async () => {
+    const patch = captureCurrentPatch('Shared');
+    const url = patchToURL(patch);
+    try {
+      await navigator.clipboard.writeText(url);
+      shareBtn.textContent = 'Copied!';
+      setTimeout(() => { shareBtn.textContent = 'Share'; }, 2000);
+    } catch (err) {
+      console.warn('Share: clipboard write failed', err);
+      // Fallback — show URL in prompt so user can copy manually
+      window.prompt('Copy this URL to share your patch:', url);
+    }
+  });
+
+  // Action row: Save + Share
+  const actionRow = document.createElement('div');
+  actionRow.className = 'panel-row panel-row--actions';
+  const actionLabel = document.createElement('span');
+  actionLabel.className = 'panel-label';
+  actionLabel.textContent = 'Patches';
+  const actionBtns = document.createElement('div');
+  actionBtns.className = 'panel-patch-actions';
+  actionBtns.appendChild(saveBtn);
+  actionBtns.appendChild(shareBtn);
+  actionRow.appendChild(actionLabel);
+  actionRow.appendChild(actionBtns);
+  body.appendChild(actionRow);
+
+  // Populate on init
+  refreshPatchList();
 }
