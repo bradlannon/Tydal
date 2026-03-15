@@ -26,6 +26,9 @@ import { initKeyboard } from './input/keyboard.js';
 import { initTouch } from './input/touch.js';
 import { initMIDI } from './input/midi.js';
 
+// Gyroscope panel
+import { initGyroPanel } from './ui/gyro-panel.js';
+
 // Initialize pad grid and input
 const instrumentEl = document.getElementById('instrument');
 const padGrid = initPadGrid(instrumentEl);
@@ -38,6 +41,7 @@ initSynthPanel(document.getElementById('synth-panel'));
 initFXPanel(document.getElementById('fx-panel'));
 initSequencerUI(document.getElementById('sequencer'));
 initVisualizer(document.getElementById('visualizer'));
+initGyroPanel(document.getElementById('gyro-panel'));
 
 // Wire volume slider to masterVolume ramp
 const volumeSlider = document.getElementById('volume-slider');
