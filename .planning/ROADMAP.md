@@ -83,7 +83,13 @@ Plans:
   3. Tilting the phone while playing bends pitch or sweeps the filter in a musically useful range
   4. A patch can be saved to localStorage and recalled after page reload; sharing the URL restores the same patch in another browser
   5. Enabling scale lock constrains pads to a chosen key and scale — no out-of-key notes are possible
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Audio visualizer with spectrum/waveform modes, pitch coloring, transient glow
+- [ ] 04-02-PLAN.md — Gyroscope tilt control with iOS permission and jitter smoothing
+- [ ] 04-03-PLAN.md — Preset save/load to localStorage and URL-based sharing
+- [ ] 04-04-PLAN.md — Human verification of all Phase 4 success criteria
 
 ### Phase 5: Platform Polish
 **Goal**: SoundForge is installable, works offline, can export recordings, and performs correctly on real mobile hardware
@@ -105,5 +111,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Audio Foundation | 2/2 | Complete   | 2026-03-15 |
 | 2. Instrument Quality | 5/5 | Complete   | 2026-03-15 |
 | 3. Composition Surface | 4/4 | Complete   | 2026-03-15 |
-| 4. Differentiators | 0/TBD | Not started | - |
+| 4. Differentiators | 0/4 | Not started | - |
 | 5. Platform Polish | 0/TBD | Not started | - |
