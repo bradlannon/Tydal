@@ -57,8 +57,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **COMP-01**: Step sequencer with per-instrument rows, 16-32 steps, and playback cursor
 - [x] **COMP-02**: Step sequencer is tempo-aware (step length derived from BPM)
 - [x] **COMP-03**: Tap tempo — set BPM by tapping rhythm
-- [ ] **COMP-04**: Quantization for recorded loops (snap-to-grid: 1/4, 1/8, 1/16, 1/32)
-- [ ] **COMP-05**: Recording with overdub support and undo stack
+- [x] **COMP-04**: Quantization for recorded loops (snap-to-grid: 1/4, 1/8, 1/16, 1/32)
+- [x] **COMP-05**: Recording with overdub support and undo stack
 
 ### Visualizer
 
@@ -164,8 +164,8 @@ Deferred to future release. Tracked but not in current roadmap.
 | COMP-01 | Phase 3 | Complete |
 | COMP-02 | Phase 3 | Complete |
 | COMP-03 | Phase 3 | Complete |
-| COMP-04 | Phase 3 | Pending |
-| COMP-05 | Phase 3 | Pending |
+| COMP-04 | Phase 3 | Complete |
+| COMP-05 | Phase 3 | Complete |
 | VIZ-01 | Phase 4 | Pending |
 | VIZ-02 | Phase 4 | Pending |
 | VIZ-03 | Phase 4 | Pending |
