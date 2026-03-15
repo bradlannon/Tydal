@@ -1,24 +1,33 @@
 /**
  * engine/instruments.js
  *
- * Warm pad voice: PolySynth with sawtooth oscillator,
- * slight detuning, lowpass filter, and smooth ADSR.
+ * Full subtractive synthesizer with selectable waveforms, ADSR envelope,
+ * filter with cutoff/resonance, velocity-aware note triggering, and voice stealing.
  *
- * Exports noteOn/noteOff for triggering individual notes.
- * All timing via Tone.now() — zero setTimeout.
+ * Signal chain: subtractiveSynth → effects chain (see engine/effects.js)
+ *
+ * Exports noteOn/noteOff for triggering notes (backward-compatible with
+ * keyboard.js and touch.js callers that do not pass velocity).
  */
 
 import * as Tone from 'tone';
+import { connectInstrument, disconnectInstrument } from './effects.js';
+import { trackNoteOn, trackNoteOff, stealOldestIfFull, clearAll, getActiveNotes } from './voice-tracker.js';
+
+// ---------------------------------------------------------------------------
+// Subtractive synthesizer definition
+// ---------------------------------------------------------------------------
 
 /**
- * warmPad — the primary instrument voice for Phase 1.
+ * subtractiveSynth — 8-voice PolySynth with:
+ *   - Sawtooth oscillator (warm, harmonically rich)
+ *   - ADSR envelope with smooth 0.4s release (anti-click)
+ *   - Lowpass filter at 2800Hz (-12dB/oct) for warmth
+ *   - Filter envelope sweeps from 200Hz up +3.5 octaves
  *
- * Character: analog pad, warm and full-bodied, long sustain,
- * smooth release (0.4s) prevents click artifacts on note-off.
- *
- * maxPolyphony: 8 allows chord playing without voice exhaustion.
+ * These parameters match the Phase 1 instrument for identical initial character.
  */
-export const warmPad = new Tone.PolySynth(Tone.Synth, {
+const subtractiveSynth = new Tone.PolySynth(Tone.Synth, {
   maxPolyphony: 8,
   options: {
     oscillator: {
@@ -29,11 +38,12 @@ export const warmPad = new Tone.PolySynth(Tone.Synth, {
       attack: 0.02,
       decay: 0.1,
       sustain: 0.85,
-      release: 0.4,        // anti-click fade on note-off (AUDIO-06)
+      release: 0.4,        // anti-click fade on note-off
     },
     filter: {
       type: 'lowpass',
       frequency: 2800,
+      Q: 1,
       rolloff: -12,
     },
     filterEnvelope: {
@@ -47,26 +57,105 @@ export const warmPad = new Tone.PolySynth(Tone.Synth, {
   },
 });
 
+// ---------------------------------------------------------------------------
+// Active synth (mutable — preset switching in Plan 04 will swap this)
+// ---------------------------------------------------------------------------
+
+/** Currently active synth. Preset switching will reassign this via switchInstrument(). */
+export let activeSynth = subtractiveSynth;
+
+// Wire initial synth into effects chain
+connectInstrument(activeSynth);
+
+// ---------------------------------------------------------------------------
+// Note triggering — public API
+// ---------------------------------------------------------------------------
+
 /**
- * Trigger note attack using sample-accurate Tone.now() scheduling.
+ * Trigger note attack with optional velocity.
+ * Performs voice stealing if 8 voices are already active.
+ *
+ * Backward-compatible: callers that omit velocity (keyboard.js, touch.js) get 0.8.
+ *
  * @param {string} note — e.g. 'C4', 'F#3'
+ * @param {number} [velocity=0.8] — 0..1 loudness
  */
-export function noteOn(note) {
-  warmPad.triggerAttack(note, Tone.now());
+export function noteOn(note, velocity = 0.8) {
+  // Voice steal: release oldest note if at polyphony limit
+  const stolenNote = stealOldestIfFull();
+  if (stolenNote !== null) {
+    activeSynth.triggerRelease(stolenNote, Tone.now());
+  }
+
+  trackNoteOn(note);
+  activeSynth.triggerAttack(note, Tone.now(), velocity);
 }
 
 /**
- * Trigger note release using sample-accurate Tone.now() scheduling.
+ * Trigger note release.
  * @param {string} note — e.g. 'C4', 'F#3'
  */
 export function noteOff(note) {
-  warmPad.triggerRelease(note, Tone.now());
+  trackNoteOff(note);
+  activeSynth.triggerRelease(note, Tone.now());
 }
 
 /**
- * Release all currently active voices immediately.
- * Called before grid rebuild to prevent stuck notes on octave shift.
+ * Release all currently tracked notes and clear the tracker.
+ * Used before hot-swapping instruments or resetting state.
  */
 export function releaseAll() {
-  warmPad.releaseAll(Tone.now());
+  const active = getActiveNotes();
+  for (const { note } of active) {
+    activeSynth.triggerRelease(note, Tone.now());
+  }
+  clearAll();
+}
+
+// ---------------------------------------------------------------------------
+// Runtime parameter control
+// ---------------------------------------------------------------------------
+
+/**
+ * Update synth parameters at runtime.
+ * Accepts any object valid for Tone.PolySynth.set().
+ *
+ * Examples:
+ *   setSynthParam({ oscillator: { type: 'square' } })
+ *   setSynthParam({ envelope: { attack: 0.5 } })
+ *   setSynthParam({ filter: { frequency: 1200 } })
+ *
+ * @param {object} paramObj
+ */
+export function setSynthParam(paramObj) {
+  activeSynth.set(paramObj);
+}
+
+/**
+ * Return a reference to the currently active synth.
+ * Useful for direct parameter inspection or one-off Tone.js calls.
+ * @returns {Tone.PolySynth}
+ */
+export function getActiveSynth() {
+  return activeSynth;
+}
+
+// ---------------------------------------------------------------------------
+// Instrument hot-swap (used by preset system in Plan 04)
+// ---------------------------------------------------------------------------
+
+/**
+ * Swap in a new synth:
+ *   1. Release all notes on old synth
+ *   2. Disconnect old synth from effects chain
+ *   3. Connect new synth to effects chain
+ *   4. Update activeSynth reference
+ *
+ * @param {Tone.PolySynth | Tone.Synth} newSynth
+ */
+export function switchInstrument(newSynth) {
+  releaseAll();
+  disconnectInstrument(activeSynth);
+  activeSynth = newSynth;
+  connectInstrument(activeSynth);
 }
