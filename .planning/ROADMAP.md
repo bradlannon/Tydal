@@ -46,7 +46,14 @@ Plans:
   3. Connecting a MIDI keyboard and playing triggers notes with correct velocity mapping
   4. Pads are laid out chromatically with semitone labels; octave shift buttons move the range up and down
   5. Reverb and delay effects are audible and adjustable via on-screen controls; filter cutoff/resonance respond in real time
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Synth engine refactor + full effects chain (reverb, delay, distortion, filter, voice stealing)
+- [ ] 02-02-PLAN.md — Chromatic pad layout, octave shift, multitouch hardening
+- [ ] 02-03-PLAN.md — Touch velocity, Web MIDI input, LFO modulation
+- [ ] 02-04-PLAN.md — FM synthesis presets, synth/FX control panels, scale lock
+- [ ] 02-05-PLAN.md — Human verification of all Phase 2 success criteria
 
 ### Phase 3: Composition Surface
 **Goal**: Users can program and play drum patterns — 808/909-style synthesis in a tempo-accurate step sequencer
@@ -90,7 +97,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Audio Foundation | 2/2 | Complete   | 2026-03-15 |
-| 2. Instrument Quality | 0/TBD | Not started | - |
+| 2. Instrument Quality | 0/5 | Planning complete | - |
 | 3. Composition Surface | 0/TBD | Not started | - |
 | 4. Differentiators | 0/TBD | Not started | - |
 | 5. Platform Polish | 0/TBD | Not started | - |
