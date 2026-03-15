@@ -20,7 +20,7 @@
 
   <main class="app-main">
     <div id="instrument" class="instrument-container">
-      <!-- Pad grid injected by Plan 02 -->
+      <!-- Pad grid injected by app.js -->
     </div>
 
     <div class="controls-bar">
@@ -36,7 +36,36 @@
           aria-label="Master Volume"
         >
       </div>
-      <button class="help-btn" id="help-btn" aria-label="Keyboard shortcuts">?</button>
+
+      <div class="help-wrapper">
+        <button id="help-btn" class="help-btn" aria-label="Show keyboard shortcuts">?</button>
+        <div id="help-panel" class="help-panel" hidden>
+          <h2 class="help-panel-title">Keyboard Shortcuts</h2>
+          <div class="help-grid">
+            <div class="help-row">
+              <span class="help-row-label">Top row</span>
+              <span class="help-keys">1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4</span>
+              <span class="help-notes">A4 B4 C5 D5</span>
+            </div>
+            <div class="help-row">
+              <span class="help-row-label">Third row</span>
+              <span class="help-keys">Q&nbsp;&nbsp;W&nbsp;&nbsp;E&nbsp;&nbsp;R</span>
+              <span class="help-notes">D4 E4 F4 G4</span>
+            </div>
+            <div class="help-row">
+              <span class="help-row-label">Second row</span>
+              <span class="help-keys">A&nbsp;&nbsp;S&nbsp;&nbsp;D&nbsp;&nbsp;F</span>
+              <span class="help-notes">G3 A3 B3 C4</span>
+            </div>
+            <div class="help-row">
+              <span class="help-row-label">Bottom row</span>
+              <span class="help-keys">Z&nbsp;&nbsp;X&nbsp;&nbsp;C&nbsp;&nbsp;V</span>
+              <span class="help-notes">C3 D3 E3 F3</span>
+            </div>
+          </div>
+          <p class="help-tip">Hold key to sustain &mdash; release to stop</p>
+        </div>
+      </div>
     </div>
   </main>
 

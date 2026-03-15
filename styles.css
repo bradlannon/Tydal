@@ -102,6 +102,7 @@ body {
   width: 100%;
   max-width: 480px;
   aspect-ratio: 1;
+  touch-action: none; /* backup for JS setting — prevents scroll interference */
 }
 
 /* Desktop: constrain so pads don't stretch too wide */
@@ -131,8 +132,11 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.pad:hover {
-  background: var(--bg-surface-hover);
+/* Only apply hover on devices with a fine pointer (desktop) */
+@media (hover: hover) {
+  .pad:hover {
+    background: var(--bg-surface-hover);
+  }
 }
 
 .pad.active {
@@ -237,8 +241,13 @@ input[type="range"]::-moz-range-track {
 }
 
 /* -------------------------
-   Help Button
+   Help Wrapper + Button + Panel
    ------------------------- */
+.help-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .help-btn {
   width: 32px;
   height: 32px;
@@ -260,6 +269,73 @@ input[type="range"]::-moz-range-track {
 .help-btn:hover {
   background: var(--bg-surface-hover);
   color: var(--text-primary);
+}
+
+/* Help panel: positioned above the help button */
+.help-panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: #1e1e1e;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  padding: 16px;
+  min-width: 260px;
+  z-index: 50;
+}
+
+.help-panel[hidden] {
+  display: none;
+}
+
+.help-panel-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin: 0 0 12px 0;
+}
+
+.help-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.help-row {
+  display: grid;
+  grid-template-columns: 80px 80px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.help-row-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.help-keys {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: monospace;
+  letter-spacing: 0.02em;
+}
+
+.help-notes {
+  font-size: 0.7rem;
+  color: var(--accent);
+  font-family: monospace;
+}
+
+.help-tip {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin: 12px 0 0 0;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
 }
 
 /* -------------------------
