@@ -62,3 +62,11 @@ export function noteOn(note) {
 export function noteOff(note) {
   warmPad.triggerRelease(note, Tone.now());
 }
+
+/**
+ * Release all currently active voices immediately.
+ * Called before grid rebuild to prevent stuck notes on octave shift.
+ */
+export function releaseAll() {
+  warmPad.releaseAll(Tone.now());
+}
