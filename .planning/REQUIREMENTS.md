@@ -62,10 +62,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Visualizer
 
-- [ ] **VIZ-01**: Real-time frequency spectrum visualizer with AnalyserNode (fftSize >= 2048)
-- [ ] **VIZ-02**: Waveform / oscilloscope display mode
-- [ ] **VIZ-03**: Visuals react expressively to audio — pitch-colored waveforms, intensity-driven animations
-- [ ] **VIZ-04**: Visual transient detection — particle bursts or glow effects on drum hits and note attacks
+- [x] **VIZ-01**: Real-time frequency spectrum visualizer with AnalyserNode (fftSize >= 2048)
+- [x] **VIZ-02**: Waveform / oscilloscope display mode
+- [x] **VIZ-03**: Visuals react expressively to audio — pitch-colored waveforms, intensity-driven animations
+- [x] **VIZ-04**: Visual transient detection — particle bursts or glow effects on drum hits and note attacks
 
 ### Unique Interaction
 
@@ -166,10 +166,10 @@ Deferred to future release. Tracked but not in current roadmap.
 | COMP-03 | Phase 3 | Complete |
 | COMP-04 | Phase 3 | Complete |
 | COMP-05 | Phase 3 | Complete |
-| VIZ-01 | Phase 4 | Pending |
-| VIZ-02 | Phase 4 | Pending |
-| VIZ-03 | Phase 4 | Pending |
-| VIZ-04 | Phase 4 | Pending |
+| VIZ-01 | Phase 4 | Complete |
+| VIZ-02 | Phase 4 | Complete |
+| VIZ-03 | Phase 4 | Complete |
+| VIZ-04 | Phase 4 | Complete |
 | UX-01 | Phase 4 | Pending |
 | UX-02 | Phase 4 | Pending |
 | UX-03 | Phase 4 | Pending |
