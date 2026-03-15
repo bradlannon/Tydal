@@ -65,7 +65,13 @@ Plans:
   3. Tapping a rhythm on the tap tempo button adjusts BPM; the sequencer immediately syncs to the new tempo
   4. Recording a melody over a running drum loop snaps notes to the selected quantization grid
   5. Overdubbing adds notes without erasing existing ones; undo removes the last overdub
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Drum synthesis engine (kick, snare, hi-hat, clap) + step sequencer engine
+- [ ] 03-02-PLAN.md — Sequencer UI grid, cursor, play/stop, BPM slider, tap tempo
+- [ ] 03-03-PLAN.md — Quantized melody recording with overdub and undo
+- [ ] 03-04-PLAN.md — Human verification of all Phase 3 success criteria
 
 ### Phase 4: Differentiators
 **Goal**: SoundForge sounds and feels unlike any other browser instrument — FM voices, expressive visuals, scale lock, and shareable presets
@@ -98,6 +104,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Audio Foundation | 2/2 | Complete   | 2026-03-15 |
 | 2. Instrument Quality | 5/5 | Complete   | 2026-03-15 |
-| 3. Composition Surface | 0/TBD | Not started | - |
+| 3. Composition Surface | 0/4 | Not started | - |
 | 4. Differentiators | 0/TBD | Not started | - |
 | 5. Platform Polish | 0/TBD | Not started | - |
