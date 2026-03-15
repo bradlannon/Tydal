@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-instrument-quality-05-PLAN.md
-last_updated: "2026-03-15T14:50:49.690Z"
+stopped_at: Completed 03-composition-surface-01-PLAN.md
+last_updated: "2026-03-15T16:33:18.941Z"
 last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 11
+  completed_plans: 8
   percent: 0
 ---
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-instrument-quality P03 | 10 | 2 tasks | 4 files |
 | Phase 02-instrument-quality P04 | 25 | 3 tasks | 7 files |
 | Phase 02-instrument-quality P05 | 1 | 1 tasks | 0 files |
+| Phase 03-composition-surface P01 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 02-instrument-quality]: Scale filter uses 4-octave window: ensures 16 in-key notes for pentatonic (5 notes/octave)
 - [Phase 02-instrument-quality]: Enharmonic normalization via explicit flat-to-sharp map for tonal/CHROMATIC compatibility
 - [Phase 02-instrument-quality]: Phase 2 verified complete: all 5 success criteria confirmed — polyphony/voice stealing, velocity sensitivity, MIDI input, chromatic layout, effects chain
+- [Phase 03-composition-surface]: drumBus Tone.Channel routes all drum voices to masterVolume, bypassing melodic effects chain
+- [Phase 03-composition-surface]: Hi-hat choke uses 5ms offset at time+0.005 to prevent envelope overlap click
+- [Phase 03-composition-surface]: Tone.getDraw fallback chain: getDraw() -> Draw.schedule -> requestAnimationFrame with warning
 
 ### Pending Todos
 
@@ -101,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T14:46:27.027Z
-Stopped at: Completed 02-instrument-quality-05-PLAN.md
+Last session: 2026-03-15T16:33:18.936Z
+Stopped at: Completed 03-composition-surface-01-PLAN.md
 Resume file: None

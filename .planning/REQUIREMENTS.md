@@ -36,11 +36,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Drums
 
-- [ ] **DRUM-01**: 808/909-style kick drum synthesis with pitch sweep, distortion, and sub-bass layering
-- [ ] **DRUM-02**: Snare synthesis with noise component + tonal body resonance
-- [ ] **DRUM-03**: Hi-hat synthesis (closed + open variants) with choke behavior
-- [ ] **DRUM-04**: Clap synthesis with multi-burst noise and reverb tail
-- [ ] **DRUM-05**: Pre-allocated noise buffers for drum voices (no per-hit regeneration)
+- [x] **DRUM-01**: 808/909-style kick drum synthesis with pitch sweep, distortion, and sub-bass layering
+- [x] **DRUM-02**: Snare synthesis with noise component + tonal body resonance
+- [x] **DRUM-03**: Hi-hat synthesis (closed + open variants) with choke behavior
+- [x] **DRUM-04**: Clap synthesis with multi-burst noise and reverb tail
+- [x] **DRUM-05**: Pre-allocated noise buffers for drum voices (no per-hit regeneration)
 
 ### Performance & Expression
 
@@ -54,8 +54,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Composition
 
-- [ ] **COMP-01**: Step sequencer with per-instrument rows, 16-32 steps, and playback cursor
-- [ ] **COMP-02**: Step sequencer is tempo-aware (step length derived from BPM)
+- [x] **COMP-01**: Step sequencer with per-instrument rows, 16-32 steps, and playback cursor
+- [x] **COMP-02**: Step sequencer is tempo-aware (step length derived from BPM)
 - [ ] **COMP-03**: Tap tempo — set BPM by tapping rhythm
 - [ ] **COMP-04**: Quantization for recorded loops (snap-to-grid: 1/4, 1/8, 1/16, 1/32)
 - [ ] **COMP-05**: Recording with overdub support and undo stack
@@ -156,13 +156,13 @@ Deferred to future release. Tracked but not in current roadmap.
 | PERF-05 | Phase 2 | Complete |
 | PERF-06 | Phase 2 | Complete |
 | PERF-07 | Phase 2 | Complete |
-| DRUM-01 | Phase 3 | Pending |
-| DRUM-02 | Phase 3 | Pending |
-| DRUM-03 | Phase 3 | Pending |
-| DRUM-04 | Phase 3 | Pending |
-| DRUM-05 | Phase 3 | Pending |
-| COMP-01 | Phase 3 | Pending |
-| COMP-02 | Phase 3 | Pending |
+| DRUM-01 | Phase 3 | Complete |
+| DRUM-02 | Phase 3 | Complete |
+| DRUM-03 | Phase 3 | Complete |
+| DRUM-04 | Phase 3 | Complete |
+| DRUM-05 | Phase 3 | Complete |
+| COMP-01 | Phase 3 | Complete |
+| COMP-02 | Phase 3 | Complete |
 | COMP-03 | Phase 3 | Pending |
 | COMP-04 | Phase 3 | Pending |
 | COMP-05 | Phase 3 | Pending |
