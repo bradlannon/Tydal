@@ -2,7 +2,8 @@
  * ui/sequencer-ui.js
  *
  * Step sequencer UI — builds the 16-step drum grid, play/stop button,
- * BPM slider, and tap tempo button; wires cursor sync via 'sequencer-step'
+ * BPM slider, tap tempo button, and recording controls (record, quantize,
+ * undo, clear, overdub count). Wires cursor sync via 'sequencer-step'
  * CustomEvent from the engine.
  *
  * Exports:
@@ -21,6 +22,15 @@ import {
   isPlaying,
 } from '../engine/sequencer.js';
 import { recordTap } from './tap-tempo.js';
+import {
+  startRecording,
+  stopRecording,
+  undoLastOverdub,
+  clearAllRecordings,
+  setQuantization,
+  isRecording,
+  getOverdubCount,
+} from '../engine/recorder.js';
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -108,6 +118,110 @@ export function initSequencerUI(containerEl) {
   transport.appendChild(playBtn);
   transport.appendChild(bpmControl);
   transport.appendChild(tapBtn);
+
+  // -----------------------------------------------------------------------
+  // Recording controls: Rec — Quantize selector — Undo — Clear — Overdub count
+  // -----------------------------------------------------------------------
+
+  // Helper: refresh overdub count display and undo button enabled state
+  function updateRecordingUI() {
+    const count = getOverdubCount();
+    const layers = count === 1 ? '1 layer' : `${count} layers`;
+    overdubCountEl.textContent = layers;
+    if (count === 0) {
+      undoBtn.style.opacity = '0.4';
+      undoBtn.style.pointerEvents = 'none';
+    } else {
+      undoBtn.style.opacity = '';
+      undoBtn.style.pointerEvents = '';
+    }
+  }
+
+  // Record button — auto-starts sequencer if not playing (standard DAW pattern)
+  const recBtn = document.createElement('button');
+  recBtn.id = 'seq-record';
+  recBtn.className = 'seq-btn';
+  recBtn.textContent = 'Rec';
+
+  recBtn.addEventListener('pointerdown', async () => {
+    if (!isRecording()) {
+      // Auto-start sequencer if not already playing
+      if (!isPlaying()) {
+        const currentBPM = Number(bpmSlider.value);
+        initTransport(currentBPM);
+        await startSequencer();
+        playBtn.textContent = 'Stop';
+      }
+      startRecording();
+      recBtn.classList.add('recording');
+      recBtn.textContent = 'Stop Rec';
+    } else {
+      stopRecording();
+      recBtn.classList.remove('recording');
+      recBtn.textContent = 'Rec';
+      updateRecordingUI();
+    }
+  });
+
+  // Quantization selector
+  const quantizeSelect = document.createElement('select');
+  quantizeSelect.id = 'quantize-select';
+  const quantizeOptions = [
+    { label: '1/4', value: '4n' },
+    { label: '1/8', value: '8n' },
+    { label: '1/16', value: '16n' },
+    { label: '1/32', value: '32n' },
+  ];
+  quantizeOptions.forEach(({ label, value }) => {
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = label;
+    if (value === '16n') opt.selected = true;
+    quantizeSelect.appendChild(opt);
+  });
+  quantizeSelect.addEventListener('change', (e) => {
+    setQuantization(e.target.value);
+  });
+
+  // Undo button — disabled when no layers exist
+  const undoBtn = document.createElement('button');
+  undoBtn.id = 'seq-undo';
+  undoBtn.className = 'seq-btn';
+  undoBtn.textContent = 'Undo';
+  undoBtn.style.opacity = '0.4';
+  undoBtn.style.pointerEvents = 'none';
+
+  undoBtn.addEventListener('click', () => {
+    undoLastOverdub();
+    updateRecordingUI();
+  });
+
+  // Clear button
+  const clearBtn = document.createElement('button');
+  clearBtn.id = 'seq-clear';
+  clearBtn.className = 'seq-btn';
+  clearBtn.textContent = 'Clear';
+
+  clearBtn.addEventListener('click', () => {
+    // If currently recording, also reset the record button visual
+    if (isRecording()) {
+      recBtn.classList.remove('recording');
+      recBtn.textContent = 'Rec';
+    }
+    clearAllRecordings();
+    updateRecordingUI();
+  });
+
+  // Overdub count indicator
+  const overdubCountEl = document.createElement('span');
+  overdubCountEl.id = 'overdub-count';
+  overdubCountEl.textContent = '0 layers';
+
+  transport.appendChild(recBtn);
+  transport.appendChild(quantizeSelect);
+  transport.appendChild(undoBtn);
+  transport.appendChild(clearBtn);
+  transport.appendChild(overdubCountEl);
 
   // -----------------------------------------------------------------------
   // Grid: 4 rows × 16 steps
