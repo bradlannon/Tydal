@@ -47,10 +47,10 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **PERF-01**: Velocity sensitivity on touch input — measure touch speed (pixels/ms) mapped to note volume
 - [ ] **PERF-02**: Velocity sensitivity on MIDI input — map MIDI velocity byte (0-127) to note volume
 - [ ] **PERF-03**: MIDI input support via Web MIDI API with graceful degradation on unsupported browsers
-- [ ] **PERF-04**: Chromatic note layout on pads with consecutive semitones (no duplicates)
-- [ ] **PERF-05**: Octave shifting (+/- octave transposition)
+- [x] **PERF-04**: Chromatic note layout on pads with consecutive semitones (no duplicates)
+- [x] **PERF-05**: Octave shifting (+/- octave transposition)
 - [ ] **PERF-06**: Scale lock mode — constrain pads to a selected scale and key
-- [ ] **PERF-07**: Mobile-first multitouch support with touch-action: manipulation (no zoom/scroll interference)
+- [x] **PERF-07**: Mobile-first multitouch support with touch-action: manipulation (no zoom/scroll interference)
 
 ### Composition
 
@@ -152,10 +152,10 @@ Deferred to future release. Tracked but not in current roadmap.
 | PERF-01 | Phase 2 | Pending |
 | PERF-02 | Phase 2 | Pending |
 | PERF-03 | Phase 2 | Pending |
-| PERF-04 | Phase 2 | Pending |
-| PERF-05 | Phase 2 | Pending |
+| PERF-04 | Phase 2 | Complete |
+| PERF-05 | Phase 2 | Complete |
 | PERF-06 | Phase 2 | Pending |
-| PERF-07 | Phase 2 | Pending |
+| PERF-07 | Phase 2 | Complete |
 | DRUM-01 | Phase 3 | Pending |
 | DRUM-02 | Phase 3 | Pending |
 | DRUM-03 | Phase 3 | Pending |
