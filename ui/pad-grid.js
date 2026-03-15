@@ -4,17 +4,21 @@
  * Generates the 4x4 pad grid DOM with MPC layout ordering.
  * Uses a chromatic 16-note layout starting at C{currentOctave}.
  * Supports octave shifting (+/- one octave) with automatic grid rebuild.
+ * Supports scale lock mode: constrains pads to notes in the selected scale.
  *
  * Exports:
- *   buildNoteMap    — Generates array of { note, key, padIndex } for 16 chromatic pads
- *   getNoteMap      — Returns the current note map array
+ *   buildNoteMap     — Generates array of { note, key, padIndex } for 16 pads
+ *   getNoteMap       — Returns the current note map array
  *   getCurrentOctave — Returns the current base octave
- *   initPadGrid     — Generates and appends pad grid DOM to a container; wires octave buttons
- *   setPadActive    — Adds/removes .active class on a pad by note name
- *   shiftOctave     — Shifts the base octave by delta (-1 or +1), clamped 1-7
+ *   initPadGrid      — Generates and appends pad grid DOM to a container; wires octave buttons
+ *   setPadActive     — Adds/removes .active class on a pad by note name
+ *   shiftOctave      — Shifts the base octave by delta (-1 or +1), clamped 1-7
+ *   setScaleLock     — Activates scale filtering (key + scaleName), null to disable
+ *   getScaleLock     — Returns current scale lock state
  */
 
 import { releaseAll } from '../engine/instruments.js';
+import { Scale } from 'tonal';
 
 /**
  * CHROMATIC: All 12 pitch classes in order.
@@ -34,6 +38,69 @@ const KEYS = ['z', 'x', 'c', 'v', 'a', 's', 'd', 'f', 'q', 'w', 'e', 'r', '1', '
 let currentOctave = 3;
 
 /**
+ * scaleLock: active scale lock state, or null for chromatic (all notes).
+ * { key: 'C', scale: 'major' } — when set, buildNoteMap returns only in-key notes.
+ */
+let scaleLock = null;
+
+// ---------------------------------------------------------------------------
+// Scale lock helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * _normalizePitchClass(pc)
+ *
+ * Normalizes a pitch class to the CHROMATIC array's notation (uses sharps).
+ * Handles enharmonic equivalents (e.g. 'Db' → 'C#', 'Eb' → 'D#').
+ *
+ * @param {string} pc — Pitch class from tonal (may be flat or sharp)
+ * @returns {string} Normalized pitch class matching CHROMATIC
+ */
+function _normalizePitchClass(pc) {
+  const enharmonics = {
+    'Db': 'C#',
+    'Eb': 'D#',
+    'Fb': 'E',
+    'Gb': 'F#',
+    'Ab': 'G#',
+    'Bb': 'A#',
+    'Cb': 'B',
+  };
+  // Capitalize first letter for consistent lookup
+  const normalized = pc.charAt(0).toUpperCase() + pc.slice(1);
+  return enharmonics[normalized] || normalized;
+}
+
+/**
+ * setScaleLock(key, scaleName)
+ *
+ * Activates scale lock mode. When active, buildNoteMap only returns notes
+ * whose pitch class belongs to the given key/scale.
+ * Pass null/empty for either argument to disable scale lock (chromatic mode).
+ * Triggers a grid rebuild.
+ *
+ * @param {string|null} key       — Root note, e.g. 'C', 'F#' — or null/'' to disable
+ * @param {string|null} scaleName — Scale name, e.g. 'major', 'minor' — or null to disable
+ */
+export function setScaleLock(key, scaleName) {
+  if (!key || !scaleName) {
+    scaleLock = null;
+  } else {
+    scaleLock = { key, scale: scaleName };
+  }
+  _rebuildGrid();
+}
+
+/**
+ * getScaleLock()
+ *
+ * @returns {{ key: string, scale: string } | null} Current scale lock state
+ */
+export function getScaleLock() {
+  return scaleLock;
+}
+
+/**
  * _containerEl: stored reference to the grid's parent container,
  * used by rebuildGrid() to recreate the grid DOM on octave shift.
  */
@@ -47,13 +114,48 @@ let _gridEl = null;
 /**
  * buildNoteMap(octave)
  *
- * Generates 16 consecutive chromatic semitone entries starting at C{octave}.
- * When chromIdx reaches 12 (B), resets to C and increments octave.
+ * Generates 16 note entries starting at C{octave}.
+ * - Chromatic mode (scaleLock null): 16 consecutive semitones
+ * - Scale lock mode: filters a 4-octave chromatic range to notes in the
+ *   selected scale, then takes the first 16 in-key notes
  *
  * @param {number} octave — Base octave (defaults to currentOctave)
  * @returns {Array<{note: string, key: string, padIndex: number}>}
  */
 export function buildNoteMap(octave = currentOctave) {
+  // --- Scale lock mode ---
+  if (scaleLock) {
+    // Get in-scale pitch classes from tonal
+    const scaleResult = Scale.get(`${scaleLock.key} ${scaleLock.scale}`);
+    const scalePCs = (scaleResult.notes || []).map(_normalizePitchClass);
+
+    if (scalePCs.length === 0) {
+      // Fallback to chromatic if tonal can't resolve scale
+      console.warn(`Scale not found: ${scaleLock.key} ${scaleLock.scale} — falling back to chromatic`);
+    } else {
+      // Generate a large chromatic range (4 octaves from base octave)
+      const chromatic = [];
+      for (let o = octave; o < octave + 4; o++) {
+        for (let ci = 0; ci < 12; ci++) {
+          chromatic.push({ pc: CHROMATIC[ci], oct: o });
+        }
+      }
+
+      // Filter to in-scale notes
+      const inScale = chromatic.filter(({ pc }) => scalePCs.includes(pc));
+
+      // Take first 16 in-scale notes, assign keyboard keys sequentially
+      const notes = inScale.slice(0, 16).map(({ pc, oct: o }, i) => ({
+        note: `${pc}${o}`,
+        key: KEYS[i],
+        padIndex: i,
+      }));
+
+      return notes;
+    }
+  }
+
+  // --- Chromatic mode (default) ---
   const notes = [];
   let oct = octave;
   let chromIdx = 0; // start at C
@@ -207,6 +309,19 @@ export function initPadGrid(containerEl) {
   if (octaveDisplay) {
     octaveDisplay.textContent = `Oct ${currentOctave}`;
   }
+
+  // Wire scale lock selectors
+  const scaleKey = document.getElementById('scale-key');
+  const scaleType = document.getElementById('scale-type');
+
+  function _onScaleChange() {
+    const key = scaleKey ? scaleKey.value : '';
+    const type = scaleType ? scaleType.value : 'major';
+    setScaleLock(key || null, key ? type : null);
+  }
+
+  if (scaleKey) scaleKey.addEventListener('change', _onScaleChange);
+  if (scaleType) scaleType.addEventListener('change', _onScaleChange);
 
   return _gridEl;
 }
