@@ -22,7 +22,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SYNTH-01**: Multi-oscillator subtractive synthesizer with selectable waveforms (sine, square, sawtooth, triangle)
 - [x] **SYNTH-02**: Full ADSR envelope controls (attack, decay, sustain, release) per voice
 - [x] **SYNTH-03**: Filter with cutoff frequency and resonance (lowpass, highpass, bandpass modes)
-- [ ] **SYNTH-04**: LFO modulation for vibrato, tremolo, and filter sweeps
+- [x] **SYNTH-04**: LFO modulation for vibrato, tremolo, and filter sweeps
 - [ ] **SYNTH-05**: FM synthesis voices for realistic piano, organ, and electric piano timbres
 - [ ] **SYNTH-06**: 6-8 polished factory presets (2-3 synths, 2 FM realistic, 1-2 drum kits)
 
@@ -44,9 +44,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Performance & Expression
 
-- [ ] **PERF-01**: Velocity sensitivity on touch input — measure touch speed (pixels/ms) mapped to note volume
-- [ ] **PERF-02**: Velocity sensitivity on MIDI input — map MIDI velocity byte (0-127) to note volume
-- [ ] **PERF-03**: MIDI input support via Web MIDI API with graceful degradation on unsupported browsers
+- [x] **PERF-01**: Velocity sensitivity on touch input — measure touch speed (pixels/ms) mapped to note volume
+- [x] **PERF-02**: Velocity sensitivity on MIDI input — map MIDI velocity byte (0-127) to note volume
+- [x] **PERF-03**: MIDI input support via Web MIDI API with graceful degradation on unsupported browsers
 - [x] **PERF-04**: Chromatic note layout on pads with consecutive semitones (no duplicates)
 - [x] **PERF-05**: Octave shifting (+/- octave transposition)
 - [ ] **PERF-06**: Scale lock mode — constrain pads to a selected scale and key
@@ -141,7 +141,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | SYNTH-01 | Phase 2 | Complete |
 | SYNTH-02 | Phase 2 | Complete |
 | SYNTH-03 | Phase 2 | Complete |
-| SYNTH-04 | Phase 2 | Pending |
+| SYNTH-04 | Phase 2 | Complete |
 | SYNTH-05 | Phase 2 | Pending |
 | SYNTH-06 | Phase 2 | Pending |
 | FX-01 | Phase 2 | Complete |
@@ -149,9 +149,9 @@ Deferred to future release. Tracked but not in current roadmap.
 | FX-03 | Phase 2 | Complete |
 | FX-04 | Phase 2 | Complete |
 | FX-05 | Phase 2 | Complete |
-| PERF-01 | Phase 2 | Pending |
-| PERF-02 | Phase 2 | Pending |
-| PERF-03 | Phase 2 | Pending |
+| PERF-01 | Phase 2 | Complete |
+| PERF-02 | Phase 2 | Complete |
+| PERF-03 | Phase 2 | Complete |
 | PERF-04 | Phase 2 | Complete |
 | PERF-05 | Phase 2 | Complete |
 | PERF-06 | Phase 2 | Pending |
