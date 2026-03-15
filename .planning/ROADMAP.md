@@ -21,16 +21,20 @@ Decimal phases appear between their surrounding integers in numeric order.
 ## Phase Details
 
 ### Phase 1: Audio Foundation
-**Goal**: A correct audio engine exists — notes start, hold, and release cleanly on both desktop and iOS, with sample-accurate timing and portfolio integration
+**Goal**: A correct Tone.js audio engine with iOS AudioContext lifecycle, warm pad synth, 4x4 MPC-layout pad grid, keyboard and touch input, and standalone dark theme app shell
 **Depends on**: Nothing (first phase)
 **Requirements**: AUDIO-01, AUDIO-02, AUDIO-03, AUDIO-04, AUDIO-05, AUDIO-06, AUDIO-07, INTG-01, INTG-02, INTG-03, INTG-04
 **Success Criteria** (what must be TRUE):
   1. Opening the app on iOS Safari produces sound on the first tap with no silent failure
   2. Holding a pad key sustains the note; releasing the key stops it without an audible click
-  3. The app lives at `/public/apps/sound-pad/` with the portfolio nav, footer, and #FAFAFA background intact
-  4. All audio scheduling uses Tone.Transport — no setTimeout calls exist in timing-critical paths
+  3. The app is a standalone dark-themed instrument at its own domain (not embedded in portfolio)
+  4. All audio scheduling uses Tone.now() — no setTimeout calls exist in timing-critical paths
   5. Multiple rapid note starts do not spawn unbounded oscillators or crash the page
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold app shell, dark theme CSS, audio engine, signal chain, iOS overlay
+- [ ] 01-02-PLAN.md — 4x4 pad grid UI, keyboard and touch input handlers, volume control, help tooltip
 
 ### Phase 2: Instrument Quality
 **Goal**: A musician can pick up the instrument and play it seriously — polyphonic, velocity-sensitive, with effects and a chromatic layout
@@ -85,7 +89,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Audio Foundation | 0/TBD | Not started | - |
+| 1. Audio Foundation | 0/2 | Planning complete | - |
 | 2. Instrument Quality | 0/TBD | Not started | - |
 | 3. Composition Surface | 0/TBD | Not started | - |
 | 4. Differentiators | 0/TBD | Not started | - |
