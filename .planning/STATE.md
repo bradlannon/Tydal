@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-audio-foundation-01-PLAN.md
-last_updated: "2026-03-15T05:31:03.646Z"
+stopped_at: Completed 01-audio-foundation-02-PLAN.md
+last_updated: "2026-03-15T07:00:27.361Z"
 last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-audio-foundation P01 | 2 | 2 tasks | 7 files |
+| Phase 01-audio-foundation P02 | 45 | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - [Phase 01-audio-foundation]: Tone.js 15.1.22 via importmap +esm CDN — no build step, resolves version discrepancy
 - [Phase 01-audio-foundation]: AudioContext singleton: only audio-engine.js calls Tone.start(); statechange recovery dispatches audio-interrupted event to overlay
 - [Phase 01-audio-foundation]: warmPad PolySynth: sawtooth + lowpass 2800Hz + release:0.4s anti-click; masterVolume at -6dB default headroom
+- [Phase 01-audio-foundation]: MPC layout via reversed DOM row rendering: logical order 1-16, top DOM row = pads 13-16, bottom = 1-4
+- [Phase 01-audio-foundation]: pointercancel + pointerleave mirror pointerup to prevent stuck notes on iOS gesture interruptions
 
 ### Pending Todos
 
@@ -81,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T05:31:03.642Z
-Stopped at: Completed 01-audio-foundation-01-PLAN.md
+Last session: 2026-03-15T07:00:27.356Z
+Stopped at: Completed 01-audio-foundation-02-PLAN.md
 Resume file: None
