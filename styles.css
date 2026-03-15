@@ -643,3 +643,7 @@ input[type="range"]::-moz-range-track {
   background: #3fc7b7;
   box-shadow: 0 0 12px rgba(42,157,143,0.6);
 }
+
+.seq-btn.recording { background: rgba(220,50,50,0.6); border-color: rgba(220,50,50,0.8); }
+#overdub-count { color: #aaa; font-size: 0.75rem; margin-left: 0.25rem; }
+#quantize-select { background: rgba(255,255,255,0.08); color: #eee; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 0.3rem 0.5rem; font-size: 0.8rem; }
