@@ -78,8 +78,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **PLAT-01**: PWA with Web App Manifest — installable to home screen with standalone display mode
 - [ ] **PLAT-02**: Service worker with offline caching (Tone.js + all app assets precached)
 - [ ] **PLAT-03**: WAV audio export of recordings/loops
-- [ ] **PLAT-04**: Preset system — save/recall patches to localStorage
-- [ ] **PLAT-05**: Preset sharing via URL encoding (base64-encoded JSON in query string/hash)
+- [x] **PLAT-04**: Preset system — save/recall patches to localStorage
+- [x] **PLAT-05**: Preset sharing via URL encoding (base64-encoded JSON in query string/hash)
 
 ### Integration
 
@@ -173,8 +173,8 @@ Deferred to future release. Tracked but not in current roadmap.
 | UX-01 | Phase 4 | Complete |
 | UX-02 | Phase 4 | Complete |
 | UX-03 | Phase 4 | Complete |
-| PLAT-04 | Phase 4 | Pending |
-| PLAT-05 | Phase 4 | Pending |
+| PLAT-04 | Phase 4 | Complete |
+| PLAT-05 | Phase 4 | Complete |
 | PLAT-01 | Phase 5 | Pending |
 | PLAT-02 | Phase 5 | Pending |
 | PLAT-03 | Phase 5 | Pending |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-differentiators-02-PLAN.md
-last_updated: "2026-03-15T18:22:10.596Z"
+stopped_at: Completed 04-differentiators-03-PLAN.md
+last_updated: "2026-03-15T18:22:53.521Z"
 last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 15
-  completed_plans: 13
+  completed_plans: 14
   percent: 0
 ---
 
@@ -63,6 +63,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-composition-surface P04 | 1 | 1 tasks | 0 files |
 | Phase 04-differentiators P01 | 99s | 1 tasks | 5 files |
 | Phase 04-differentiators P02 | 2 | 1 tasks | 5 files |
+| Phase 04-differentiators P03 | 3 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,8 @@ Recent decisions affecting current work:
 - [Phase 04-differentiators]: ZCR pitch estimation maps C2-C6 to HSL hue 0-300 for waveform color; teal default during silence
 - [Phase 04-differentiators]: Gyroscope EMA alpha=0.15: responsive sub-100ms while eliminating zipper noise
 - [Phase 04-differentiators]: Exponential gamma-to-frequency mapping (200 * 40^x) gives musically natural filter sweep distribution
+- [Phase 04-differentiators]: captureCurrentPatch stores full synth.get() params rather than detecting factory preset name — avoids cross-module tracking
+- [Phase 04-differentiators]: URL patch restore runs after all panel inits in app.js so audio chain is fully wired before loadPatch() applies effects
 
 ### Pending Todos
 
@@ -120,6 +123,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:22:10.591Z
-Stopped at: Completed 04-differentiators-02-PLAN.md
+Last session: 2026-03-15T18:22:53.518Z
+Stopped at: Completed 04-differentiators-03-PLAN.md
 Resume file: None
