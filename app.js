@@ -15,6 +15,10 @@ import './ui/overlay.js';
 // Pad grid DOM generation
 import { initPadGrid } from './ui/pad-grid.js';
 
+// Synth and effects control panels
+import { initSynthPanel } from './ui/synth-panel.js';
+import { initFXPanel } from './ui/fx-panel.js';
+
 // Input handlers
 import { initKeyboard } from './input/keyboard.js';
 import { initTouch } from './input/touch.js';
@@ -26,6 +30,10 @@ const padGrid = initPadGrid(instrumentEl);
 initKeyboard();
 initTouch(padGrid);
 initMIDI(); // fire-and-forget — gracefully no-ops on unsupported browsers
+
+// Initialize synth and FX control panels
+initSynthPanel(document.getElementById('synth-panel'));
+initFXPanel(document.getElementById('fx-panel'));
 
 // Wire volume slider to masterVolume ramp
 const volumeSlider = document.getElementById('volume-slider');
