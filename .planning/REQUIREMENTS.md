@@ -69,9 +69,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Unique Interaction
 
-- [ ] **UX-01**: Gyroscope/tilt control — device tilt maps to pitch bend or filter sweep
-- [ ] **UX-02**: iOS DeviceMotion permission request UI (required on iOS 13+)
-- [ ] **UX-03**: Jitter smoothing on gyroscope data for stable control output
+- [x] **UX-01**: Gyroscope/tilt control — device tilt maps to pitch bend or filter sweep
+- [x] **UX-02**: iOS DeviceMotion permission request UI (required on iOS 13+)
+- [x] **UX-03**: Jitter smoothing on gyroscope data for stable control output
 
 ### Platform
 
@@ -170,9 +170,9 @@ Deferred to future release. Tracked but not in current roadmap.
 | VIZ-02 | Phase 4 | Complete |
 | VIZ-03 | Phase 4 | Complete |
 | VIZ-04 | Phase 4 | Complete |
-| UX-01 | Phase 4 | Pending |
-| UX-02 | Phase 4 | Pending |
-| UX-03 | Phase 4 | Pending |
+| UX-01 | Phase 4 | Complete |
+| UX-02 | Phase 4 | Complete |
+| UX-03 | Phase 4 | Complete |
 | PLAT-04 | Phase 4 | Pending |
 | PLAT-05 | Phase 4 | Pending |
 | PLAT-01 | Phase 5 | Pending |
