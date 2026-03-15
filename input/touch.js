@@ -6,6 +6,11 @@
  * Clears touchedPads on 'grid-rebuild' events (octave shift) to prevent
  * stuck notes when pads are reassigned to different notes.
  *
+ * Velocity is measured from pointer movement speed:
+ *   0 px/ms = 0.4 (minimum, never silent)
+ *   ~3 px/ms = 1.0 (maximum)
+ *   First tap defaults to 0.6 (mid-range) — no prior position to diff.
+ *
  * Exports:
  *   initTouch — Attaches pointer event listeners to the pad grid element
  *
@@ -21,6 +26,14 @@ import { setPadActive } from '../ui/pad-grid.js';
  * Enables correct note release when each finger lifts independently.
  */
 const touchedPads = new Map();
+
+/**
+ * Velocity state — tracks last pointer Y position and timestamp
+ * to compute movement speed for velocity calculation.
+ * Reset on 'grid-rebuild' to avoid stale measurements after octave shift.
+ */
+let lastPointerY = null;
+let lastPointerTime = null;
 
 /**
  * releasePointer(pointerId)
@@ -66,6 +79,9 @@ export function initTouch(padGridEl) {
       setPadActive(note, false);
     }
     touchedPads.clear();
+    // Reset velocity state — stale measurements after grid rebuild are invalid
+    lastPointerY = null;
+    lastPointerTime = null;
   });
 
   // pointerdown: start note for the touched pad
@@ -81,8 +97,25 @@ export function initTouch(padGridEl) {
     const note = pad.dataset.note;
     touchedPads.set(e.pointerId, note);
 
+    // Compute velocity from pointer movement speed.
+    // On first tap (no prior position), default to 0.6 (mid-range) to
+    // avoid silent-sounding notes when the user hasn't moved their pointer.
+    let velocity = 0.6;
+    const now = performance.now();
+    if (lastPointerY !== null && lastPointerTime !== null) {
+      const timeDelta = now - lastPointerTime;
+      if (timeDelta > 0) {
+        const yDelta = Math.abs(e.clientY - lastPointerY);
+        const speed = yDelta / timeDelta; // px/ms
+        // 0 px/ms → 0.4 (minimum, never silent), ~3 px/ms → 1.0 (max)
+        velocity = Math.min(1, Math.max(0.4, speed / 3));
+      }
+    }
+    lastPointerY = e.clientY;
+    lastPointerTime = now;
+
     await ensureAudioStarted();
-    noteOn(note);
+    noteOn(note, velocity);
     setPadActive(note, true);
   }, { passive: false });
 

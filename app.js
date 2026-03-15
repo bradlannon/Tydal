@@ -18,12 +18,14 @@ import { initPadGrid } from './ui/pad-grid.js';
 // Input handlers
 import { initKeyboard } from './input/keyboard.js';
 import { initTouch } from './input/touch.js';
+import { initMIDI } from './input/midi.js';
 
 // Initialize pad grid and input
 const instrumentEl = document.getElementById('instrument');
 const padGrid = initPadGrid(instrumentEl);
 initKeyboard();
 initTouch(padGrid);
+initMIDI(); // fire-and-forget — gracefully no-ops on unsupported browsers
 
 // Wire volume slider to masterVolume ramp
 const volumeSlider = document.getElementById('volume-slider');
