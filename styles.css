@@ -1,0 +1,304 @@
+/* ============================================================
+   Tydal — Dark Theme, Mobile-First
+   ============================================================ */
+
+/* -------------------------
+   CSS Custom Properties
+   ------------------------- */
+:root {
+  --bg-body: #0a0a0a;
+  --bg-surface: #1a1a1a;
+  --bg-surface-hover: #2a2a2a;
+  --accent: #2A9D8F;
+  --accent-glow: rgba(42, 157, 143, 0.4);
+  --text-primary: #e0e0e0;
+  --text-secondary: #888;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --header-height: 52px;
+  --controls-height: 56px;
+}
+
+/* -------------------------
+   Reset & Base
+   ------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-body);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------------------------
+   Header
+   ------------------------- */
+.app-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  padding: 0 16px;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 0;
+  user-select: none;
+}
+
+/* -------------------------
+   Main Layout
+   ------------------------- */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 12px;
+  gap: 12px;
+}
+
+/* -------------------------
+   Instrument Container
+   ------------------------- */
+.instrument-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* -------------------------
+   Pad Grid
+   ------------------------- */
+.pad-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+}
+
+/* Desktop: constrain so pads don't stretch too wide */
+@media (min-width: 768px) {
+  .pad-grid {
+    max-width: 520px;
+  }
+}
+
+/* -------------------------
+   Pad
+   ------------------------- */
+.pad {
+  background: var(--bg-surface);
+  border-radius: 8px;
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  transition: background-color 60ms ease, box-shadow 60ms ease;
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pad:hover {
+  background: var(--bg-surface-hover);
+}
+
+.pad.active {
+  background-color: var(--accent);
+  box-shadow: 0 0 16px var(--accent-glow);
+  border-color: transparent;
+}
+
+.pad-note {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.pad.active .pad-note {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pad-key {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.pad.active .pad-key {
+  color: #fff;
+}
+
+/* -------------------------
+   Controls Bar
+   ------------------------- */
+.controls-bar {
+  height: var(--controls-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 0 4px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.control-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Range input — dark theme */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: var(--bg-surface);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 0 6px var(--accent-glow);
+  transition: box-shadow 80ms ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--bg-surface);
+  border-radius: 2px;
+}
+
+/* -------------------------
+   Help Button
+   ------------------------- */
+.help-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 80ms ease, color 80ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.help-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+/* -------------------------
+   Audio Overlay
+   ------------------------- */
+#audio-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(10, 10, 10, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#audio-overlay[hidden] {
+  display: none;
+}
+
+.overlay-inner {
+  text-align: center;
+  pointer-events: none;
+}
+
+.overlay-text {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.overlay-text::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 12px auto 0;
+  border-radius: 1px;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tydal</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "tone": "https://cdn.jsdelivr.net/npm/tone@15.1.22/+esm"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">Tydal</h1>
+  </header>
+
+  <main class="app-main">
+    <div id="instrument" class="instrument-container">
+      <!-- Pad grid injected by Plan 02 -->
+    </div>
+
+    <div class="controls-bar">
+      <div class="volume-control">
+        <label for="volume-slider" class="control-label">Volume</label>
+        <input
+          type="range"
+          id="volume-slider"
+          min="-40"
+          max="0"
+          value="-6"
+          step="1"
+          aria-label="Master Volume"
+        >
+      </div>
+      <button class="help-btn" id="help-btn" aria-label="Keyboard shortcuts">?</button>
+    </div>
+  </main>
+
+  <div id="audio-overlay" hidden>
+    <div class="overlay-inner">
+      <p class="overlay-text">Tap anywhere to enable audio</p>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
