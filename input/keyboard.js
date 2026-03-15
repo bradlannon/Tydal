@@ -3,6 +3,7 @@
  *
  * Keyboard key-to-note mapping with keydown/keyup note lifecycle.
  * Handles held-key tracking to prevent auto-repeat triggering.
+ * Rebuilds KEY_TO_NOTE dynamically on 'grid-rebuild' events (octave shift).
  *
  * Exports:
  *   initKeyboard — Attaches global keydown/keyup listeners
@@ -12,16 +13,14 @@
 
 import { ensureAudioStarted } from '../engine/audio-engine.js';
 import { noteOn, noteOff } from '../engine/instruments.js';
-import { NOTE_MAP, setPadActive } from '../ui/pad-grid.js';
+import { getNoteMap, setPadActive } from '../ui/pad-grid.js';
 
 /**
  * KEY_TO_NOTE: lookup map from keyboard key (lowercase) to note name.
- * Built from NOTE_MAP to keep a single source of truth.
- * e.g. { 'z': 'C3', 'x': 'D3', ... }
+ * Built dynamically from getNoteMap() so it stays in sync with octave shifts.
+ * e.g. { 'z': 'C3', 'x': 'C#3', ... }
  */
-const KEY_TO_NOTE = Object.fromEntries(
-  NOTE_MAP.map(({ note, key }) => [key.toLowerCase(), note])
-);
+let KEY_TO_NOTE = {};
 
 /**
  * heldKeys: tracks currently pressed keys to prevent auto-repeat
@@ -30,13 +29,37 @@ const KEY_TO_NOTE = Object.fromEntries(
 const heldKeys = new Set();
 
 /**
+ * rebuildKeyMap()
+ *
+ * Reconstructs KEY_TO_NOTE from the current note map.
+ * Called once at init and again whenever 'grid-rebuild' fires.
+ * Also clears heldKeys to prevent stuck notes after octave shift.
+ */
+export function rebuildKeyMap() {
+  KEY_TO_NOTE = Object.fromEntries(
+    getNoteMap().map(({ note, key }) => [key.toLowerCase(), note])
+  );
+  heldKeys.clear();
+}
+
+/**
  * initKeyboard()
  *
  * Attaches keydown and keyup listeners to the document.
  * On keydown: triggers noteOn and visual pad activation (once per press).
  * On keyup: triggers noteOff and deactivates visual pad.
+ *
+ * Listens for 'grid-rebuild' to rebuild KEY_TO_NOTE when octave shifts.
  */
 export function initKeyboard() {
+  // Initialize KEY_TO_NOTE from current note map
+  rebuildKeyMap();
+
+  // Rebuild on octave shift — pad notes have changed
+  document.addEventListener('grid-rebuild', () => {
+    rebuildKeyMap();
+  });
+
   document.addEventListener('keydown', async (e) => {
     // Ignore browser-generated auto-repeat events
     if (e.repeat) return;

@@ -3,6 +3,8 @@
  *
  * Pointer event handlers for the pad grid with multitouch tracking.
  * Uses pointerId map to correctly handle simultaneous touches.
+ * Clears touchedPads on 'grid-rebuild' events (octave shift) to prevent
+ * stuck notes when pads are reassigned to different notes.
  *
  * Exports:
  *   initTouch — Attaches pointer event listeners to the pad grid element
@@ -41,7 +43,8 @@ function releasePointer(pointerId) {
  * initTouch(padGridEl)
  *
  * Attaches pointer event listeners to the pad grid element.
- * Sets touch-action: none to prevent scroll interference during pad play.
+ * Sets touch-action: none on both the grid and body to prevent
+ * scroll/zoom interference during multitouch pad play.
  *
  * @param {HTMLElement} padGridEl — The .pad-grid element
  */
@@ -49,10 +52,27 @@ export function initTouch(padGridEl) {
   // Prevent page scroll/zoom while interacting with the pad grid
   padGridEl.style.touchAction = 'none';
 
+  // Set touch-action: manipulation on body to prevent double-tap zoom
+  // at the page level without blocking pointer events on the grid.
+  document.body.style.touchAction = 'manipulation';
+
+  // On 'grid-rebuild' (octave shift), clear all active pointer tracking.
+  // The grid DOM has been recreated — old pointer→note mappings are invalid.
+  // releaseAll() in instruments.js handles actual audio release; we just
+  // clean up the pointer map and visual state here.
+  document.addEventListener('grid-rebuild', () => {
+    // Deactivate any visually highlighted pads for tracked pointers
+    for (const note of touchedPads.values()) {
+      setPadActive(note, false);
+    }
+    touchedPads.clear();
+  });
+
   // pointerdown: start note for the touched pad
   padGridEl.addEventListener('pointerdown', async (e) => {
     // Must call preventDefault here — requires { passive: false } on listener.
-    // Without this, Chrome ignores preventDefault on touch events (Pitfall 3).
+    // Without this, Chrome ignores preventDefault on touch events.
+    // This also prevents zoom on rapid multi-finger taps (Pitfall 7).
     e.preventDefault();
 
     const pad = e.target.closest('[data-note]');
@@ -72,7 +92,7 @@ export function initTouch(padGridEl) {
   });
 
   // pointercancel: browser cancelled pointer (e.g. incoming call, scroll takeover)
-  // IDENTICAL to pointerup — prevents stuck notes (Pitfall 6)
+  // IDENTICAL to pointerup — prevents stuck notes on iOS gesture interruptions
   padGridEl.addEventListener('pointercancel', (e) => {
     releasePointer(e.pointerId);
   });
