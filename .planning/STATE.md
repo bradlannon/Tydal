@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-instrument-quality-03-PLAN.md
-last_updated: "2026-03-15T14:38:12.242Z"
+stopped_at: Completed 02-instrument-quality-04-PLAN.md
+last_updated: "2026-03-15T14:44:40.598Z"
 last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-instrument-quality P01 | 3 | 2 tasks | 3 files |
 | Phase 02-instrument-quality P02 | 3 | 2 tasks | 6 files |
 | Phase 02-instrument-quality P03 | 10 | 2 tasks | 4 files |
+| Phase 02-instrument-quality P04 | 25 | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,9 @@ Recent decisions affecting current work:
 - [Phase 02-instrument-quality]: Velocity range 0.4-1.0: minimum 0.4 ensures notes are never silent; 3 px/ms maps to 1.0
 - [Phase 02-instrument-quality]: Tremolo must be started even at wet=0: Tone.Tremolo oscillator requires explicit start
 - [Phase 02-instrument-quality]: filterLFO not started by default: only enabled when user activates via setLFO()
+- [Phase 02-instrument-quality]: applyPreset creates new PolySynth each time to ensure FM modulator graph is fully reconstructed
+- [Phase 02-instrument-quality]: Scale filter uses 4-octave window: ensures 16 in-key notes for pentatonic (5 notes/octave)
+- [Phase 02-instrument-quality]: Enharmonic normalization via explicit flat-to-sharp map for tonal/CHROMATIC compatibility
 
 ### Pending Todos
 
@@ -95,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T14:38:12.238Z
-Stopped at: Completed 02-instrument-quality-03-PLAN.md
+Last session: 2026-03-15T14:44:40.589Z
+Stopped at: Completed 02-instrument-quality-04-PLAN.md
 Resume file: None

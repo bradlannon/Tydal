@@ -23,8 +23,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SYNTH-02**: Full ADSR envelope controls (attack, decay, sustain, release) per voice
 - [x] **SYNTH-03**: Filter with cutoff frequency and resonance (lowpass, highpass, bandpass modes)
 - [x] **SYNTH-04**: LFO modulation for vibrato, tremolo, and filter sweeps
-- [ ] **SYNTH-05**: FM synthesis voices for realistic piano, organ, and electric piano timbres
-- [ ] **SYNTH-06**: 6-8 polished factory presets (2-3 synths, 2 FM realistic, 1-2 drum kits)
+- [x] **SYNTH-05**: FM synthesis voices for realistic piano, organ, and electric piano timbres
+- [x] **SYNTH-06**: 6-8 polished factory presets (2-3 synths, 2 FM realistic, 1-2 drum kits)
 
 ### Effects
 
@@ -49,7 +49,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PERF-03**: MIDI input support via Web MIDI API with graceful degradation on unsupported browsers
 - [x] **PERF-04**: Chromatic note layout on pads with consecutive semitones (no duplicates)
 - [x] **PERF-05**: Octave shifting (+/- octave transposition)
-- [ ] **PERF-06**: Scale lock mode — constrain pads to a selected scale and key
+- [x] **PERF-06**: Scale lock mode — constrain pads to a selected scale and key
 - [x] **PERF-07**: Mobile-first multitouch support with touch-action: manipulation (no zoom/scroll interference)
 
 ### Composition
@@ -142,8 +142,8 @@ Deferred to future release. Tracked but not in current roadmap.
 | SYNTH-02 | Phase 2 | Complete |
 | SYNTH-03 | Phase 2 | Complete |
 | SYNTH-04 | Phase 2 | Complete |
-| SYNTH-05 | Phase 2 | Pending |
-| SYNTH-06 | Phase 2 | Pending |
+| SYNTH-05 | Phase 2 | Complete |
+| SYNTH-06 | Phase 2 | Complete |
 | FX-01 | Phase 2 | Complete |
 | FX-02 | Phase 2 | Complete |
 | FX-03 | Phase 2 | Complete |
@@ -154,7 +154,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | PERF-03 | Phase 2 | Complete |
 | PERF-04 | Phase 2 | Complete |
 | PERF-05 | Phase 2 | Complete |
-| PERF-06 | Phase 2 | Pending |
+| PERF-06 | Phase 2 | Complete |
 | PERF-07 | Phase 2 | Complete |
 | DRUM-01 | Phase 3 | Pending |
 | DRUM-02 | Phase 3 | Pending |
