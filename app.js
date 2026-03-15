@@ -19,6 +19,7 @@ import { initPadGrid } from './ui/pad-grid.js';
 import { initSynthPanel } from './ui/synth-panel.js';
 import { initFXPanel } from './ui/fx-panel.js';
 import { initSequencerUI } from './ui/sequencer-ui.js';
+import { initVisualizer } from './ui/visualizer-ui.js';
 
 // Input handlers
 import { initKeyboard } from './input/keyboard.js';
@@ -36,6 +37,7 @@ initMIDI(); // fire-and-forget — gracefully no-ops on unsupported browsers
 initSynthPanel(document.getElementById('synth-panel'));
 initFXPanel(document.getElementById('fx-panel'));
 initSequencerUI(document.getElementById('sequencer'));
+initVisualizer(document.getElementById('visualizer'));
 
 // Wire volume slider to masterVolume ramp
 const volumeSlider = document.getElementById('volume-slider');
