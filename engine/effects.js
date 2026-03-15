@@ -3,11 +3,13 @@
  *
  * Full effects bus for the subtractive synth.
  *
- * Signal chain (AUDIO-02, SYNTH-02):
- *   Instrument → reverb → delay → distortion → filterFX → channel → masterVolume → Destination
+ * Signal chain (AUDIO-02, SYNTH-02, SYNTH-04):
+ *   Instrument → vibrato → tremolo → reverb → delay → distortion → filterFX → channel → masterVolume → Destination
  *
  * Default state: only reverb is audible (wet:0.3).
  * Delay and distortion start at wet:0 so the first load isn't overwhelming.
+ * Vibrato and tremolo have wet:0 by default — in chain but inaudible until enabled.
+ * filterLFO is created and connected to filterFX.frequency but not started.
  *
  * connectInstrument / disconnectInstrument replace the old hard-wired
  * warmPad.connect() so any synth can be hot-swapped into the chain.
@@ -18,6 +20,12 @@ import * as Tone from 'tone';
 // ---------------------------------------------------------------------------
 // Effects nodes
 // ---------------------------------------------------------------------------
+
+/** Vibrato — pitch LFO modulation; starts silent (wet:0) */
+export const vibrato = new Tone.Vibrato({ frequency: 5, depth: 0.1, wet: 0 });
+
+/** Tremolo — amplitude LFO modulation; starts silent (wet:0). Must be started even at wet:0. */
+export const tremolo = new Tone.Tremolo({ frequency: 4, depth: 0.5, wet: 0 }).start();
 
 /** Reverb — adds space; audible by default (wet:0.3, decay:2.5s) */
 export const reverb = new Tone.Reverb({ decay: 2.5, wet: 0.3 });
@@ -38,8 +46,21 @@ export const channel = new Tone.Channel({ volume: 0, pan: 0 });
 export const masterVolume = new Tone.Volume(-6).toDestination();
 
 // ---------------------------------------------------------------------------
-// Wire the chain: reverb → delay → distortion → filterFX → channel → masterVolume → Destination
+// LFO modulation
 // ---------------------------------------------------------------------------
+
+/**
+ * filterLFO — oscillates filterFX.frequency between 400–4000 Hz.
+ * Not started by default. Enable via setLFO('filterLFO', { enabled: true }).
+ */
+export const filterLFO = new Tone.LFO({ frequency: 2, min: 400, max: 4000, type: 'sine' });
+filterLFO.connect(filterFX.frequency);
+
+// ---------------------------------------------------------------------------
+// Wire the chain: vibrato → tremolo → reverb → delay → distortion → filterFX → channel → masterVolume → Destination
+// ---------------------------------------------------------------------------
+vibrato.connect(tremolo);
+tremolo.connect(reverb);
 reverb.connect(delay);
 delay.connect(distortion);
 distortion.connect(filterFX);
@@ -57,11 +78,11 @@ export const effectsReady = reverb.ready;
 // ---------------------------------------------------------------------------
 
 /**
- * Connect a synth into the effects chain (into the reverb input).
+ * Connect a synth into the effects chain (into vibrato, the first node).
  * @param {Tone.PolySynth | Tone.Synth} synth
  */
 export function connectInstrument(synth) {
-  synth.connect(reverb);
+  synth.connect(vibrato);
 }
 
 /**
@@ -70,4 +91,44 @@ export function connectInstrument(synth) {
  */
 export function disconnectInstrument(synth) {
   synth.disconnect();
+}
+
+// ---------------------------------------------------------------------------
+// LFO control helper
+// ---------------------------------------------------------------------------
+
+/**
+ * setLFO(target, params)
+ *
+ * Update LFO parameters at runtime. Called by UI controls to enable/configure
+ * vibrato, tremolo, or the filter sweep LFO.
+ *
+ * @param {'vibrato' | 'tremolo' | 'filterLFO'} target
+ * @param {Object} params
+ *   For vibrato/tremolo: { frequency?, depth?, wet? }
+ *   For filterLFO: { frequency?, min?, max?, type?, enabled? }
+ */
+export function setLFO(target, params) {
+  const nodes = { vibrato, tremolo, filterLFO };
+  const node = nodes[target];
+  if (!node) {
+    console.warn(`setLFO: unknown target "${target}"`);
+    return;
+  }
+
+  if (target === 'filterLFO') {
+    // filterLFO uses Tone.LFO API — handle start/stop via enabled flag
+    const { enabled, ...lfoParams } = params;
+    if (Object.keys(lfoParams).length > 0) {
+      node.set(lfoParams);
+    }
+    if (enabled === true) {
+      node.start();
+    } else if (enabled === false) {
+      node.stop();
+    }
+  } else {
+    // vibrato and tremolo use Tone.Effect .set() for all params
+    node.set(params);
+  }
 }
