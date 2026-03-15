@@ -13,6 +13,7 @@
 import * as Tone from 'tone';
 import { connectInstrument, disconnectInstrument } from './effects.js';
 import { trackNoteOn, trackNoteOff, stealOldestIfFull, clearAll, getActiveNotes } from './voice-tracker.js';
+import { isRecording, recordNote } from './recorder.js';
 
 // ---------------------------------------------------------------------------
 // Subtractive synthesizer definition
@@ -89,6 +90,11 @@ export function noteOn(note, velocity = 0.8) {
 
   trackNoteOn(note);
   activeSynth.triggerAttack(note, Tone.now(), velocity);
+
+  // Capture note into active recording pass (all sources: keyboard, touch, MIDI)
+  if (isRecording()) {
+    recordNote(note, velocity, '8n');
+  }
 }
 
 /**
