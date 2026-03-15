@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-15T04:53:51.213Z"
+stopped_at: Completed 01-audio-foundation-01-PLAN.md
+last_updated: "2026-03-15T05:31:03.646Z"
 last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01-audio-foundation P01 | 2 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,9 @@ Recent decisions affecting current work:
 - Roadmap: 5-phase structure ordered by hard audio dependencies (Foundation → Instrument Quality → Composition → Differentiators → Platform)
 - Roadmap: Service worker deferred to Phase 5 — caches specific file inventory that must be final
 - Roadmap: Preset system placed in Phase 4, not Phase 2 — synth.get()/set() APIs must be stable before serializing
+- [Phase 01-audio-foundation]: Tone.js 15.1.22 via importmap +esm CDN — no build step, resolves version discrepancy
+- [Phase 01-audio-foundation]: AudioContext singleton: only audio-engine.js calls Tone.start(); statechange recovery dispatches audio-interrupted event to overlay
+- [Phase 01-audio-foundation]: warmPad PolySynth: sawtooth + lowpass 2800Hz + release:0.4s anti-click; masterVolume at -6dB default headroom
 
 ### Pending Todos
 
@@ -77,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T04:53:51.208Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-audio-foundation/01-CONTEXT.md
+Last session: 2026-03-15T05:31:03.642Z
+Stopped at: Completed 01-audio-foundation-01-PLAN.md
+Resume file: None

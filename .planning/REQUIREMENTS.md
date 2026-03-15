@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Audio Core
 
-- [ ] **AUDIO-01**: App initializes a single Tone.js AudioContext with proper lifecycle management (suspended → running, iOS interrupted recovery)
-- [ ] **AUDIO-02**: Audio bus architecture with instrument channels → effects sends → master bus → Tone.Destination
+- [x] **AUDIO-01**: App initializes a single Tone.js AudioContext with proper lifecycle management (suspended → running, iOS interrupted recovery)
+- [x] **AUDIO-02**: Audio bus architecture with instrument channels → effects sends → master bus → Tone.Destination
 - [ ] **AUDIO-03**: Note-on/note-off lifecycle — notes sustain while key/pad is held, release on keyup/touchend
-- [ ] **AUDIO-04**: 8-voice polyphony with voice stealing via Tone.PolySynth
-- [ ] **AUDIO-05**: All scheduling uses Tone.Transport — no setTimeout for musical timing
-- [ ] **AUDIO-06**: Anti-click envelopes on all voice stop events (gain ramp to zero before stop)
+- [x] **AUDIO-04**: 8-voice polyphony with voice stealing via Tone.PolySynth
+- [x] **AUDIO-05**: All scheduling uses Tone.Transport — no setTimeout for musical timing
+- [x] **AUDIO-06**: Anti-click envelopes on all voice stop events (gain ramp to zero before stop)
 - [ ] **AUDIO-07**: Master volume control via Tone.Volume before Tone.Destination
 
 ### Sound Design
@@ -83,10 +83,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Integration
 
-- [ ] **INTG-01**: Portfolio theme integration — same nav (nav-links + search box), footer, #FAFAFA background
-- [ ] **INTG-02**: Dark instrument container (card-style) within the light portfolio page
+- [x] **INTG-01**: Portfolio theme integration — same nav (nav-links + search box), footer, #FAFAFA background
+- [x] **INTG-02**: Dark instrument container (card-style) within the light portfolio page
 - [ ] **INTG-03**: Responsive design — mobile-first with desktop enhancements
-- [ ] **INTG-04**: ES modules loaded via import map (no build step), Tone.js from CDN
+- [x] **INTG-04**: ES modules loaded via import map (no build step), Tone.js from CDN
 
 ## v2 Requirements
 
@@ -127,17 +127,17 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIO-01 | Phase 1 | Pending |
-| AUDIO-02 | Phase 1 | Pending |
+| AUDIO-01 | Phase 1 | Complete |
+| AUDIO-02 | Phase 1 | Complete |
 | AUDIO-03 | Phase 1 | Pending |
-| AUDIO-04 | Phase 1 | Pending |
-| AUDIO-05 | Phase 1 | Pending |
-| AUDIO-06 | Phase 1 | Pending |
+| AUDIO-04 | Phase 1 | Complete |
+| AUDIO-05 | Phase 1 | Complete |
+| AUDIO-06 | Phase 1 | Complete |
 | AUDIO-07 | Phase 1 | Pending |
-| INTG-01 | Phase 1 | Pending |
-| INTG-02 | Phase 1 | Pending |
+| INTG-01 | Phase 1 | Complete |
+| INTG-02 | Phase 1 | Complete |
 | INTG-03 | Phase 1 | Pending |
-| INTG-04 | Phase 1 | Pending |
+| INTG-04 | Phase 1 | Complete |
 | SYNTH-01 | Phase 2 | Pending |
 | SYNTH-02 | Phase 2 | Pending |
 | SYNTH-03 | Phase 2 | Pending |
