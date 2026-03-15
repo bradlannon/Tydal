@@ -19,20 +19,20 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Sound Design
 
-- [ ] **SYNTH-01**: Multi-oscillator subtractive synthesizer with selectable waveforms (sine, square, sawtooth, triangle)
-- [ ] **SYNTH-02**: Full ADSR envelope controls (attack, decay, sustain, release) per voice
-- [ ] **SYNTH-03**: Filter with cutoff frequency and resonance (lowpass, highpass, bandpass modes)
+- [x] **SYNTH-01**: Multi-oscillator subtractive synthesizer with selectable waveforms (sine, square, sawtooth, triangle)
+- [x] **SYNTH-02**: Full ADSR envelope controls (attack, decay, sustain, release) per voice
+- [x] **SYNTH-03**: Filter with cutoff frequency and resonance (lowpass, highpass, bandpass modes)
 - [ ] **SYNTH-04**: LFO modulation for vibrato, tremolo, and filter sweeps
 - [ ] **SYNTH-05**: FM synthesis voices for realistic piano, organ, and electric piano timbres
 - [ ] **SYNTH-06**: 6-8 polished factory presets (2-3 synths, 2 FM realistic, 1-2 drum kits)
 
 ### Effects
 
-- [ ] **FX-01**: Effects chain: reverb (Tone.Reverb) with wet/dry and decay controls
-- [ ] **FX-02**: Effects chain: delay (Tone.FeedbackDelay) with time, feedback, and wet/dry controls
-- [ ] **FX-03**: Effects chain: distortion (Tone.Distortion) with amount control
-- [ ] **FX-04**: Effects chain: filter effect with cutoff and resonance knobs
-- [ ] **FX-05**: Per-channel volume and pan controls for independent instrument mixing
+- [x] **FX-01**: Effects chain: reverb (Tone.Reverb) with wet/dry and decay controls
+- [x] **FX-02**: Effects chain: delay (Tone.FeedbackDelay) with time, feedback, and wet/dry controls
+- [x] **FX-03**: Effects chain: distortion (Tone.Distortion) with amount control
+- [x] **FX-04**: Effects chain: filter effect with cutoff and resonance knobs
+- [x] **FX-05**: Per-channel volume and pan controls for independent instrument mixing
 
 ### Drums
 
@@ -138,17 +138,17 @@ Deferred to future release. Tracked but not in current roadmap.
 | INTG-02 | Phase 1 | Complete |
 | INTG-03 | Phase 1 | Complete |
 | INTG-04 | Phase 1 | Complete |
-| SYNTH-01 | Phase 2 | Pending |
-| SYNTH-02 | Phase 2 | Pending |
-| SYNTH-03 | Phase 2 | Pending |
+| SYNTH-01 | Phase 2 | Complete |
+| SYNTH-02 | Phase 2 | Complete |
+| SYNTH-03 | Phase 2 | Complete |
 | SYNTH-04 | Phase 2 | Pending |
 | SYNTH-05 | Phase 2 | Pending |
 | SYNTH-06 | Phase 2 | Pending |
-| FX-01 | Phase 2 | Pending |
-| FX-02 | Phase 2 | Pending |
-| FX-03 | Phase 2 | Pending |
-| FX-04 | Phase 2 | Pending |
-| FX-05 | Phase 2 | Pending |
+| FX-01 | Phase 2 | Complete |
+| FX-02 | Phase 2 | Complete |
+| FX-03 | Phase 2 | Complete |
+| FX-04 | Phase 2 | Complete |
+| FX-05 | Phase 2 | Complete |
 | PERF-01 | Phase 2 | Pending |
 | PERF-02 | Phase 2 | Pending |
 | PERF-03 | Phase 2 | Pending |

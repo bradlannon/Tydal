@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-audio-foundation-02-PLAN.md
-last_updated: "2026-03-15T12:56:15.749Z"
+stopped_at: Completed 02-instrument-quality-02-PLAN.md
+last_updated: "2026-03-15T14:34:14.907Z"
 last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 7
+  completed_plans: 4
   percent: 0
 ---
 
@@ -52,6 +52,8 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01-audio-foundation P01 | 2 | 2 tasks | 7 files |
 | Phase 01-audio-foundation P02 | 45 | 3 tasks | 6 files |
+| Phase 02-instrument-quality P01 | 3 | 2 tasks | 3 files |
+| Phase 02-instrument-quality P02 | 3 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -68,6 +70,11 @@ Recent decisions affecting current work:
 - [Phase 01-audio-foundation]: warmPad PolySynth: sawtooth + lowpass 2800Hz + release:0.4s anti-click; masterVolume at -6dB default headroom
 - [Phase 01-audio-foundation]: MPC layout via reversed DOM row rendering: logical order 1-16, top DOM row = pads 13-16, bottom = 1-4
 - [Phase 01-audio-foundation]: pointercancel + pointerleave mirror pointerup to prevent stuck notes on iOS gesture interruptions
+- [Phase 02-instrument-quality]: Removed warmPad export; replaced with mutable activeSynth let for Plan 04 preset hot-swapping via switchInstrument()
+- [Phase 02-instrument-quality]: Effects bus pattern: connectInstrument/disconnectInstrument route synths into static reverb->...->masterVolume chain
+- [Phase 02-instrument-quality]: Delay wet:0 and distortion wet:0 by default — only reverb audible on first load
+- [Phase 02-instrument-quality]: Full DOM teardown/rebuild for grid on octave shift: simpler than in-place updates; rebuilds are infrequent
+- [Phase 02-instrument-quality]: 'grid-rebuild' CustomEvent: pad-grid.js dispatches, input modules subscribe independently for loose coupling
 
 ### Pending Todos
 
@@ -84,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T07:00:27.356Z
-Stopped at: Completed 01-audio-foundation-02-PLAN.md
+Last session: 2026-03-15T14:34:14.902Z
+Stopped at: Completed 02-instrument-quality-02-PLAN.md
 Resume file: None
