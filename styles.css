@@ -958,3 +958,60 @@ input[type="range"]::-moz-range-track {
   color: var(--accent);
   opacity: 1;
 }
+
+/* -------------------------
+   Preset Browser
+   ------------------------- */
+.preset-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  user-select: none;
+  transition: background 120ms ease;
+}
+
+.preset-item:hover {
+  background: var(--bg-surface-hover);
+}
+
+.preset-item.previewing {
+  background: rgba(42, 157, 143, 0.15);
+  border-left: 3px solid var(--accent);
+  padding-left: 9px; /* compensate for the 3px border */
+}
+
+.preset-section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  padding: 8px 0 4px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.preset-browser-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 8px;
+}
+
+.preset-empty {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 8px 0;
+  margin: 0;
+}
+
+.panel-btn--browse {
+  font-size: 0.65rem;
+  padding: 3px 8px;
+}

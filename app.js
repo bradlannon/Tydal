@@ -25,6 +25,7 @@ import { initMIDI } from './input/midi.js';
 import { initGyroPanel } from './ui/gyro-panel.js';
 import { initNoteRepeatUI } from './ui/note-repeat-ui.js';
 import { initMacroPanel } from './ui/macro-panel.js';
+import { initPresetBrowser } from './ui/preset-browser.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -41,6 +42,7 @@ initVisualizer(document.getElementById('visualizer'));
 initGyroPanel(document.getElementById('gyro-panel'));
 initNoteRepeatUI(document.getElementById('note-repeat-control'));
 initMacroPanel(document.getElementById('macro-panel'));
+initPresetBrowser(document.getElementById('preset-browser'));
 
 // Volume slider
 const volumeSlider = document.getElementById('volume-slider');
@@ -122,6 +124,10 @@ toolbarBtns.forEach((btn) => {
 });
 
 backdrop.addEventListener('click', closeSheet);
+
+// Preset browser sheet open/close events (dispatched by synth-panel and preset-browser)
+document.addEventListener('open-preset-browser', () => openSheet('preset-browser-sheet'));
+document.addEventListener('close-preset-browser', () => closeSheet());
 
 // Restore shared patch from URL
 const urlPatch = patchFromURL();

@@ -110,7 +110,7 @@ export function initSynthPanel(containerEl) {
   }
 
   // ---------------------------------------------------------------------------
-  // Preset selector
+  // Preset selector + Browse button
   // ---------------------------------------------------------------------------
   const presetSelect = makeSelect(
     getPresetNames().map((name) => ({ value: name, label: name }))
@@ -124,7 +124,29 @@ export function initSynthPanel(containerEl) {
       waveformSelect.style.opacity = isFMPreset ? '0.4' : '1';
     }
   });
-  body.appendChild(makeRow('Preset', presetSelect));
+
+  // Browse button opens the preset browser bottom sheet
+  const browseBtn = document.createElement('button');
+  browseBtn.className = 'panel-btn panel-btn--browse';
+  browseBtn.textContent = 'Browse';
+  browseBtn.title = 'Open preset browser with tap-to-preview';
+  browseBtn.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('open-preset-browser'));
+  });
+
+  // Row: label + preset select + browse button
+  const presetRow = document.createElement('div');
+  presetRow.className = 'panel-row';
+  const presetLabel = document.createElement('span');
+  presetLabel.className = 'panel-label';
+  presetLabel.textContent = 'Preset';
+  const presetControls = document.createElement('div');
+  presetControls.className = 'panel-patch-controls';
+  presetControls.appendChild(presetSelect);
+  presetControls.appendChild(browseBtn);
+  presetRow.appendChild(presetLabel);
+  presetRow.appendChild(presetControls);
+  body.appendChild(presetRow);
 
   // ---------------------------------------------------------------------------
   // Waveform selector
