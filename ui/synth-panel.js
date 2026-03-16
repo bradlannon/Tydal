@@ -18,6 +18,7 @@ import {
   deletePatch,
   patchToURL,
 } from '../engine/preset-storage.js';
+import { randomizePatch, saveVariation, loadVariation, listVariations } from '../engine/randomizer.js';
 
 /**
  * initSynthPanel(containerEl)
@@ -307,4 +308,88 @@ export function initSynthPanel(containerEl) {
 
   // Populate on init
   refreshPatchList();
+
+  // ---------------------------------------------------------------------------
+  // Randomize section — Randomize button + 4 variation slots
+  // ---------------------------------------------------------------------------
+
+  // Section heading
+  const randomizeHeading = document.createElement('div');
+  randomizeHeading.className = 'panel-heading';
+  randomizeHeading.textContent = 'Randomize';
+  body.appendChild(randomizeHeading);
+
+  // Randomize button row
+  const randomizeRow = document.createElement('div');
+  randomizeRow.className = 'panel-row';
+  const randomizeBtn = document.createElement('button');
+  randomizeBtn.className = 'panel-btn panel-btn--randomize';
+  randomizeBtn.textContent = 'Randomize';
+  randomizeBtn.addEventListener('click', () => {
+    randomizePatch();
+  });
+  randomizeRow.appendChild(randomizeBtn);
+  body.appendChild(randomizeRow);
+
+  // Variation slot buttons row
+  const variationRow = document.createElement('div');
+  variationRow.className = 'panel-row panel-row--variations';
+
+  // Track which slot is currently loaded
+  let activeSlot = null;
+
+  // Keep references to slot buttons for state updates
+  const slotBtns = [];
+
+  /**
+   * Refresh all slot button visual states from listVariations().
+   * Called after save/load to keep UI in sync.
+   */
+  function refreshSlotStates() {
+    const names = listVariations();
+    names.forEach((name, i) => {
+      const btn = slotBtns[i];
+      btn.classList.toggle('filled', name !== null);
+      btn.classList.toggle('active-slot', i === activeSlot);
+      btn.title = name ? `Slot ${i + 1}: ${name}` : `Slot ${i + 1}: empty — click to save`;
+    });
+  }
+
+  for (let i = 0; i < 4; i++) {
+    const slotBtn = document.createElement('button');
+    slotBtn.className = 'variation-slot-btn';
+    slotBtn.textContent = String(i + 1);
+    slotBtn.dataset.slot = String(i);
+
+    // Click: empty slot → save; filled slot → load
+    slotBtn.addEventListener('click', () => {
+      const names = listVariations();
+      if (names[i] === null) {
+        // Slot is empty — save current patch
+        saveVariation(i);
+        activeSlot = i;
+      } else {
+        // Slot is filled — load it
+        loadVariation(i);
+        activeSlot = i;
+      }
+      refreshSlotStates();
+    });
+
+    // Double-click: overwrite slot with current patch regardless of state
+    slotBtn.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      saveVariation(i);
+      activeSlot = i;
+      refreshSlotStates();
+    });
+
+    slotBtns.push(slotBtn);
+    variationRow.appendChild(slotBtn);
+  }
+
+  body.appendChild(variationRow);
+
+  // Initialize slot button states
+  refreshSlotStates();
 }

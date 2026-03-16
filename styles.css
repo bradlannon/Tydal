@@ -896,3 +896,65 @@ input[type="range"]::-moz-range-track {
 .seq-btn.recording { background: rgba(220,50,50,0.6); border-color: rgba(220,50,50,0.8); }
 #overdub-count { color: #aaa; font-size: 0.7rem; margin-left: 0.25rem; }
 #quantize-select { background: rgba(255,255,255,0.08); color: #eee; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 0.25rem 0.4rem; font-size: 0.75rem; }
+
+/* -------------------------
+   Randomize panel controls
+   ------------------------- */
+
+/* Full-width randomize button */
+.panel-btn--randomize {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Variation slots row */
+.panel-row--variations {
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+/* Individual variation slot button — compact square */
+.variation-slot-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-family: monospace;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: border-color 0.15s, color 0.15s, background 0.15s, opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Filled slot — has a saved variation */
+.variation-slot-btn.filled {
+  border-color: var(--accent);
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* Currently active/loaded slot */
+.variation-slot-btn.active-slot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  opacity: 1;
+}
+
+.variation-slot-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  opacity: 1;
+}
