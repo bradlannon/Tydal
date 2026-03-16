@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Completed 04-differentiators-03-PLAN.md
-last_updated: "2026-03-15T18:22:53.521Z"
-last_activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
+status: executing
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-16T20:32:14.282Z"
+last_activity: "2026-03-16 — Completed 05-01: MPE-lite pad expression"
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 15
-  completed_plans: 14
+  total_plans: 20
+  completed_plans: 15
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** When someone opens SoundForge on their phone and plays a few notes, their reaction should be "holy shit, this is in a browser?" — a musician should be able to connect a MIDI keyboard and genuinely jam with it.
-**Current focus:** Phase 1 — Audio Foundation
+**Current focus:** Phase 5 — Performance Features
 
 ## Current Position
 
-Phase: 1 of 5 (Audio Foundation)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-03-15 — Roadmap created, ready for Phase 1 planning
+Phase: 5 of 5 (Performance Features)
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-03-16 — Completed 05-01: MPE-lite pad expression
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -64,6 +64,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-differentiators P01 | 99s | 1 tasks | 5 files |
 | Phase 04-differentiators P02 | 2 | 1 tasks | 5 files |
 | Phase 04-differentiators P03 | 3 | 2 tasks | 4 files |
+| Phase 05-performance-features P01 | 7 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,8 @@ Recent decisions affecting current work:
 - [Phase 04-differentiators]: Exponential gamma-to-frequency mapping (200 * 40^x) gives musically natural filter sweep distribution
 - [Phase 04-differentiators]: captureCurrentPatch stores full synth.get() params rather than detecting factory preset name — avoids cross-module tracking
 - [Phase 04-differentiators]: URL patch restore runs after all panel inits in app.js so audio chain is fully wired before loadPatch() applies effects
+- [Phase 05-performance-features]: EMA alpha=0.3 for pad expression: more responsive than gyroscope (0.15) because finger contact has inherent mechanical smoothing
+- [Phase 05-performance-features]: stopExpression resets detune to -8 and filter to 4000Hz matching instruments.js/effects.js defaults
 
 ### Pending Todos
 
@@ -123,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:22:53.518Z
-Stopped at: Completed 04-differentiators-03-PLAN.md
+Last session: 2026-03-16T20:32:14.277Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None

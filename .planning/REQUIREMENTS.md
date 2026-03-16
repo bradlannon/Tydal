@@ -73,6 +73,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UX-02**: iOS DeviceMotion permission request UI (required on iOS 13+)
 - [x] **UX-03**: Jitter smoothing on gyroscope data for stable control output
 
+### Performance Expression
+
+- [x] **EXPR-01**: MPE-lite pad slide — finger X/Y within held pad controls pitch bend (detune ±200 cents) and filter sweep (200–6000 Hz) with EMA smoothing
+- [ ] **EXPR-02**: Note repeat — BPM-synced auto-retrigger at selectable rates (1/4, 1/8, 1/16, 1/32) while holding a pad
+- [ ] **EXPR-03**: Macro knobs — 4 sliders (Darkness, Grit, Motion, Space) each controlling multiple effect parameters simultaneously
+- [ ] **EXPR-04**: Macro randomize — one-tap random sound generation with musical constraints (chaos budget) and 4 variation snapshot slots
+- [ ] **EXPR-05**: Preset browser with preview — browsable preset list with tap-to-audition test chord and backup/restore flow
+
 ### Platform
 
 - [ ] **PLAT-01**: PWA with Web App Manifest — installable to home screen with standalone display mode
@@ -175,13 +183,18 @@ Deferred to future release. Tracked but not in current roadmap.
 | UX-03 | Phase 4 | Complete |
 | PLAT-04 | Phase 4 | Complete |
 | PLAT-05 | Phase 4 | Complete |
-| PLAT-01 | Phase 5 | Pending |
-| PLAT-02 | Phase 5 | Pending |
-| PLAT-03 | Phase 5 | Pending |
+| EXPR-01 | Phase 5 | Complete |
+| EXPR-02 | Phase 5 | Pending |
+| EXPR-03 | Phase 5 | Pending |
+| EXPR-04 | Phase 5 | Pending |
+| EXPR-05 | Phase 5 | Pending |
+| PLAT-01 | Deferred | Pending |
+| PLAT-02 | Deferred | Pending |
+| PLAT-03 | Deferred | Pending |
 
 **Coverage:**
-- v1 requirements: 51 total
-- Mapped to phases: 51
+- v1 requirements: 56 total
+- Mapped to phases: 56
 - Unmapped: 0 ✓
 
 ---

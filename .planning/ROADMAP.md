@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Instrument Quality** - Cross the toy-to-tool line with polyphony, velocity, effects, and chromatic layout (completed 2026-03-15)
 - [x] **Phase 3: Composition Surface** - Drum synthesis and step sequencer for pattern-based music making (completed 2026-03-15)
 - [ ] **Phase 4: Differentiators** - FM voices, expressive visualizer, scale lock, and preset system
-- [ ] **Phase 5: Platform Polish** - PWA offline support, WAV export, and gyroscope interaction
+- [ ] **Phase 5: Performance Features** - Push 3-inspired expression, note repeat, macros, randomize, preset browser
 
 ## Phase Details
 
@@ -91,15 +91,24 @@ Plans:
 - [ ] 04-03-PLAN.md — Preset save/load to localStorage and URL-based sharing
 - [ ] 04-04-PLAN.md — Human verification of all Phase 4 success criteria
 
-### Phase 5: Platform Polish
-**Goal**: SoundForge is installable, works offline, can export recordings, and performs correctly on real mobile hardware
+### Phase 5: Performance Features
+**Goal**: Push 3-inspired performance features — pad slide expression, note repeat, macro knobs, randomize with variations, and preset browser with preview
 **Depends on**: Phase 4
-**Requirements**: PLAT-01, PLAT-02, PLAT-03
+**Requirements**: EXPR-01, EXPR-02, EXPR-03, EXPR-04, EXPR-05
 **Success Criteria** (what must be TRUE):
-  1. Adding SoundForge to the iOS home screen launches it in standalone mode with no browser chrome
-  2. Turning off WiFi after install and reopening the app produces full functionality with no network errors
-  3. Recording a loop and pressing Export downloads a valid WAV file that plays correctly in any audio player
-**Plans**: TBD
+  1. Holding a note pad and sliding finger produces audible pitch bend (X) and filter sweep (Y) that reset on release
+  2. With Note Repeat enabled, holding a pad auto-retriggers the note at the selected BPM-synced rate
+  3. Moving a macro slider simultaneously controls multiple effect parameters (e.g., Darkness closes filter + increases reverb)
+  4. Tapping Randomize produces a new musically usable sound; saving to a variation slot and loading it back restores the exact sound
+  5. Tapping a preset in the browser plays an audible preview chord; canceling restores the original sound
+**Plans**: 5 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — MPE-lite pad slide expression (X→pitch bend, Y→filter sweep)
+- [ ] 05-02-PLAN.md — Note repeat at BPM-synced rates with RPT toggle and rate selector
+- [ ] 05-03-PLAN.md — 4 macro knobs (Darkness, Grit, Motion, Space) controlling multiple params
+- [ ] 05-04-PLAN.md — Randomize with musical constraints and 4 variation snapshot slots
+- [ ] 05-05-PLAN.md — Preset browser with tap-to-audition preview flow
 
 ## Progress
 
@@ -112,4 +121,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Instrument Quality | 5/5 | Complete   | 2026-03-15 |
 | 3. Composition Surface | 4/4 | Complete   | 2026-03-15 |
 | 4. Differentiators | 3/4 | In Progress|  |
-| 5. Platform Polish | 0/TBD | Not started | - |
+| 5. Performance Features | 1/5 | In Progress|  |
