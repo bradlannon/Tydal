@@ -79,7 +79,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EXPR-02**: Note repeat — BPM-synced auto-retrigger at selectable rates (1/4, 1/8, 1/16, 1/32) while holding a pad
 - [x] **EXPR-03**: Macro knobs — 4 sliders (Darkness, Grit, Motion, Space) each controlling multiple effect parameters simultaneously
 - [x] **EXPR-04**: Macro randomize — one-tap random sound generation with musical constraints (chaos budget) and 4 variation snapshot slots
-- [ ] **EXPR-05**: Preset browser with preview — browsable preset list with tap-to-audition test chord and backup/restore flow
+- [x] **EXPR-05**: Preset browser with preview — browsable preset list with tap-to-audition test chord and backup/restore flow
 
 ### Platform
 
@@ -187,7 +187,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | EXPR-02 | Phase 5 | Complete |
 | EXPR-03 | Phase 5 | Complete |
 | EXPR-04 | Phase 5 | Complete |
-| EXPR-05 | Phase 5 | Pending |
+| EXPR-05 | Phase 5 | Complete |
 | PLAT-01 | Deferred | Pending |
 | PLAT-02 | Deferred | Pending |
 | PLAT-03 | Deferred | Pending |
