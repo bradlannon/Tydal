@@ -1,137 +1,111 @@
 /**
  * input/touch.js
  *
- * Pointer event handlers for the pad grid with multitouch tracking.
- * Uses pointerId map to correctly handle simultaneous touches.
- * Clears touchedPads on 'grid-rebuild' events (octave shift) to prevent
- * stuck notes when pads are reassigned to different notes.
- *
- * Velocity is measured from pointer movement speed:
- *   0 px/ms = 0.4 (minimum, never silent)
- *   ~3 px/ms = 1.0 (maximum)
- *   First tap defaults to 0.6 (mid-range) — no prior position to diff.
+ * Pointer event handlers for the Push 3-style grid.
+ * Handles both step cells (toggle) and note pads (play + select).
  *
  * Exports:
- *   initTouch — Attaches pointer event listeners to the pad grid element
- *
- * Zero setTimeout calls — all timing via Tone.now() inside noteOn/noteOff.
+ *   initTouch — Attaches pointer event listeners to the grid element
  */
 
 import { ensureAudioStarted } from '../engine/audio-engine.js';
 import { noteOn, noteOff } from '../engine/instruments.js';
 import { setPadActive } from '../ui/pad-grid.js';
+import {
+  setSelectedNote, toggleStep, getLanes, getPage,
+  STEPS_PER_PAGE,
+} from '../engine/melodic-sequencer.js';
+import { startExpression, updateExpression, stopExpression } from '../engine/pad-expression.js';
 
-/**
- * touchedPads: maps pointerId -> note name for active touches.
- * Enables correct note release when each finger lifts independently.
- */
+/** Maps pointerId → note name for active touches on note pads */
 const touchedPads = new Map();
 
-/**
- * Velocity state — tracks last pointer Y position and timestamp
- * to compute movement speed for velocity calculation.
- * Reset on 'grid-rebuild' to avoid stale measurements after octave shift.
- */
 let lastPointerY = null;
 let lastPointerTime = null;
 
-/**
- * releasePointer(pointerId)
- *
- * Shared logic for pointerup, pointercancel, and pointerleave.
- * Looks up the note for this pointer, triggers noteOff, removes from map.
- *
- * @param {number} pointerId
- */
-function releasePointer(pointerId) {
+function releasePointer(pointerId, gridEl) {
   const note = touchedPads.get(pointerId);
   if (!note) return;
-
   touchedPads.delete(pointerId);
+  stopExpression(pointerId);
   noteOff(note);
   setPadActive(note, false);
+  // Remove expressing class from any pad showing expression feedback
+  if (gridEl) {
+    const expressingEl = gridEl.querySelector(`.note-cell[data-note="${note}"]`);
+    if (expressingEl) expressingEl.classList.remove('expressing');
+  }
 }
 
-/**
- * initTouch(padGridEl)
- *
- * Attaches pointer event listeners to the pad grid element.
- * Sets touch-action: none on both the grid and body to prevent
- * scroll/zoom interference during multitouch pad play.
- *
- * @param {HTMLElement} padGridEl — The .pad-grid element
- */
-export function initTouch(padGridEl) {
-  // Prevent page scroll/zoom while interacting with the pad grid
-  padGridEl.style.touchAction = 'none';
-
-  // Set touch-action: manipulation on body to prevent double-tap zoom
-  // at the page level without blocking pointer events on the grid.
+export function initTouch(gridEl) {
+  gridEl.style.touchAction = 'none';
   document.body.style.touchAction = 'manipulation';
 
-  // On 'grid-rebuild' (octave shift), clear all active pointer tracking.
-  // The grid DOM has been recreated — old pointer→note mappings are invalid.
-  // releaseAll() in instruments.js handles actual audio release; we just
-  // clean up the pointer map and visual state here.
   document.addEventListener('grid-rebuild', () => {
-    // Deactivate any visually highlighted pads for tracked pointers
     for (const note of touchedPads.values()) {
       setPadActive(note, false);
     }
     touchedPads.clear();
-    // Reset velocity state — stale measurements after grid rebuild are invalid
     lastPointerY = null;
     lastPointerTime = null;
   });
 
-  // pointerdown: start note for the touched pad
-  padGridEl.addEventListener('pointerdown', async (e) => {
-    // Must call preventDefault here — requires { passive: false } on listener.
-    // Without this, Chrome ignores preventDefault on touch events.
-    // This also prevents zoom on rapid multi-finger taps (Pitfall 7).
+  gridEl.addEventListener('pointerdown', async (e) => {
     e.preventDefault();
 
-    const pad = e.target.closest('[data-note]');
-    if (!pad) return;
+    const target = e.target.closest('[data-type]');
+    if (!target) return;
 
-    const note = pad.dataset.note;
-    touchedPads.set(e.pointerId, note);
+    // ---- Step cell: toggle step ----
+    if (target.dataset.type === 'step') {
+      const lane = parseInt(target.dataset.lane);
+      const col = parseInt(target.dataset.col);
+      const lanesArr = getLanes();
+      const laneNote = lanesArr[lane];
+      if (!laneNote) return;
 
-    // Compute velocity from pointer movement speed.
-    // On first tap (no prior position), default to 0.6 (mid-range) to
-    // avoid silent-sounding notes when the user hasn't moved their pointer.
-    let velocity = 0.6;
-    const now = performance.now();
-    if (lastPointerY !== null && lastPointerTime !== null) {
-      const timeDelta = now - lastPointerTime;
-      if (timeDelta > 0) {
-        const yDelta = Math.abs(e.clientY - lastPointerY);
-        const speed = yDelta / timeDelta; // px/ms
-        // 0 px/ms → 0.4 (minimum, never silent), ~3 px/ms → 1.0 (max)
-        velocity = Math.min(1, Math.max(0.4, speed / 3));
-      }
+      const actualStep = getPage() * STEPS_PER_PAGE + col;
+      toggleStep(actualStep, laneNote);
+      return;
     }
-    lastPointerY = e.clientY;
-    lastPointerTime = now;
 
-    await ensureAudioStarted();
-    noteOn(note, velocity);
-    setPadActive(note, true);
+    // ---- Note pad: play + select ----
+    if (target.dataset.type === 'pad') {
+      const note = target.dataset.note;
+      touchedPads.set(e.pointerId, note);
+
+      // Velocity from pointer speed
+      let velocity = 0.6;
+      const now = performance.now();
+      if (lastPointerY !== null && lastPointerTime !== null) {
+        const timeDelta = now - lastPointerTime;
+        if (timeDelta > 0) {
+          const speed = Math.abs(e.clientY - lastPointerY) / timeDelta;
+          velocity = Math.min(1, Math.max(0.4, speed / 3));
+        }
+      }
+      lastPointerY = e.clientY;
+      lastPointerTime = now;
+
+      await ensureAudioStarted();
+      noteOn(note, velocity);
+      setPadActive(note, true);
+      setSelectedNote(note);
+      startExpression(e.pointerId, note, target.getBoundingClientRect());
+    }
   }, { passive: false });
 
-  // pointerup: finger lifted — release note
-  padGridEl.addEventListener('pointerup', (e) => {
-    releasePointer(e.pointerId);
+  gridEl.addEventListener('pointermove', (e) => {
+    updateExpression(e.pointerId, e.clientX, e.clientY);
+    // Add expressing class to the pad element currently held by this pointer
+    const note = touchedPads.get(e.pointerId);
+    if (note) {
+      const padEl = gridEl.querySelector(`.note-cell[data-note="${note}"]`);
+      if (padEl) padEl.classList.add('expressing');
+    }
   });
 
-  // pointercancel: browser cancelled pointer (e.g. incoming call, scroll takeover)
-  // IDENTICAL to pointerup — prevents stuck notes on iOS gesture interruptions
-  padGridEl.addEventListener('pointercancel', (e) => {
-    releasePointer(e.pointerId);
-  });
-
-  // pointerleave: finger slides off the pad grid entirely — release note
-  padGridEl.addEventListener('pointerleave', (e) => {
-    releasePointer(e.pointerId);
-  });
+  gridEl.addEventListener('pointerup', (e) => releasePointer(e.pointerId, gridEl));
+  gridEl.addEventListener('pointercancel', (e) => releasePointer(e.pointerId, gridEl));
+  gridEl.addEventListener('pointerleave', (e) => releasePointer(e.pointerId, gridEl));
 }
