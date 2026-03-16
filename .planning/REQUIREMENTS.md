@@ -76,7 +76,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Performance Expression
 
 - [x] **EXPR-01**: MPE-lite pad slide — finger X/Y within held pad controls pitch bend (detune ±200 cents) and filter sweep (200–6000 Hz) with EMA smoothing
-- [ ] **EXPR-02**: Note repeat — BPM-synced auto-retrigger at selectable rates (1/4, 1/8, 1/16, 1/32) while holding a pad
+- [x] **EXPR-02**: Note repeat — BPM-synced auto-retrigger at selectable rates (1/4, 1/8, 1/16, 1/32) while holding a pad
 - [ ] **EXPR-03**: Macro knobs — 4 sliders (Darkness, Grit, Motion, Space) each controlling multiple effect parameters simultaneously
 - [ ] **EXPR-04**: Macro randomize — one-tap random sound generation with musical constraints (chaos budget) and 4 variation snapshot slots
 - [ ] **EXPR-05**: Preset browser with preview — browsable preset list with tap-to-audition test chord and backup/restore flow
@@ -184,7 +184,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | PLAT-04 | Phase 4 | Complete |
 | PLAT-05 | Phase 4 | Complete |
 | EXPR-01 | Phase 5 | Complete |
-| EXPR-02 | Phase 5 | Pending |
+| EXPR-02 | Phase 5 | Complete |
 | EXPR-03 | Phase 5 | Pending |
 | EXPR-04 | Phase 5 | Pending |
 | EXPR-05 | Phase 5 | Pending |

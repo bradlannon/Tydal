@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-16T20:32:14.282Z"
-last_activity: "2026-03-16 — Completed 05-01: MPE-lite pad expression"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-16T20:43:52.882Z"
+last_activity: "2026-03-16 — Completed 05-02: Note Repeat"
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 20
-  completed_plans: 15
+  completed_plans: 16
   percent: 0
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 5 of 5 (Performance Features)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-03-16 — Completed 05-01: MPE-lite pad expression
+Last activity: 2026-03-16 — Completed 05-02: Note Repeat
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-differentiators P02 | 2 | 1 tasks | 5 files |
 | Phase 04-differentiators P03 | 3 | 2 tasks | 4 files |
 | Phase 05-performance-features P01 | 7 | 2 tasks | 3 files |
+| Phase 05-performance-features P02 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -110,6 +111,8 @@ Recent decisions affecting current work:
 - [Phase 04-differentiators]: URL patch restore runs after all panel inits in app.js so audio chain is fully wired before loadPatch() applies effects
 - [Phase 05-performance-features]: EMA alpha=0.3 for pad expression: more responsive than gyroscope (0.15) because finger contact has inherent mechanical smoothing
 - [Phase 05-performance-features]: stopExpression resets detune to -8 and filter to 4000Hz matching instruments.js/effects.js defaults
+- [Phase Phase 05-performance-features]: 5ms noteOff→noteOn gap prevents envelope click artifacts during repeat ticks
+- [Phase Phase 05-performance-features]: setRepeatRate immediately restarts active repeats so rhythm changes are felt in real time
 
 ### Pending Todos
 
@@ -126,6 +129,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T20:32:14.277Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-16T20:43:52.877Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
