@@ -22,23 +22,51 @@
   <main class="app-main">
     <div id="instrument" class="instrument-container">
       <!-- Pad grid injected by app.js -->
+      <div id="visualizer"></div>
+    </div>
+  </main>
+
+  <!-- Bottom sheets (panels) -->
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+
+  <div class="bottom-sheet" id="synth-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Synth</div>
+    <div class="sheet-content" id="synth-panel"></div>
+  </div>
+
+  <div class="bottom-sheet" id="fx-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Effects</div>
+    <div class="sheet-content" id="fx-panel"></div>
+  </div>
+
+  <div class="bottom-sheet" id="seq-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Sequencer</div>
+    <div class="sheet-content" id="sequencer"></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button id="play-btn" class="toolbar-btn toolbar-btn--play" aria-label="Play/Stop">▶</button>
+
+    <div class="octave-control">
+      <button id="octave-down" class="octave-btn" aria-label="Octave down">-</button>
+      <span id="octave-display" class="octave-display">Oct 3</span>
+      <button id="octave-up" class="octave-btn" aria-label="Octave up">+</button>
     </div>
 
-    <div id="visualizer"></div>
+    <div class="toolbar-panels">
+      <button class="toolbar-btn" data-sheet="synth-sheet" aria-label="Synth panel">Synth</button>
+      <button class="toolbar-btn" data-sheet="fx-sheet" aria-label="Effects panel">FX</button>
+      <button class="toolbar-btn" data-sheet="seq-sheet" aria-label="Drums panel">Drums</button>
+    </div>
 
-    <div id="synth-panel"></div>
-    <div id="fx-panel"></div>
-    <div id="sequencer"></div>
+    <div id="note-repeat-control" class="note-repeat-control"></div>
 
-    <div class="controls-bar">
-      <div class="octave-control">
-        <button id="octave-down" class="octave-btn" aria-label="Octave down">-</button>
-        <span id="octave-display" class="octave-display">Oct 3</span>
-        <button id="octave-up" class="octave-btn" aria-label="Octave up">+</button>
-      </div>
-
+    <div class="toolbar-controls">
       <div class="volume-control">
-        <label for="volume-slider" class="control-label">Volume</label>
         <input
           type="range"
           id="volume-slider"
@@ -77,38 +105,38 @@
           <option value="blues">Blues</option>
         </select>
       </div>
+    </div>
 
-      <div class="help-wrapper">
-        <button id="help-btn" class="help-btn" aria-label="Show keyboard shortcuts">?</button>
-        <div id="help-panel" class="help-panel" hidden>
-          <h2 class="help-panel-title">Keyboard Shortcuts</h2>
-          <div class="help-grid">
-            <div class="help-row">
-              <span class="help-row-label">Top row</span>
-              <span class="help-keys">1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4</span>
-              <span class="help-notes">A4 B4 C5 D5</span>
-            </div>
-            <div class="help-row">
-              <span class="help-row-label">Third row</span>
-              <span class="help-keys">Q&nbsp;&nbsp;W&nbsp;&nbsp;E&nbsp;&nbsp;R</span>
-              <span class="help-notes">D4 E4 F4 G4</span>
-            </div>
-            <div class="help-row">
-              <span class="help-row-label">Second row</span>
-              <span class="help-keys">A&nbsp;&nbsp;S&nbsp;&nbsp;D&nbsp;&nbsp;F</span>
-              <span class="help-notes">G3 A3 B3 C4</span>
-            </div>
-            <div class="help-row">
-              <span class="help-row-label">Bottom row</span>
-              <span class="help-keys">Z&nbsp;&nbsp;X&nbsp;&nbsp;C&nbsp;&nbsp;V</span>
-              <span class="help-notes">C3 D3 E3 F3</span>
-            </div>
+    <div class="help-wrapper">
+      <button id="help-btn" class="help-btn" aria-label="Show keyboard shortcuts">?</button>
+      <div id="help-panel" class="help-panel" hidden>
+        <h2 class="help-panel-title">Keyboard Shortcuts</h2>
+        <div class="help-grid">
+          <div class="help-row">
+            <span class="help-row-label">Top row</span>
+            <span class="help-keys">1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4</span>
+            <span class="help-notes">A4 B4 C5 D5</span>
           </div>
-          <p class="help-tip">Hold key to sustain &mdash; release to stop</p>
+          <div class="help-row">
+            <span class="help-row-label">Third row</span>
+            <span class="help-keys">Q&nbsp;&nbsp;W&nbsp;&nbsp;E&nbsp;&nbsp;R</span>
+            <span class="help-notes">D4 E4 F4 G4</span>
+          </div>
+          <div class="help-row">
+            <span class="help-row-label">Second row</span>
+            <span class="help-keys">A&nbsp;&nbsp;S&nbsp;&nbsp;D&nbsp;&nbsp;F</span>
+            <span class="help-notes">G3 A3 B3 C4</span>
+          </div>
+          <div class="help-row">
+            <span class="help-row-label">Bottom row</span>
+            <span class="help-keys">Z&nbsp;&nbsp;X&nbsp;&nbsp;C&nbsp;&nbsp;V</span>
+            <span class="help-notes">C3 D3 E3 F3</span>
+          </div>
         </div>
+        <p class="help-tip">Hold key to sustain &mdash; release to stop</p>
       </div>
     </div>
-  </main>
+  </div>
 
   <div id="audio-overlay" hidden>
     <div class="overlay-inner">

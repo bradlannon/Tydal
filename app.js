@@ -1,52 +1,46 @@
 /**
  * app.js — Tydal bootstrap
  *
- * Module entry point. Wires the signal chain (via effects.js import),
- * sets up the audio overlay (via overlay.js import), initializes the
- * pad grid and input handlers, and connects the volume slider.
+ * Wires the signal chain, initializes the Push 3-style grid,
+ * input handlers, panels, and transport controls.
  */
 
-// Side effect: wires warmPad -> Volume(-6dB) -> Destination
 import { masterVolume } from './engine/effects.js';
-
-// Preset persistence and URL sharing
 import { patchFromURL, loadPatch } from './engine/preset-storage.js';
+import { initTransport, startSequencer, stopSequencer, isPlaying } from './engine/sequencer.js';
+import { ensureAudioStarted } from './engine/audio-engine.js';
 
-// Side effect: sets up overlay click handler and initial state
+// Import melodic sequencer — arms its Sequence on the shared Transport
+import './engine/melodic-sequencer.js';
+
 import './ui/overlay.js';
-
-// Pad grid DOM generation
 import { initPadGrid } from './ui/pad-grid.js';
-
-// Synth and effects control panels
 import { initSynthPanel } from './ui/synth-panel.js';
 import { initFXPanel } from './ui/fx-panel.js';
 import { initSequencerUI } from './ui/sequencer-ui.js';
 import { initVisualizer } from './ui/visualizer-ui.js';
-
-// Input handlers
 import { initKeyboard } from './input/keyboard.js';
 import { initTouch } from './input/touch.js';
 import { initMIDI } from './input/midi.js';
-
-// Gyroscope panel
 import { initGyroPanel } from './ui/gyro-panel.js';
+import { initNoteRepeatUI } from './ui/note-repeat-ui.js';
 
-// Initialize pad grid and input
+// Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
-const padGrid = initPadGrid(instrumentEl);
+const pushGrid = initPadGrid(instrumentEl);
 initKeyboard();
-initTouch(padGrid);
-initMIDI(); // fire-and-forget — gracefully no-ops on unsupported browsers
+initTouch(pushGrid);
+initMIDI();
 
-// Initialize synth and FX control panels
+// Initialize panels (inside bottom sheets)
 initSynthPanel(document.getElementById('synth-panel'));
 initFXPanel(document.getElementById('fx-panel'));
 initSequencerUI(document.getElementById('sequencer'));
 initVisualizer(document.getElementById('visualizer'));
 initGyroPanel(document.getElementById('gyro-panel'));
+initNoteRepeatUI(document.getElementById('note-repeat-control'));
 
-// Wire volume slider to masterVolume ramp
+// Volume slider
 const volumeSlider = document.getElementById('volume-slider');
 if (volumeSlider) {
   volumeSlider.addEventListener('input', (e) => {
@@ -54,7 +48,7 @@ if (volumeSlider) {
   });
 }
 
-// Help panel toggle
+// Help panel
 const helpBtn = document.getElementById('help-btn');
 const helpPanel = document.getElementById('help-panel');
 if (helpBtn && helpPanel) {
@@ -62,8 +56,6 @@ if (helpBtn && helpPanel) {
     e.stopPropagation();
     helpPanel.hidden = !helpPanel.hidden;
   });
-
-  // Close help panel on click outside
   document.addEventListener('click', (e) => {
     if (!helpPanel.hidden && !helpPanel.contains(e.target) && e.target !== helpBtn) {
       helpPanel.hidden = true;
@@ -71,11 +63,66 @@ if (helpBtn && helpPanel) {
   });
 }
 
-// Restore shared patch from URL hash (e.g. #patch=<base64>)
-// Run after all panel inits so loadPatch has a fully wired audio chain.
-const urlPatch = patchFromURL();
-if (urlPatch) {
-  loadPatch(urlPatch);
+// ---------------------------------------------------------------------------
+// Play/Stop button — controls shared Transport (drums + melodic)
+// ---------------------------------------------------------------------------
+const playBtn = document.getElementById('play-btn');
+if (playBtn) {
+  playBtn.addEventListener('click', async () => {
+    await ensureAudioStarted();
+    if (isPlaying()) {
+      stopSequencer();
+      playBtn.textContent = '▶';
+      playBtn.classList.remove('playing');
+    } else {
+      initTransport();
+      await startSequencer();
+      playBtn.textContent = '■';
+      playBtn.classList.add('playing');
+    }
+  });
 }
+
+// ---------------------------------------------------------------------------
+// Bottom sheet system — one sheet open at a time
+// ---------------------------------------------------------------------------
+const backdrop = document.getElementById('sheet-backdrop');
+const toolbarBtns = document.querySelectorAll('.toolbar-btn[data-sheet]');
+let activeSheet = null;
+
+function openSheet(sheetId) {
+  closeSheet();
+  const sheet = document.getElementById(sheetId);
+  if (!sheet) return;
+  sheet.classList.add('open');
+  backdrop.classList.add('visible');
+  activeSheet = sheetId;
+  toolbarBtns.forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.sheet === sheetId);
+  });
+}
+
+function closeSheet() {
+  if (!activeSheet) return;
+  const sheet = document.getElementById(activeSheet);
+  if (sheet) sheet.classList.remove('open');
+  backdrop.classList.remove('visible');
+  activeSheet = null;
+  toolbarBtns.forEach((btn) => btn.classList.remove('active'));
+}
+
+toolbarBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const sheetId = btn.dataset.sheet;
+    if (activeSheet === sheetId) closeSheet();
+    else openSheet(sheetId);
+  });
+});
+
+backdrop.addEventListener('click', closeSheet);
+
+// Restore shared patch from URL
+const urlPatch = patchFromURL();
+if (urlPatch) loadPatch(urlPatch);
 
 console.log('Tydal ready');

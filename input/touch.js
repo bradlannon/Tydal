@@ -16,6 +16,7 @@ import {
   STEPS_PER_PAGE,
 } from '../engine/melodic-sequencer.js';
 import { startExpression, updateExpression, stopExpression } from '../engine/pad-expression.js';
+import { startRepeat, stopRepeat, isRepeatEnabled } from '../engine/note-repeat.js';
 
 /** Maps pointerId → note name for active touches on note pads */
 const touchedPads = new Map();
@@ -28,6 +29,7 @@ function releasePointer(pointerId, gridEl) {
   if (!note) return;
   touchedPads.delete(pointerId);
   stopExpression(pointerId);
+  stopRepeat(note);
   noteOff(note);
   setPadActive(note, false);
   // Remove expressing class from any pad showing expression feedback
@@ -89,6 +91,7 @@ export function initTouch(gridEl) {
 
       await ensureAudioStarted();
       noteOn(note, velocity);
+      if (isRepeatEnabled()) startRepeat(note, velocity);
       setPadActive(note, true);
       setSelectedNote(note);
       startExpression(e.pointerId, note, target.getBoundingClientRect());

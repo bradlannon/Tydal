@@ -462,6 +462,29 @@ body {
   cursor: not-allowed;
 }
 
+/* -------------------------
+   Note Repeat Control
+   ------------------------- */
+.note-repeat-control {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.note-repeat-rate {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.65rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 .gyro-denied-msg {
   position: absolute;
   bottom: calc(100% + 6px);
