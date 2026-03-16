@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-16T20:43:52.882Z"
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-03-16T20:48:41.437Z"
 last_activity: "2026-03-16 — Completed 05-02: Note Repeat"
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 20
-  completed_plans: 16
-  percent: 0
+  completed_plans: 17
+  percent: 80
 ---
 
 # Project State
@@ -66,6 +66,7 @@ Progress: [████████░░] 80%
 | Phase 04-differentiators P03 | 3 | 2 tasks | 4 files |
 | Phase 05-performance-features P01 | 7 | 2 tasks | 3 files |
 | Phase 05-performance-features P02 | 5 | 2 tasks | 7 files |
+| Phase 05-performance-features P04 | 9 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,8 @@ Recent decisions affecting current work:
 - [Phase 05-performance-features]: stopExpression resets detune to -8 and filter to 4000Hz matching instruments.js/effects.js defaults
 - [Phase Phase 05-performance-features]: 5ms noteOff→noteOn gap prevents envelope click artifacts during repeat ticks
 - [Phase Phase 05-performance-features]: setRepeatRate immediately restarts active repeats so rhythm changes are felt in real time
+- [Phase 05-performance-features]: Chaos budget cap 1.5 total wet: allows 2-3 effects simultaneously without drowning dry signal
+- [Phase 05-performance-features]: Variation slots are session-only (module memory, not localStorage) — lightweight A/B comparison without polluting saved patches
 
 ### Pending Todos
 
@@ -129,6 +132,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T20:43:52.877Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-03-16T20:48:24.037Z
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None
