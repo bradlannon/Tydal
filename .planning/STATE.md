@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-03-16T20:48:41.437Z"
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-03-16T20:54:53.759Z"
 last_activity: "2026-03-16 — Completed 05-02: Note Repeat"
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 20
-  completed_plans: 17
+  completed_plans: 18
   percent: 80
 ---
 
@@ -67,6 +67,7 @@ Progress: [████████░░] 80%
 | Phase 05-performance-features P01 | 7 | 2 tasks | 3 files |
 | Phase 05-performance-features P02 | 5 | 2 tasks | 7 files |
 | Phase 05-performance-features P04 | 9 | 2 tasks | 3 files |
+| Phase 05-performance-features P03 | 2 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -116,6 +117,8 @@ Recent decisions affecting current work:
 - [Phase Phase 05-performance-features]: setRepeatRate immediately restarts active repeats so rhythm changes are felt in real time
 - [Phase 05-performance-features]: Chaos budget cap 1.5 total wet: allows 2-3 effects simultaneously without drowning dry signal
 - [Phase 05-performance-features]: Variation slots are session-only (module memory, not localStorage) — lightweight A/B comparison without polluting saved patches
+- [Phase 05-performance-features]: Tone .set({[param]: value}) used for all macro param writes — handles Signal and plain property targets uniformly
+- [Phase 05-performance-features]: MACROS exported as named object keyed by macro name so UI can iterate Object.keys() and get stable names
 
 ### Pending Todos
 
@@ -132,6 +135,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T20:48:24.037Z
-Stopped at: Completed 05-04-PLAN.md
+Last session: 2026-03-16T20:54:53.754Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
