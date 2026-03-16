@@ -24,6 +24,7 @@ import { initTouch } from './input/touch.js';
 import { initMIDI } from './input/midi.js';
 import { initGyroPanel } from './ui/gyro-panel.js';
 import { initNoteRepeatUI } from './ui/note-repeat-ui.js';
+import { initMacroPanel } from './ui/macro-panel.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -39,6 +40,7 @@ initSequencerUI(document.getElementById('sequencer'));
 initVisualizer(document.getElementById('visualizer'));
 initGyroPanel(document.getElementById('gyro-panel'));
 initNoteRepeatUI(document.getElementById('note-repeat-control'));
+initMacroPanel(document.getElementById('macro-panel'));
 
 // Volume slider
 const volumeSlider = document.getElementById('volume-slider');
