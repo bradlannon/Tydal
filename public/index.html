@@ -17,10 +17,15 @@
 <body>
   <main class="app-main">
     <div id="instrument" class="instrument-container">
-      <!-- Encoder section: OLED + 9 rotary encoders (above pad grid) -->
-      <div id="encoder-section"></div>
-      <!-- Pad grid injected by app.js -->
-      <div id="visualizer"></div>
+      <!-- Track selection buttons — vertical column on the left -->
+      <div id="track-buttons"></div>
+      <!-- Main instrument area: encoder section + pad grid + visualizer -->
+      <div class="instrument-main">
+        <!-- Encoder section: OLED + 9 rotary encoders (above pad grid) -->
+        <div id="encoder-section"></div>
+        <!-- Pad grid injected by app.js -->
+        <div id="visualizer"></div>
+      </div>
     </div>
   </main>
 
