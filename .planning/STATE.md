@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Ableton Move Redesign
-status: planning
-stopped_at: Defining requirements for v1.1
-last_updated: "2026-03-16T22:00:00.000Z"
-last_activity: "2026-03-16 — Milestone v1.1 started"
+status: ready
+stopped_at: Roadmap created — ready for Phase 6 planning
+last_updated: "2026-03-16T22:30:00.000Z"
+last_activity: "2026-03-16 — v1.1 roadmap created (phases 6–9)"
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -18,24 +18,24 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-14)
+See: .planning/PROJECT.md (updated 2026-03-16)
 
-**Core value:** When someone opens SoundForge on their phone and plays a few notes, their reaction should be "holy shit, this is in a browser?" — a musician should be able to connect a MIDI keyboard and genuinely jam with it.
+**Core value:** When someone opens Tydal on their phone and plays a few notes, their reaction should be "holy shit, this is in a browser?" — a musician should be able to connect a MIDI keyboard and genuinely jam with it.
 **Current focus:** v1.1 — Ableton Move Redesign
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 6 — Move Visual Aesthetic (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-03-16 — Milestone v1.1 started
+Status: Roadmap complete, ready for Phase 6 planning
+Last activity: 2026-03-16 — v1.1 roadmap created (phases 6–9)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
+- Total plans completed: 0 (v1.1)
 - Average duration: —
 - Total execution time: —
 
@@ -43,13 +43,18 @@ Progress: [░░░░░░░░░░] 0%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 6. Move Visual Aesthetic | TBD | — | — |
+| 7. Encoder Layout & Contextual Display | TBD | — | — |
+| 8. Multi-Track System | TBD | — | — |
+| 9. Move Performance Features | TBD | — | — |
 
 **Recent Trend:**
 - Last 5 plans: —
 - Trend: —
 
 *Updated after each plan completion*
+
+**v1.0 Historical (for reference):**
 | Phase 01-audio-foundation P01 | 2 | 2 tasks | 7 files |
 | Phase 01-audio-foundation P02 | 45 | 3 tasks | 6 files |
 | Phase 02-instrument-quality P01 | 3 | 2 tasks | 3 files |
@@ -77,9 +82,8 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- Roadmap: 5-phase structure ordered by hard audio dependencies (Foundation → Instrument Quality → Composition → Differentiators → Platform)
-- Roadmap: Service worker deferred to Phase 5 — caches specific file inventory that must be final
-- Roadmap: Preset system placed in Phase 4, not Phase 2 — synth.get()/set() APIs must be stable before serializing
+- Roadmap: 5-phase v1.0 structure ordered by hard audio dependencies (Foundation → Instrument Quality → Composition → Differentiators → Platform)
+- Roadmap: v1.1 phases 6–9 ordered by visual dependency (Aesthetic → Layout → Multi-Track → Performance)
 - [Phase 01-audio-foundation]: Tone.js 15.1.22 via importmap +esm CDN — no build step, resolves version discrepancy
 - [Phase 01-audio-foundation]: AudioContext singleton: only audio-engine.js calls Tone.start(); statechange recovery dispatches audio-interrupted event to overlay
 - [Phase 01-audio-foundation]: warmPad PolySynth: sawtooth + lowpass 2800Hz + release:0.4s anti-click; masterVolume at -6dB default headroom
@@ -125,19 +129,17 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-- Phase 1: Verify Tone.js ESM CDN import path (+esm jsDelivr suffix) before writing any import map
-- Phase 1: Check CSP headers in server.js — cdn.jsdelivr.net may need to be added
-- Phase 1: Resolve Tone.js 14.x vs 15.x version discrepancy (STACK.md vs ARCHITECTURE.md example)
-- Phase 2: Test on real iOS hardware — AudioWorklet distortion and velocity sensitivity cannot be validated in DevTools
-- Phase 4: FM synthesis sound design requires iteration — budget time for piano/organ parameter tuning
-- Phase 5: Verify audiobuffer-to-wav CDN ESM availability before implementation
+- Phase 6: CSS overhaul will touch nearly every UI file — establish dark canvas token system early to avoid per-element hacks
+- Phase 7: Rotary encoder interaction on mobile (no scroll wheel) requires drag-based or touch gesture implementation decision
+- Phase 8: Multi-track engine is a significant architecture change — existing single-instrument audio chain must be generalized to 4 tracks
+- Phase 9: Capture mode requires a rolling audio/note buffer running at all times — memory and performance implications to evaluate
 
 ## Session Continuity
 
-Last session: 2026-03-16T21:00:03.303Z
-Stopped at: Completed 05-05-PLAN.md
+Last session: 2026-03-16T22:00:00.000Z
+Stopped at: v1.1 roadmap created
 Resume file: None
