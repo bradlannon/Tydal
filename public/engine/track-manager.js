@@ -22,6 +22,7 @@
 
 import * as Tone from 'tone';
 import { createTrackEffectsChain } from './effects.js';
+import { drumBus } from './drums.js';
 
 // ---------------------------------------------------------------------------
 // Track colors — 4 distinct colors (orange, blue, purple, green)
@@ -150,4 +151,46 @@ export function setActiveTrack(id) {
  */
 export function getTrackById(id) {
   return tracks[id];
+}
+
+/**
+ * Set a track's volume in dB and ramp the audio node.
+ * Drum track (0): ramps drumBus volume.
+ * Melodic tracks (1-3): ramp the track's own effects chain channel volume.
+ * Dispatches 'track-volume' CustomEvent.
+ *
+ * @param {number} trackId — 0-3
+ * @param {number} volumeDb — volume in dB (e.g. -40 to 0)
+ */
+export function setTrackVolume(trackId, volumeDb) {
+  const track = tracks[trackId];
+  if (!track) return;
+  track.volume = volumeDb;
+  if (trackId === 0) {
+    drumBus.volume.rampTo(volumeDb, 0.05);
+  } else if (track.effectsChain) {
+    track.effectsChain.channel.volume.rampTo(volumeDb, 0.05);
+  }
+  document.dispatchEvent(new CustomEvent('track-volume', { detail: { trackId, volume: volumeDb } }));
+}
+
+/**
+ * Mute or unmute a track at the audio channel level.
+ * Drum track (0): sets drumBus.mute.
+ * Melodic tracks (1-3): sets the track's effects chain channel mute.
+ * Dispatches 'track-mute' CustomEvent.
+ *
+ * @param {number} trackId — 0-3
+ * @param {boolean} muted
+ */
+export function setTrackMute(trackId, muted) {
+  const track = tracks[trackId];
+  if (!track) return;
+  track.muted = muted;
+  if (trackId === 0) {
+    drumBus.mute = muted;
+  } else if (track.effectsChain) {
+    track.effectsChain.channel.mute = muted;
+  }
+  document.dispatchEvent(new CustomEvent('track-mute', { detail: { trackId, muted } }));
 }
