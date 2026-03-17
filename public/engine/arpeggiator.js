@@ -17,7 +17,7 @@
  *   setArpRate(rate)
  */
 
-import { noteOn, noteOff } from './instruments.js';
+import { _triggerNoteOn, _triggerNoteOff } from './instruments.js';
 import { getBPM } from './sequencer.js';
 
 // ---------------------------------------------------------------------------
@@ -109,14 +109,14 @@ function _tick() {
 
   // noteOff previous note, then noteOn next with 5ms gap (anti-click pattern)
   if (lastNote !== null) {
-    noteOff(lastNote);
+    _triggerNoteOff(lastNote);
   }
 
   // Clamp arpIndex to current sorted length
   arpIndex = arpIndex % sorted.length;
   const nextNote = sorted[arpIndex];
 
-  setTimeout(() => noteOn(nextNote, 0.7), 5);
+  setTimeout(() => _triggerNoteOn(nextNote, 0.7), 5);
   lastNote = nextNote;
 
   // Advance index for next tick
@@ -176,7 +176,7 @@ export function removeArpNote(note) {
   if (heldNotes.length === 0) {
     _stopInterval();
     if (lastNote !== null) {
-      noteOff(lastNote);
+      _triggerNoteOff(lastNote);
       lastNote = null;
     }
     arpIndex = 0;
@@ -194,7 +194,7 @@ export function setArpEnabled(val) {
   if (!enabled) {
     _stopInterval();
     if (lastNote !== null) {
-      noteOff(lastNote);
+      _triggerNoteOff(lastNote);
       lastNote = null;
     }
     heldNotes.length = 0;

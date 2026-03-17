@@ -346,6 +346,13 @@ body {
   background: transparent;
 }
 
+/* ARP button active state — green glow matching play button */
+#arp-btn.active {
+  color: var(--move-glow-green);
+  text-shadow: 0 0 6px rgba(0, 255, 90, 0.6);
+  background: transparent;
+}
+
 /* Capture button feedback states */
 #capture-btn {
   transition: color 80ms ease, border-color 80ms ease;

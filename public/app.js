@@ -31,6 +31,7 @@ import { initTrackButtons } from './ui/track-buttons.js';
 import { setActiveTrack, getActiveTrackId } from './engine/track-manager.js';
 import { commitCapture, clearCaptureBuffer } from './engine/capture.js';
 import { showOLED, hideOLED } from './ui/oled-display.js';
+import { setArpEnabled, isArpEnabled, setArpMode, getArpMode } from './engine/arpeggiator.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -194,6 +195,50 @@ if (captureBtn) {
 document.addEventListener('track-change', () => {
   clearCaptureBuffer();
 });
+
+// ---------------------------------------------------------------------------
+// ARP button — toggle arpeggiator; long-press cycles Up/Down/Random modes
+// ---------------------------------------------------------------------------
+const ARP_MODES = ['up', 'down', 'random'];
+const ARP_LONG_PRESS_MS = 500;
+
+const arpBtn = document.getElementById('arp-btn');
+if (arpBtn) {
+  let arpPressTimer = null;
+  let arpIsLongPress = false;
+
+  arpBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    arpIsLongPress = false;
+    arpPressTimer = setTimeout(() => {
+      arpIsLongPress = true;
+      // Cycle mode: up -> down -> random -> up
+      const currentMode = getArpMode();
+      const idx = ARP_MODES.indexOf(currentMode);
+      const nextMode = ARP_MODES[(idx + 1) % ARP_MODES.length];
+      setArpMode(nextMode);
+
+      // Show mode briefly on OLED
+      if (oledEl) {
+        showOLED(oledEl, 'ARP Mode', nextMode.toUpperCase());
+        setTimeout(() => hideOLED(oledEl), 1000);
+      }
+    }, ARP_LONG_PRESS_MS);
+  });
+
+  arpBtn.addEventListener('pointerup', () => {
+    clearTimeout(arpPressTimer);
+    if (!arpIsLongPress) {
+      // Short press: toggle arp on/off
+      const nowEnabled = !isArpEnabled();
+      setArpEnabled(nowEnabled);
+      arpBtn.classList.toggle('active', nowEnabled);
+    }
+  });
+
+  arpBtn.addEventListener('pointercancel', () => clearTimeout(arpPressTimer));
+  arpBtn.addEventListener('pointerleave', () => clearTimeout(arpPressTimer));
+}
 
 // Restore shared patch from URL
 const urlPatch = patchFromURL();

@@ -16,6 +16,7 @@ import { getActiveTrack } from './track-manager.js';
 import { trackNoteOn, trackNoteOff, stealOldestIfFull, clearAll, getActiveNotes } from './voice-tracker.js';
 import { isRecording, recordNote } from './recorder.js';
 import { feedCapture } from './capture.js';
+import { isArpEnabled, addArpNote, removeArpNote } from './arpeggiator.js';
 
 // ---------------------------------------------------------------------------
 // Subtractive synthesizer definition
@@ -84,6 +85,22 @@ connectInstrument(activeSynth);
  * @param {number} [velocity=0.8] — 0..1 loudness
  */
 export function noteOn(note, velocity = 0.8) {
+  // If arpeggiator is active, route to arp engine instead of triggering directly.
+  // The arp tick will call noteOn again with arp routing bypassed (arp calls internal _triggerNoteOn).
+  if (isArpEnabled()) {
+    addArpNote(note, velocity);
+    return;
+  }
+  _triggerNoteOn(note, velocity);
+}
+
+/**
+ * Internal note trigger — bypasses arp routing. Used by the arp tick itself
+ * to actually trigger the synth.
+ * @param {string} note
+ * @param {number} velocity
+ */
+export function _triggerNoteOn(note, velocity = 0.8) {
   // Use active track's synth if a melodic track is active
   const activeTrack = getActiveTrack();
   const synth = (activeTrack && activeTrack.type === 'melodic') ? activeTrack.synth : activeSynth;
@@ -111,6 +128,19 @@ export function noteOn(note, velocity = 0.8) {
  * @param {string} note — e.g. 'C4', 'F#3'
  */
 export function noteOff(note) {
+  // If arpeggiator is active, remove from held set (arp tick handles the actual noteOff).
+  if (isArpEnabled()) {
+    removeArpNote(note);
+    return;
+  }
+  _triggerNoteOff(note);
+}
+
+/**
+ * Internal note release — bypasses arp routing. Used by the arp tick.
+ * @param {string} note
+ */
+export function _triggerNoteOff(note) {
   const activeTrack = getActiveTrack();
   const synth = (activeTrack && activeTrack.type === 'melodic') ? activeTrack.synth : activeSynth;
   trackNoteOff(note);

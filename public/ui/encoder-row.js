@@ -28,7 +28,7 @@ import {
 } from '../engine/effects.js';
 import { setSynthParam } from '../engine/instruments.js';
 import { drumBus } from '../engine/drums.js';
-import { setBPM, getBPM } from '../engine/sequencer.js';
+import { setBPM, getBPM, setSwing } from '../engine/sequencer.js';
 import { getActiveTrack, setTrackVolume } from '../engine/track-manager.js';
 
 // ---------------------------------------------------------------------------
@@ -140,7 +140,15 @@ export const DRUM_MAPPING = [
   { name: 'Kick Tone',  min: 40,   max: 80,  value: 60,  step: 1,    unit: '',    apply(_val) {} },
   { name: 'Snare Tone', min: 0,    max: 1,   value: 0.5, step: 0.01, unit: '',    apply(_val) {} },
   { name: 'HH Decay',   min: 0.01, max: 0.5, value: 0.1, step: 0.01, unit: 's',  apply(_val) {} },
-  { name: 'Clap Verb',  min: 0,    max: 1,   value: 0.3, step: 0.01, unit: '',    apply(_val) {} },
+  {
+    name: 'Swing',
+    min: 0,
+    max: 100,
+    value: 0,
+    step: 1,
+    unit: '%',
+    apply(val) { setSwing(val / 100); },
+  },
   // Functional encoders
   {
     name: 'Reverb',
@@ -417,17 +425,13 @@ export function buildTrackMelodicMapping(track) {
       },
     },
     {
-      name: 'Vibrato',
+      name: 'Swing',
       min: 0,
-      max: 1,
+      max: 100,
       value: 0,
-      step: 0.01,
-      unit: '',
-      apply(val) {
-        // No per-track vibrato node; route to global vibrato as fallback
-        vibrato.depth.value = val;
-        vibrato.wet.value = val > 0 ? 1 : 0;
-      },
+      step: 1,
+      unit: '%',
+      apply(val) { setSwing(val / 100); },
     },
     {
       name: 'Trk Vol',
