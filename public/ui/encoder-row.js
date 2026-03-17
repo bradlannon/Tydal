@@ -29,6 +29,7 @@ import {
 import { setSynthParam } from '../engine/instruments.js';
 import { drumBus } from '../engine/drums.js';
 import { setBPM, getBPM } from '../engine/sequencer.js';
+import { getActiveTrack } from '../engine/track-manager.js';
 
 // ---------------------------------------------------------------------------
 // Parameter mappings
@@ -330,6 +331,117 @@ export function setEncoderMapping(mappingArray) {
 }
 
 // ---------------------------------------------------------------------------
+// Per-track melodic mapping builder
+// ---------------------------------------------------------------------------
+
+/**
+ * buildTrackMelodicMapping(track) — build a MELODIC_MAPPING-shaped array
+ * targeting the given track's independent synth and effects chain.
+ *
+ * @param {Object} track — a melodic track object from track-manager.js
+ * @returns {Array}
+ */
+export function buildTrackMelodicMapping(track) {
+  const { synth, effectsChain } = track;
+  return [
+    {
+      name: 'Cutoff',
+      min: 50,
+      max: 10000,
+      value: 2800,
+      step: 10,
+      unit: 'Hz',
+      apply(val) {
+        // PolySynth filter frequency via set()
+        synth.set({ filter: { frequency: val } });
+      },
+    },
+    {
+      name: 'Res',
+      min: 0.1,
+      max: 20,
+      value: 1,
+      step: 0.1,
+      unit: '',
+      apply(val) {
+        synth.set({ filter: { Q: val } });
+      },
+    },
+    {
+      name: 'Reverb',
+      min: 0,
+      max: 1,
+      value: 0.3,
+      step: 0.01,
+      unit: '',
+      apply(val) { effectsChain.reverb.wet.value = val; },
+    },
+    {
+      name: 'Delay',
+      min: 0,
+      max: 1,
+      value: 0,
+      step: 0.01,
+      unit: '',
+      apply(val) { effectsChain.delay.wet.value = val; },
+    },
+    {
+      name: 'Attack',
+      min: 0.001,
+      max: 2,
+      value: 0.02,
+      step: 0.001,
+      unit: 's',
+      apply(val) { synth.set({ envelope: { attack: val } }); },
+    },
+    {
+      name: 'Release',
+      min: 0.01,
+      max: 3,
+      value: 0.4,
+      step: 0.01,
+      unit: 's',
+      apply(val) { synth.set({ envelope: { release: val } }); },
+    },
+    {
+      name: 'Dist',
+      min: 0,
+      max: 1,
+      value: 0,
+      step: 0.01,
+      unit: '',
+      apply(val) {
+        // No per-track distortion node; route to global distortion as fallback
+        distortion.distortion = val;
+        distortion.wet.value = val > 0 ? 1 : 0;
+      },
+    },
+    {
+      name: 'Vibrato',
+      min: 0,
+      max: 1,
+      value: 0,
+      step: 0.01,
+      unit: '',
+      apply(val) {
+        // No per-track vibrato node; route to global vibrato as fallback
+        vibrato.depth.value = val;
+        vibrato.wet.value = val > 0 ? 1 : 0;
+      },
+    },
+    {
+      name: 'Volume',
+      min: -40,
+      max: 0,
+      value: 0,
+      step: 1,
+      unit: 'dB',
+      apply(val) { effectsChain.channel.volume.rampTo(val, 0.05); },
+    },
+  ];
+}
+
+// ---------------------------------------------------------------------------
 // Mode-change listener — dispatched from app.js toolbar handler
 // ---------------------------------------------------------------------------
 
@@ -338,6 +450,30 @@ document.addEventListener('mode-change', (e) => {
   if (mode === 'drum') {
     setEncoderMapping(DRUM_MAPPING);
   } else {
-    setEncoderMapping(MELODIC_MAPPING);
+    // Apply mapping for the currently active melodic track
+    const track = getActiveTrack();
+    if (track && track.type === 'melodic') {
+      setEncoderMapping(buildTrackMelodicMapping(track));
+    } else {
+      setEncoderMapping(MELODIC_MAPPING);
+    }
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Track-change listener — dispatched from track-manager.js setActiveTrack()
+// ---------------------------------------------------------------------------
+
+document.addEventListener('track-change', (e) => {
+  const trackId = e.detail && e.detail.trackId;
+  if (trackId === 0) {
+    // Drum track — apply drum mapping
+    setEncoderMapping(DRUM_MAPPING);
+  } else {
+    // Melodic track — build mapping from the track's own synth/effects
+    const track = getActiveTrack();
+    if (track && track.type === 'melodic') {
+      setEncoderMapping(buildTrackMelodicMapping(track));
+    }
   }
 });

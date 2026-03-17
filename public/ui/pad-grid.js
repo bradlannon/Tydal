@@ -9,16 +9,13 @@
  *   buildNoteMap, getNoteMap, getCurrentOctave
  *   initPadGrid, setPadActive, shiftOctave
  *   setScaleLock, getScaleLock
- *   TRACK_COLOR
  */
 
 import { releaseAll } from '../engine/instruments.js';
 import { Scale } from 'tonal';
 import { initStepButtons } from './step-buttons.js';
 import { getSelectedNote } from '../engine/melodic-sequencer.js';
-
-/** Move track 1 default color — orange-amber. Phase 8 can swap per track. */
-export const TRACK_COLOR = '#e87a20';
+import { getActiveTrack } from '../engine/track-manager.js';
 
 const CHROMATIC = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -176,6 +173,15 @@ function _createGrid() {
 // Pad RGB coloring — assigns colors based on musical role
 // ---------------------------------------------------------------------------
 
+/** Convert a 6-digit hex color to an rgba() string for glow effects */
+function _hexToRgba(hex, alpha) {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 function _applyPadColors() {
   const cells = document.querySelectorAll('.note-cell');
   if (!cells.length) return;
@@ -205,9 +211,11 @@ function _applyPadColors() {
 
     if (scalePCs && rootPC) {
       if (pc === rootPC) {
-        // Root note — orange glow
-        color = TRACK_COLOR;
-        glow = '0 0 8px rgba(232, 122, 32, 0.4)';
+        // Root note — track color glow
+        const trackColor = getActiveTrack().color;
+        color = trackColor;
+        // Build a subtle glow using the track color (parse hex to rgba)
+        glow = `0 0 8px ${_hexToRgba(trackColor, 0.4)}`;
       } else if (scalePCs.includes(pc)) {
         // In-scale (non-root) — dim warm gray
         color = '#2a2a2a';
@@ -233,6 +241,11 @@ function _applyPadColors() {
 
 // Listen for melodic sequencer updates — update selected pad visual
 document.addEventListener('melodic-update', _onMelodicUpdate);
+
+// Listen for track changes — recolor pads with new track's color
+document.addEventListener('track-change', () => {
+  requestAnimationFrame(_applyPadColors);
+});
 
 function _onMelodicUpdate() {
   // Update which pad shows as selected (last tapped note)

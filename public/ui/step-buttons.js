@@ -15,6 +15,8 @@ import {
   getCurrentMelodicStep,
   toggleStep,
 } from '../engine/melodic-sequencer.js';
+import { getActiveTrack } from '../engine/track-manager.js';
+import { getStep, ROWS } from '../engine/sequencer.js';
 
 const NUM_STEPS = 16;
 
@@ -31,9 +33,10 @@ export function initStepButtons(containerEl) {
   _rowEl = _buildRow();
   containerEl.appendChild(_rowEl);
 
-  // Listen for playhead and step updates
+  // Listen for playhead, step, and track-change updates
   document.addEventListener('sequencer-step', _onSequencerStep);
   document.addEventListener('melodic-update', _onMelodicUpdate);
+  document.addEventListener('track-change', _onTrackChange);
 
   // Initial render
   _refreshButtons();
@@ -71,6 +74,9 @@ function _buildRow() {
 
 function _onStepTap(e) {
   e.preventDefault();
+  const track = getActiveTrack();
+  // Drum step editing is done via the DRM sheet; step taps are no-ops on drum track
+  if (track.type === 'drum') return;
   const step = parseInt(e.currentTarget.dataset.step);
   const note = getSelectedNote();
   if (note !== null && note !== undefined) {
@@ -86,18 +92,31 @@ function _onMelodicUpdate() {
   _refreshButtons();
 }
 
+function _onTrackChange() {
+  _refreshButtons();
+}
+
 // ---------------------------------------------------------------------------
 // Visual refresh
 // ---------------------------------------------------------------------------
 
 function _refreshButtons() {
-  const note = getSelectedNote();
+  const track = getActiveTrack();
   const playStep = getCurrentMelodicStep();
 
   _buttons.forEach((btn, i) => {
-    const isActive = note ? hasNoteAtStep(i, note) : false;
-    const isPlayhead = i === playStep;
+    let isActive = false;
 
+    if (track.type === 'drum') {
+      // Combined drum view: step is active if ANY drum row has it active
+      isActive = ROWS.some(row => getStep(row, i));
+    } else {
+      // Melodic view: check if the selected note has a step at position i
+      const note = getSelectedNote();
+      isActive = note ? hasNoteAtStep(i, note) : false;
+    }
+
+    const isPlayhead = i === playStep;
     btn.classList.toggle('active', isActive);
     btn.classList.toggle('playhead', isPlayhead);
   });

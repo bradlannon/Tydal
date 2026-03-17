@@ -27,6 +27,8 @@ import { initMacroPanel } from './ui/macro-panel.js';
 import { initPresetBrowser } from './ui/preset-browser.js';
 import { initEncoderRow, getOLEDElement } from './ui/encoder-row.js';
 import { initJogWheel, setJogWheelMode } from './ui/jog-wheel.js';
+import { initTrackButtons } from './ui/track-buttons.js';
+import { setActiveTrack, getActiveTrackId } from './engine/track-manager.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -44,6 +46,9 @@ initGyroPanel(document.getElementById('gyro-panel'));
 initNoteRepeatUI(document.getElementById('note-repeat-control'));
 initMacroPanel(document.getElementById('macro-panel'));
 initPresetBrowser(document.getElementById('preset-browser'));
+
+// Initialize track selection buttons (vertical column on the left)
+initTrackButtons(document.getElementById('track-buttons'));
 
 // Initialize encoder row (9 rotary encoders + OLED display above pad grid)
 initEncoderRow(document.getElementById('encoder-section'));
@@ -96,6 +101,8 @@ if (playBtn) {
 const backdrop = document.getElementById('sheet-backdrop');
 const toolbarBtns = document.querySelectorAll('.toolbar-btn[data-sheet]');
 let activeSheet = null;
+/** Track id to restore after DRM sheet closes */
+let _lastMelodicTrackId = getActiveTrackId();
 
 /**
  * Dispatch mode-change CustomEvent so encoder-row.js and jog-wheel.js
@@ -117,17 +124,29 @@ function openSheet(sheetId) {
     btn.classList.toggle('active', btn.dataset.sheet === sheetId);
   });
   // Switch encoder/jog-wheel mapping based on active sheet
-  dispatchModeChange(sheetId === 'seq-sheet' ? 'drum' : 'melodic');
+  if (sheetId === 'seq-sheet') {
+    // DRM sheet: remember current melodic track, then switch to drum track
+    _lastMelodicTrackId = getActiveTrackId();
+    setActiveTrack(0);
+    dispatchModeChange('drum');
+  } else {
+    dispatchModeChange('melodic');
+  }
 }
 
 function closeSheet() {
   if (!activeSheet) return;
+  const wasDrumSheet = activeSheet === 'seq-sheet';
   const sheet = document.getElementById(activeSheet);
   if (sheet) sheet.classList.remove('open');
   backdrop.classList.remove('visible');
   activeSheet = null;
   toolbarBtns.forEach((btn) => btn.classList.remove('active'));
   // Return to melodic mode when sheet closes
+  if (wasDrumSheet) {
+    // Restore the previously active melodic track
+    setActiveTrack(_lastMelodicTrackId);
+  }
   dispatchModeChange('melodic');
 }
 
