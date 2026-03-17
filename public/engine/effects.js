@@ -94,6 +94,39 @@ export function disconnectInstrument(synth) {
 }
 
 // ---------------------------------------------------------------------------
+// Per-track effects chain factory (for multi-track system)
+// ---------------------------------------------------------------------------
+
+/**
+ * createTrackEffectsChain()
+ *
+ * Creates an independent mini effects chain for a melodic track.
+ * Each track gets: reverb → delay → channel → masterVolume
+ *
+ * The `input` property is the entry point for the track's synth.
+ *
+ * @returns {{ input, reverb, delay, channel, ready }}
+ */
+export function createTrackEffectsChain() {
+  const trackReverb = new Tone.Reverb({ decay: 2.5, wet: 0.3 });
+  const trackDelay = new Tone.FeedbackDelay({ delayTime: '8n', feedback: 0.35, wet: 0 });
+  const trackChannel = new Tone.Channel({ volume: 0, pan: 0 });
+
+  // Chain: input (reverb) → delay → channel → masterVolume
+  trackReverb.connect(trackDelay);
+  trackDelay.connect(trackChannel);
+  trackChannel.connect(masterVolume);
+
+  return {
+    input: trackReverb,
+    reverb: trackReverb,
+    delay: trackDelay,
+    channel: trackChannel,
+    ready: trackReverb.ready,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // LFO control helper
 // ---------------------------------------------------------------------------
 
