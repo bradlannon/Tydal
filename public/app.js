@@ -25,7 +25,8 @@ import { initGyroPanel } from './ui/gyro-panel.js';
 import { initNoteRepeatUI } from './ui/note-repeat-ui.js';
 import { initMacroPanel } from './ui/macro-panel.js';
 import { initPresetBrowser } from './ui/preset-browser.js';
-import { initEncoderRow } from './ui/encoder-row.js';
+import { initEncoderRow, getOLEDElement } from './ui/encoder-row.js';
+import { initJogWheel, setJogWheelMode } from './ui/jog-wheel.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -46,6 +47,13 @@ initPresetBrowser(document.getElementById('preset-browser'));
 
 // Initialize encoder row (9 rotary encoders + OLED display above pad grid)
 initEncoderRow(document.getElementById('encoder-section'));
+
+// Initialize jog wheel — placed in the slot created by initEncoderRow
+const jogSlot = document.getElementById('jog-wheel-slot');
+const oledEl = getOLEDElement();
+if (jogSlot && oledEl) {
+  initJogWheel(jogSlot, oledEl);
+}
 
 // Help panel
 const helpBtn = document.getElementById('help-btn');
@@ -89,6 +97,15 @@ const backdrop = document.getElementById('sheet-backdrop');
 const toolbarBtns = document.querySelectorAll('.toolbar-btn[data-sheet]');
 let activeSheet = null;
 
+/**
+ * Dispatch mode-change CustomEvent so encoder-row.js and jog-wheel.js
+ * can react to drum/melodic mode transitions.
+ */
+function dispatchModeChange(mode) {
+  document.dispatchEvent(new CustomEvent('mode-change', { detail: { mode } }));
+  setJogWheelMode(mode);
+}
+
 function openSheet(sheetId) {
   closeSheet();
   const sheet = document.getElementById(sheetId);
@@ -99,6 +116,8 @@ function openSheet(sheetId) {
   toolbarBtns.forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.sheet === sheetId);
   });
+  // Switch encoder/jog-wheel mapping based on active sheet
+  dispatchModeChange(sheetId === 'seq-sheet' ? 'drum' : 'melodic');
 }
 
 function closeSheet() {
@@ -108,6 +127,8 @@ function closeSheet() {
   backdrop.classList.remove('visible');
   activeSheet = null;
   toolbarBtns.forEach((btn) => btn.classList.remove('active'));
+  // Return to melodic mode when sheet closes
+  dispatchModeChange('melodic');
 }
 
 toolbarBtns.forEach((btn) => {

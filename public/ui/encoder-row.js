@@ -4,12 +4,16 @@
  * Row of 9 rotary encoders wired to synth/FX parameters, with OLED
  * contextual display that activates during interaction and fades dark when idle.
  *
- * Layout: OLED display on top, 9 encoders in a flex row below.
+ * Layout: OLED display on top, below that a flex row with encoders (flex:1)
+ * and the jog wheel slot (flex-shrink:0) side by side.
  *
  * Default: MELODIC_MAPPING — Filter Cutoff, Filter Res, Reverb, Delay,
  *          Attack, Release, Distortion, Vibrato, Volume.
  *
- * DRUM_MAPPING is provided as a placeholder for Phase 7 Plan 03 wiring.
+ * DRUM_MAPPING — BPM, drum volume, shared FX, and named placeholders for
+ * per-voice params (Phase 8 will expose them via getDrumParams()).
+ *
+ * Mode switching: listen for 'mode-change' CustomEvent dispatched from app.js.
  */
 
 import { createEncoder } from './encoder.js';
@@ -23,6 +27,8 @@ import {
   masterVolume,
 } from '../engine/effects.js';
 import { setSynthParam } from '../engine/instruments.js';
+import { drumBus } from '../engine/drums.js';
+import { setBPM, getBPM } from '../engine/sequencer.js';
 
 // ---------------------------------------------------------------------------
 // Parameter mappings
@@ -123,19 +129,43 @@ export const MELODIC_MAPPING = [
 ];
 
 /**
- * DRUM_MAPPING — placeholder encoder layout for drum mode.
- * Actual drum parameter wiring done in Phase 7 Plan 03.
+ * DRUM_MAPPING — encoder layout for drum mode.
+ * Encoders 1-4 are named placeholders (individual drum voice params are
+ * module-private in drums.js; per-voice controls arrive in Phase 8).
+ * Encoders 5-9 are fully functional.
  */
 export const DRUM_MAPPING = [
-  { name: 'Kick Pitch', min: 40,   max: 80,  value: 60,  step: 1,    unit: '',   apply(_val) {} },
-  { name: 'Kick Decay', min: 0.05, max: 1.5, value: 0.5, step: 0.05, unit: 's',  apply(_val) {} },
-  { name: 'Snare Tone', min: 0,    max: 1,   value: 0.5, step: 0.01, unit: '',   apply(_val) {} },
+  // Placeholders (no direct param exposed yet — Phase 8 will add getDrumParams())
+  { name: 'Kick Tone',  min: 40,   max: 80,  value: 60,  step: 1,    unit: '',    apply(_val) {} },
+  { name: 'Snare Tone', min: 0,    max: 1,   value: 0.5, step: 0.01, unit: '',    apply(_val) {} },
   { name: 'HH Decay',   min: 0.01, max: 0.5, value: 0.1, step: 0.01, unit: 's',  apply(_val) {} },
-  { name: 'Reverb',     min: 0,    max: 1,   value: 0.2, step: 0.01, unit: '',   apply(val)  { reverb.wet.value = val; } },
-  { name: 'Delay',      min: 0,    max: 1,   value: 0,   step: 0.01, unit: '',   apply(val)  { delay.wet.value = val; } },
-  { name: 'BPM',        min: 60,   max: 200, value: 120, step: 1,    unit: 'bpm', apply(_val) {} },
-  { name: 'Swing',      min: 0,    max: 1,   value: 0,   step: 0.01, unit: '',   apply(_val) {} },
-  { name: 'Volume',     min: -40,  max: 0,   value: -6,  step: 1,    unit: 'dB', apply(val)  { masterVolume.volume.rampTo(val, 0.05); } },
+  { name: 'Clap Verb',  min: 0,    max: 1,   value: 0.3, step: 0.01, unit: '',    apply(_val) {} },
+  // Functional encoders
+  {
+    name: 'Reverb',
+    min: 0,    max: 1,   value: 0.2, step: 0.01, unit: '',
+    apply(val) { reverb.wet.value = val; },
+  },
+  {
+    name: 'Delay',
+    min: 0,    max: 1,   value: 0,   step: 0.01, unit: '',
+    apply(val) { delay.wet.value = val; },
+  },
+  {
+    name: 'BPM',
+    min: 40,   max: 240, value: 120, step: 1,    unit: 'bpm',
+    apply(val) { setBPM(val); },
+  },
+  {
+    name: 'Drum Vol',
+    min: -40,  max: 0,   value: 0,   step: 1,    unit: 'dB',
+    apply(val) { drumBus.volume.rampTo(val, 0.05); },
+  },
+  {
+    name: 'Master Vol',
+    min: -40,  max: 0,   value: -6,  step: 1,    unit: 'dB',
+    apply(val) { masterVolume.volume.rampTo(val, 0.05); },
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -144,14 +174,15 @@ export const DRUM_MAPPING = [
 
 let oledEl = null;
 let encoderEls = [];
-let currentMapping = MELODIC_MAPPING;
+/** Each slot holds the current live param config (swapped on mode-change) */
+let liveParams = MELODIC_MAPPING.map(p => ({ ...p }));
 
 // ---------------------------------------------------------------------------
 // Build helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Build OLED display string: "Name  FormattedValue [unit]"
+ * Build OLED display string: "FormattedValue unit"
  */
 function oledValue(param, val) {
   const formatted = formatValue(val, param.step);
@@ -160,10 +191,13 @@ function oledValue(param, val) {
 }
 
 /**
- * Wire a single encoder element to an OLED and parameter.
+ * Wire a single encoder element to its live param slot via an index.
+ * The onChange handler reads liveParams[i] at call time, so swapping
+ * liveParams entries via setEncoderMapping() takes effect immediately.
  */
-function wireEncoder(encoderEl, param, oled) {
+function wireEncoderAtIndex(encoderEl, i, oled) {
   encoderEl.addEventListener('encoder-start', () => {
+    const param = liveParams[i];
     showOLED(oled, param.name, oledValue(param, encoderEl.getValue()));
   });
 
@@ -177,7 +211,20 @@ function wireEncoder(encoderEl, param, oled) {
 // ---------------------------------------------------------------------------
 
 /**
+ * getOLEDElement() — returns the shared OLED display element.
+ * Used by app.js to pass the oled reference to initJogWheel.
+ *
+ * @returns {HTMLElement|null}
+ */
+export function getOLEDElement() {
+  return oledEl;
+}
+
+/**
  * initEncoderRow(containerEl) — build the encoder section and append to container.
+ * Creates OLED on top, then an .encoder-controls-row containing:
+ *   - .encoder-row (9 encoders, flex:1)
+ *   - a .jog-wheel-slot div (flex-shrink:0) for the jog wheel
  *
  * @param {HTMLElement} containerEl
  */
@@ -187,17 +234,22 @@ export function initEncoderRow(containerEl) {
   const section = document.createElement('div');
   section.className = 'encoder-section';
 
-  // OLED display
+  // OLED display (full width on top)
   oledEl = createOLED();
   section.appendChild(oledEl);
+
+  // Controls row: encoders left, jog wheel right
+  const controlsRow = document.createElement('div');
+  controlsRow.className = 'encoder-controls-row';
 
   // Encoder row
   const row = document.createElement('div');
   row.className = 'encoder-row';
 
   encoderEls = [];
+  liveParams = MELODIC_MAPPING.map(p => ({ ...p }));
 
-  currentMapping.forEach((param) => {
+  liveParams.forEach((param, i) => {
     const wrapper = document.createElement('div');
     wrapper.className = 'encoder-wrapper';
 
@@ -208,12 +260,13 @@ export function initEncoderRow(containerEl) {
       value: param.value,
       step: param.step,
       onChange: (val) => {
-        param.apply(val);
-        showOLED(oledEl, param.name, oledValue(param, val));
+        const live = liveParams[i];
+        live.apply(val);
+        showOLED(oledEl, live.name, oledValue(live, val));
       },
     });
 
-    wireEncoder(encoderEl, param, oledEl);
+    wireEncoderAtIndex(encoderEl, i, oledEl);
     encoderEls.push(encoderEl);
 
     // Tiny label
@@ -226,34 +279,46 @@ export function initEncoderRow(containerEl) {
     row.appendChild(wrapper);
   });
 
-  section.appendChild(row);
+  // Jog wheel slot — populated by app.js via initJogWheel(jogSlot, oledEl)
+  const jogSlot = document.createElement('div');
+  jogSlot.className = 'jog-wheel-slot';
+  jogSlot.id = 'jog-wheel-slot';
+
+  controlsRow.appendChild(row);
+  controlsRow.appendChild(jogSlot);
+  section.appendChild(controlsRow);
   containerEl.appendChild(section);
 }
 
 /**
  * setEncoderMapping(mappingArray) — swap parameter bindings at runtime.
- * Rebuilds encoder values and re-wires onChange handlers.
+ * Updates liveParams entries in-place and resets encoder visual positions
+ * and labels. The onChange closures reference liveParams[i] by index, so
+ * they automatically call the new param's apply() function.
  *
  * @param {Array} mappingArray - Array of parameter config objects
  */
 export function setEncoderMapping(mappingArray) {
-  currentMapping = mappingArray;
-
   if (!oledEl || encoderEls.length === 0) return;
 
-  // Update each encoder with new mapping entry
   const count = Math.min(mappingArray.length, encoderEls.length);
   for (let i = 0; i < count; i++) {
     const param = mappingArray[i];
+
+    // Update live param slot in-place so existing onChange closures pick it up
+    liveParams[i] = { ...param };
+
     const encoderEl = encoderEls[i];
 
-    // Reset encoder to new param's default value
-    encoderEl.setValue(param.value);
-    encoderEl.dataset.name = param.name;
+    // For BPM encoder in drum mode, initialize from current Transport BPM
+    let initValue = param.value;
+    if (param.name === 'BPM') {
+      try { initValue = getBPM() || param.value; } catch (_) { /* no-op */ }
+    }
 
-    // Remove old listeners by cloning — then re-wire
-    // (Simplest approach: rebuild the onChange by storing on element)
-    encoderEl._onChangeParam = param;
+    // Reset encoder to new param's value
+    encoderEl.setValue(initValue);
+    encoderEl.dataset.name = param.name;
 
     // Update label
     const wrapper = encoderEl.parentElement;
@@ -262,10 +327,17 @@ export function setEncoderMapping(mappingArray) {
       if (label) label.textContent = param.name;
     }
   }
-
-  // Re-wire onChange for each encoder using stored param ref
-  // We achieve this by patching the existing encoder's onChange directly.
-  // Since createEncoder captures onChange in closure, we need a level of indirection.
-  // The actual re-wiring is handled by the encoderEl event listeners calling param.apply.
-  // For a full swap, rebuild would be cleaner — but for Plan 03 we re-init the row.
 }
+
+// ---------------------------------------------------------------------------
+// Mode-change listener — dispatched from app.js toolbar handler
+// ---------------------------------------------------------------------------
+
+document.addEventListener('mode-change', (e) => {
+  const mode = e.detail && e.detail.mode;
+  if (mode === 'drum') {
+    setEncoderMapping(DRUM_MAPPING);
+  } else {
+    setEncoderMapping(MELODIC_MAPPING);
+  }
+});
