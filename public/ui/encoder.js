@@ -36,24 +36,45 @@ export function createEncoder({ name, min, max, value, step = 0.01, onChange }) 
   el.dataset.name = name;
   el.dataset.value = value;
 
-  // Indicator dot
+  // Dot arm: a full-size transparent overlay that rotates around the encoder
+  // center, with the visible dot at the top. This approach works at any size.
+  const dotArm = document.createElement('div');
+  dotArm.className = 'encoder-dot-arm';
+  dotArm.style.cssText = [
+    'position:absolute',
+    'inset:0',
+    'border-radius:50%',
+    'pointer-events:none',
+  ].join(';');
+
   const dot = document.createElement('div');
   dot.className = 'encoder-dot';
-  el.appendChild(dot);
+  // Dot positioned at the top of the arm, horizontally centered
+  dot.style.cssText = [
+    'position:absolute',
+    'width:4px',
+    'height:4px',
+    'border-radius:50%',
+    'background:#555',
+    'top:4px',
+    'left:50%',
+    'transform:translateX(-50%)',
+  ].join(';');
+
+  dotArm.appendChild(dot);
+  el.appendChild(dotArm);
 
   // Tiny label below (will be sibling in encoder-row, but keep reference)
   let currentValue = value;
 
   function updateVisual(val) {
     const angle = valueToAngle(val, min, max);
-    // Dot is at top-center; rotate around the encoder center
-    const rad = (angle - 90) * (Math.PI / 180);
-    const radius = 14; // pixels from center (for 40px encoder, center-to-edge=20, dot near edge)
-    const cx = 20 + radius * Math.cos(rad);
-    const cy = 20 + radius * Math.sin(rad);
-    dot.style.left = cx - 2 + 'px'; // -2 for half dot width (4px)
-    dot.style.top = cy - 2 + 'px';
-    dot.style.transform = 'none'; // override CSS default
+    // Rotate the arm around the encoder center (transform-origin defaults to 50% 50%)
+    dotArm.style.transform = `rotate(${angle}deg)`;
+  }
+
+  function setDotActive(active) {
+    dot.style.background = active ? '#fff' : '#555';
   }
 
   // Pointer drag state
@@ -72,6 +93,7 @@ export function createEncoder({ name, min, max, value, step = 0.01, onChange }) 
     startY = e.clientY;
     startValue = currentValue;
     el.classList.add('active');
+    setDotActive(true);
     el.dispatchEvent(new CustomEvent('encoder-start', { bubbles: true, detail: { name, value: currentValue } }));
   });
 
@@ -88,10 +110,11 @@ export function createEncoder({ name, min, max, value, step = 0.01, onChange }) 
     if (onChange) onChange(newValue);
   });
 
-  const onPointerEnd = (e) => {
+  const onPointerEnd = (_e) => {
     if (!dragging) return;
     dragging = false;
     el.classList.remove('active');
+    setDotActive(false);
     el.dispatchEvent(new CustomEvent('encoder-end', { bubbles: true, detail: { name, value: currentValue } }));
   };
 
