@@ -150,6 +150,11 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
+- [ ] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
+- [ ] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
+- [ ] 08-03-PLAN.md — Per-track effects, volume, and mute controls
+
+Plans:
 - [ ] 07-01-PLAN.md — Rotary encoder component, OLED display, and 9-encoder row with synth/FX mapping
 - [ ] 07-02-PLAN.md — 16-step horizontal button row replacing 4x8 step zone
 - [ ] 07-03-PLAN.md — Jog wheel preset browser and contextual encoder auto-mapping
@@ -164,7 +169,12 @@ Plans:
   3. Switching to a different track shows that track's step pattern in the step row; edits only affect the selected track
   4. Each track can have up to 2 effects applied independently; switching tracks does not bleed effects between tracks
   5. Per-track volume and mute are accessible via the track buttons; muting a track silences it without stopping the sequencer
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
+- [ ] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
+- [ ] 08-03-PLAN.md — Per-track effects, volume, and mute controls
 
 ### Phase 9: Move Performance Features
 **Goal**: Move's signature performance features are available — arpeggiator for melodic tracks, capture mode for retroactive recording, swing control for groove, and per-step encoder automation
@@ -175,7 +185,12 @@ Plans:
   2. Playing a spontaneous melody then pressing Capture commits the last performance to the active track's step sequence without interrupting playback
   3. Adjusting swing from 0% to 100% produces audible triplet-feel groove on step playback; 0% is straight, higher values push off-beats
   4. Holding a step button and turning an encoder sets a per-step parameter value; that step plays with the automation value when the sequencer reaches it
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
+- [ ] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
+- [ ] 08-03-PLAN.md — Per-track effects, volume, and mute controls
 
 ## Progress
 
@@ -191,5 +206,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 5. Performance Features | 5/5 | Complete | 2026-03-16 |
 | 6. Move Visual Aesthetic | 2/2 | Complete   | 2026-03-17 |
 | 7. Encoder Layout & Contextual Display | 3/3 | Complete   | 2026-03-17 |
-| 8. Multi-Track System | 0/? | Not started | -- |
+| 8. Multi-Track System | 0/3 | Not started | -- |
 | 9. Move Performance Features | 0/? | Not started | -- |
