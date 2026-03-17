@@ -5,7 +5,6 @@
  * input handlers, panels, and transport controls.
  */
 
-import { masterVolume } from './engine/effects.js';
 import { patchFromURL, loadPatch } from './engine/preset-storage.js';
 import { initTransport, startSequencer, stopSequencer, isPlaying } from './engine/sequencer.js';
 import { ensureAudioStarted } from './engine/audio-engine.js';
@@ -26,6 +25,7 @@ import { initGyroPanel } from './ui/gyro-panel.js';
 import { initNoteRepeatUI } from './ui/note-repeat-ui.js';
 import { initMacroPanel } from './ui/macro-panel.js';
 import { initPresetBrowser } from './ui/preset-browser.js';
+import { initEncoderRow } from './ui/encoder-row.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -44,13 +44,8 @@ initNoteRepeatUI(document.getElementById('note-repeat-control'));
 initMacroPanel(document.getElementById('macro-panel'));
 initPresetBrowser(document.getElementById('preset-browser'));
 
-// Volume slider
-const volumeSlider = document.getElementById('volume-slider');
-if (volumeSlider) {
-  volumeSlider.addEventListener('input', (e) => {
-    masterVolume.volume.rampTo(Number(e.target.value), 0.05);
-  });
-}
+// Initialize encoder row (9 rotary encoders + OLED display above pad grid)
+initEncoderRow(document.getElementById('encoder-section'));
 
 // Help panel
 const helpBtn = document.getElementById('help-btn');

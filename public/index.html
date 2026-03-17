@@ -17,6 +17,8 @@
 <body>
   <main class="app-main">
     <div id="instrument" class="instrument-container">
+      <!-- Encoder section: OLED + 9 rotary encoders (above pad grid) -->
+      <div id="encoder-section"></div>
       <!-- Pad grid injected by app.js -->
       <div id="visualizer"></div>
     </div>
@@ -74,18 +76,6 @@
     <div id="note-repeat-control" class="note-repeat-control"></div>
 
     <div class="toolbar-controls">
-      <div class="volume-control">
-        <input
-          type="range"
-          id="volume-slider"
-          min="-40"
-          max="0"
-          value="-6"
-          step="1"
-          aria-label="Master Volume"
-        >
-      </div>
-
       <div id="gyro-panel" class="gyro-control"></div>
 
       <div class="scale-control">

@@ -916,18 +916,7 @@ input[type="range"]::-moz-range-track {
   cursor: grabbing;
 }
 
-.encoder-dot {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #555;
-  /* Initial position set by JS */
-}
-
-.encoder.active .encoder-dot {
-  background: #fff;
-}
+/* .encoder-dot — position and color managed via JS inline styles */
 
 .encoder-label {
   font-size: 0.45rem;
