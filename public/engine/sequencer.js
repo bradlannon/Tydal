@@ -53,6 +53,29 @@ let currentStep = 0;
 let _drawFallbackWarned = false;
 
 // ---------------------------------------------------------------------------
+// Swing state
+// ---------------------------------------------------------------------------
+
+/** 0 = straight 16th notes, 1 = full triplet swing (maximum shuffle) */
+let swingAmount = 0;
+
+/**
+ * Set swing amount.
+ * @param {number} amount — 0..1
+ */
+export function setSwing(amount) {
+  swingAmount = Math.max(0, Math.min(1, amount));
+}
+
+/**
+ * Get current swing amount.
+ * @returns {number} 0..1
+ */
+export function getSwing() {
+  return swingAmount;
+}
+
+// ---------------------------------------------------------------------------
 // Grid accessors
 // ---------------------------------------------------------------------------
 
@@ -127,12 +150,19 @@ const sequence = new Tone.Sequence(
     const drumTrack = getTrackById(0);
     const drumsMuted = drumTrack && drumTrack.muted;
 
+    // Swing offset: delay odd steps (1, 3, 5, ...) by swingAmount × one 16th note duration.
+    // Even steps play on the grid; odd steps are pushed later for a shuffle feel.
+    // Visual playhead is NOT swung — cursor stays on-grid for clarity.
+    const isOddStep = step % 2 === 1;
+    const swingOffset = isOddStep ? swingAmount * (60 / getBPM() / 4) : 0;
+    const audioTime = time + swingOffset;
+
     if (!drumsMuted) {
       // Fire active drum voices — audio-thread safe (Tone scheduled time)
-      if (grid.kick[step])  triggerKick(time);
-      if (grid.snare[step]) triggerSnare(time);
-      if (grid.hihat[step]) triggerHihat('closed', time);
-      if (grid.clap[step])  triggerClap(time);
+      if (grid.kick[step])  triggerKick(audioTime);
+      if (grid.snare[step]) triggerSnare(audioTime);
+      if (grid.hihat[step]) triggerHihat('closed', audioTime);
+      if (grid.clap[step])  triggerClap(audioTime);
     }
 
     // Dispatch visual cursor event via Tone.Draw (never DOM from audio callback)

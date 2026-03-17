@@ -19,6 +19,7 @@
 
 import * as Tone from 'tone';
 import { tracks, getActiveTrack, getActiveTrackId } from './track-manager.js';
+import { getSwing, getBPM } from './sequencer.js';
 
 export const NUM_STEPS = 16;
 export const NUM_LANES = 4;
@@ -152,11 +153,17 @@ const sequence = new Tone.Sequence(
   (time, step) => {
     currentStep = step;
 
+    // Swing offset: delay odd steps (1, 3, 5, ...) by swingAmount × one 16th note duration.
+    // Same formula as sequencer.js — single swing source of truth via getSwing().
+    const isOddStep = step % 2 === 1;
+    const swingOffset = isOddStep ? getSwing() * (60 / getBPM() / 4) : 0;
+    const audioTime = time + swingOffset;
+
     // Trigger notes for all non-muted melodic tracks simultaneously
     for (const track of tracks) {
       if (track.type !== 'melodic' || track.muted) continue;
       for (const note of track.grid[step]) {
-        track.synth.triggerAttackRelease(note, '16n', time, 0.7);
+        track.synth.triggerAttackRelease(note, '16n', audioTime, 0.7);
       }
     }
 
