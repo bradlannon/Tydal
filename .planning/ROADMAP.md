@@ -134,8 +134,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Move CSS token system, black canvas overhaul, strip all text labels
-- [ ] 06-02-PLAN.md — RGB pad coloring, green playhead, white active steps, grid proportions
+- [x] 06-01-PLAN.md — Move CSS token system, black canvas overhaul, strip all text labels
+- [x] 06-02-PLAN.md — RGB pad coloring, green playhead, white active steps, grid proportions
 
 ### Phase 7: Encoder Layout & Contextual Display
 **Goal**: Sliders and panels are replaced by 9 rotary encoders with a small OLED-style info display, a 16-step horizontal button row, and a jog wheel for browsing — the layout matches Move's physical hardware
@@ -147,7 +147,12 @@ Plans:
   3. The OLED display shows parameter name and value only while interacting — it goes dark when not in use
   4. A jog wheel element allows scrolling through presets and sounds with the OLED display showing the current item
   5. Encoders auto-map to the selected track's relevant parameters — drum track shows drum parameters, melodic track shows synth parameters
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Rotary encoder component, OLED display, and 9-encoder row with synth/FX mapping
+- [ ] 07-02-PLAN.md — 16-step horizontal button row replacing 4x8 step zone
+- [ ] 07-03-PLAN.md — Jog wheel preset browser and contextual encoder auto-mapping
 
 ### Phase 8: Multi-Track System
 **Goal**: Four simultaneous tracks (1 drum + 3 melodic) each with independent instrument, effects, and step pattern — selecting a track switches what the pads play and shows that track's sequence
@@ -185,6 +190,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 4. Differentiators | 3/4 | In Progress | -- |
 | 5. Performance Features | 5/5 | Complete | 2026-03-16 |
 | 6. Move Visual Aesthetic | 2/2 | Complete   | 2026-03-17 |
-| 7. Encoder Layout & Contextual Display | 0/? | Not started | -- |
+| 7. Encoder Layout & Contextual Display | 0/3 | Not started | -- |
 | 8. Multi-Track System | 0/? | Not started | -- |
 | 9. Move Performance Features | 0/? | Not started | -- |
