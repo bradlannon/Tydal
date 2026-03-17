@@ -150,14 +150,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
-- [ ] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
-- [ ] 08-03-PLAN.md — Per-track effects, volume, and mute controls
-
-Plans:
-- [ ] 07-01-PLAN.md — Rotary encoder component, OLED display, and 9-encoder row with synth/FX mapping
-- [ ] 07-02-PLAN.md — 16-step horizontal button row replacing 4x8 step zone
-- [ ] 07-03-PLAN.md — Jog wheel preset browser and contextual encoder auto-mapping
+- [x] 07-01-PLAN.md — Rotary encoder component, OLED display, and 9-encoder row with synth/FX mapping
+- [x] 07-02-PLAN.md — 16-step horizontal button row replacing 4x8 step zone
+- [x] 07-03-PLAN.md — Jog wheel preset browser and contextual encoder auto-mapping
 
 ### Phase 8: Multi-Track System
 **Goal**: Four simultaneous tracks (1 drum + 3 melodic) each with independent instrument, effects, and step pattern — selecting a track switches what the pads play and shows that track's sequence
@@ -172,9 +167,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
-- [ ] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
-- [ ] 08-03-PLAN.md — Per-track effects, volume, and mute controls
+- [x] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
+- [x] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
+- [x] 08-03-PLAN.md — Per-track effects, volume, and mute controls
 
 ### Phase 9: Move Performance Features
 **Goal**: Move's signature performance features are available — arpeggiator for melodic tracks, capture mode for retroactive recording, swing control for groove, and per-step encoder automation
@@ -188,9 +183,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — Track engine core: 4-track audio architecture with per-track synths, effects chains, and simultaneous sequencer playback
-- [ ] 08-02-PLAN.md — Track switching UI: 4 track buttons, pad color/step pattern/encoder mapping per track
-- [ ] 08-03-PLAN.md — Per-track effects, volume, and mute controls
+- [ ] 09-01-PLAN.md — Arpeggiator engine with Up/Down/Random modes and swing/groove control
+- [ ] 09-02-PLAN.md — Capture mode with rolling note buffer and retroactive commit to step grid
+- [ ] 09-03-PLAN.md — Per-step parameter automation via hold-step + encoder-turn interaction
 
 ## Progress
 
@@ -206,5 +201,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 5. Performance Features | 5/5 | Complete | 2026-03-16 |
 | 6. Move Visual Aesthetic | 2/2 | Complete   | 2026-03-17 |
 | 7. Encoder Layout & Contextual Display | 3/3 | Complete   | 2026-03-17 |
-| 8. Multi-Track System | 2/3 | In Progress|  |
-| 9. Move Performance Features | 0/? | Not started | -- |
+| 8. Multi-Track System | 3/3 | Complete |  |
+| 9. Move Performance Features | 0/3 | Not started | -- |
