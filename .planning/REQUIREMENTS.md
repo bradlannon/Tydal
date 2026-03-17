@@ -29,8 +29,8 @@ Requirements for Move-inspired redesign. Phases 6+.
 - [x] **MTRK-01**: 4-track system — 1 drum track + 3 melodic tracks, each with independent instrument and effects
 - [x] **MTRK-02**: Track switching — selecting a track changes which instrument the pads play and which step sequence is shown
 - [x] **MTRK-03**: Per-track sequencer state — each track has its own 16-step pattern that plays simultaneously
-- [ ] **MTRK-04**: Per-track effects — each track can have up to 2 audio effects from the existing effects library
-- [ ] **MTRK-05**: Track mixing — per-track volume and mute accessible via track buttons
+- [x] **MTRK-04**: Per-track effects — each track can have up to 2 audio effects from the existing effects library
+- [x] **MTRK-05**: Track mixing — per-track volume and mute accessible via track buttons
 
 ### Move Performance
 
@@ -241,8 +241,8 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MTRK-01 | Phase 8 | Complete |
 | MTRK-02 | Phase 8 | Complete |
 | MTRK-03 | Phase 8 | Complete |
-| MTRK-04 | Phase 8 | Pending |
-| MTRK-05 | Phase 8 | Pending |
+| MTRK-04 | Phase 8 | Complete |
+| MTRK-05 | Phase 8 | Complete |
 | MPERF-01 | Phase 9 | Pending |
 | MPERF-02 | Phase 9 | Pending |
 | MPERF-03 | Phase 9 | Pending |
