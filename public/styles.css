@@ -57,6 +57,7 @@ body {
 .instrument-container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 0;
@@ -83,43 +84,44 @@ body {
   }
 }
 
-/* Step zone — top 4 rows × 8 cols */
-.step-zone {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 3px;
-  flex: 2;
-  min-height: 0;
-}
-
-/* Zone divider — minimal page toggle only */
-.zone-divider {
+/* Step button row — single horizontal row of 16 step buttons */
+.step-button-row {
   display: flex;
+  gap: 3px;
+  padding: 4px 0;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 2px 0;
   flex-shrink: 0;
 }
 
-.page-label {
-  display: none;
+.step-btn {
+  flex: 1;
+  height: 28px;
+  border-radius: 4px;
+  background: #181818;
+  border: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 60ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.page-toggle-btn {
-  background: none;
-  border: 1px solid #222;
-  color: #444;
-  font-size: 0.55rem;
-  width: 20px;
-  height: 16px;
-  border-radius: 3px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
+.step-btn.active {
+  background: #fff;
+}
+
+.step-btn.playhead {
+  background: var(--move-glow-green);
+  box-shadow: 0 0 6px rgba(0, 255, 90, 0.4);
+}
+
+.step-btn.active.playhead {
+  background: var(--move-glow-green);
+  box-shadow: 0 0 10px rgba(0, 255, 90, 0.5);
+}
+
+/* Beat grouping — extra left margin before beats 2, 3, 4 */
+.step-btn.beat-start {
+  margin-left: 5px;
 }
 
 /* Note zone — bottom 4 rows × 8 cols */
@@ -147,49 +149,7 @@ body {
   overflow: hidden;
 }
 
-/* -------------------------
-   Step Cells (sequencer)
-   ------------------------- */
-.step-cell {
-  background: #111;
-  border: none;
-  border-radius: 3px;
-  transition: background-color 60ms ease;
-}
-
-.step-cell.step-empty {
-  background: #080808;
-  border: none;
-  cursor: default;
-}
-
-/* Selected note's lane — subtle highlight */
-.step-cell.step-selected-lane {
-  background: #1a1a1a;
-  border: none;
-}
-
-/* Step has note active */
-.step-cell.step-active {
-  background: #fff;
-  border: none;
-}
-
-/* Playhead column */
-.step-cell.step-playhead {
-  background: var(--move-glow-green);
-  box-shadow: 0 0 6px rgba(0, 255, 90, 0.4);
-}
-
-.step-cell.step-active.step-playhead {
-  background: var(--move-glow-green);
-  box-shadow: 0 0 10px rgba(0, 255, 90, 0.5);
-}
-
-/* Lane label — hidden on Move aesthetic */
-.lane-label {
-  display: none;
-}
+/* Step cells (.step-cell) removed — replaced by .step-btn in step-button-row */
 
 /* -------------------------
    Note Cells (pads)
@@ -441,8 +401,7 @@ body {
 .panel-heading,
 .bpm-control label,
 .seq-row-label,
-.lane-label,
-.page-label {
+.lane-label {
   display: none;
 }
 
@@ -879,4 +838,118 @@ input[type="range"]::-moz-range-track {
 .panel-btn--browse {
   font-size: 0.65rem;
   padding: 3px 8px;
+}
+
+/* -------------------------
+   Encoder Section
+   ------------------------- */
+.encoder-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4px 0;
+}
+
+.oled-display {
+  height: 28px;
+  background: #000;
+  border: 1px solid #111;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.7rem;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  margin-bottom: 4px;
+}
+
+.oled-display.active {
+  opacity: 1;
+}
+
+.oled-name {
+  letter-spacing: 0.05em;
+}
+
+.oled-value {
+  letter-spacing: 0.03em;
+}
+
+.encoder-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 4px 0;
+  gap: 2px;
+}
+
+.encoder-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.encoder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #181818;
+  border: 1px solid #333;
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.encoder.active {
+  border-color: #666;
+  cursor: grabbing;
+}
+
+.encoder-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #555;
+  /* Initial position set by JS */
+}
+
+.encoder.active .encoder-dot {
+  background: #fff;
+}
+
+.encoder-label {
+  font-size: 0.45rem;
+  color: #333;
+  text-align: center;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .encoder {
+    width: 48px;
+    height: 48px;
+  }
+
+  .encoder-section {
+    max-width: 560px;
+  }
 }

@@ -1,9 +1,9 @@
 /**
  * ui/pad-grid.js
  *
- * Push 3-inspired 8×8 grid with split layout:
- *   Top 4 rows  — step sequencer (4 note lanes × 8 steps, paged for 16 total)
- *   Bottom 4 rows — playable note pads (32 notes, chromatic or scale-locked)
+ * Move-style grid layout:
+ *   Step buttons row — 16 horizontal step buttons (via step-buttons.js)
+ *   Note zone        — 4 rows × 8 cols playable note pads
  *
  * Exports:
  *   buildNoteMap, getNoteMap, getCurrentOctave
@@ -14,13 +14,11 @@
 
 import { releaseAll } from '../engine/instruments.js';
 import { Scale } from 'tonal';
+import { initStepButtons } from './step-buttons.js';
+import { getSelectedNote } from '../engine/melodic-sequencer.js';
 
 /** Move track 1 default color — orange-amber. Phase 8 can swap per track. */
 export const TRACK_COLOR = '#e87a20';
-import {
-  getLanes, getPage, getSelectedNote, getCurrentMelodicStep,
-  hasNoteAtStep, togglePage, STEPS_PER_PAGE,
-} from '../engine/melodic-sequencer.js';
 
 const CHROMATIC = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -127,51 +125,18 @@ function _rebuildGrid() {
 }
 
 // ---------------------------------------------------------------------------
-// Grid construction — Push 3-style 8×8
+// Grid construction — Move-style step row + note zone
 // ---------------------------------------------------------------------------
 
 function _createGrid() {
   const container = document.createElement('div');
   container.className = 'push-grid';
 
-  // ---- Step zone (top 4 rows × 8 cols) ----
-  const stepZone = document.createElement('div');
-  stepZone.className = 'step-zone';
+  // ---- Step button row (16 horizontal buttons) ----
+  // initStepButtons builds and appends a .step-button-row div inside the container
+  initStepButtons(container);
 
-  for (let lane = 0; lane < 4; lane++) {
-    for (let col = 0; col < 8; col++) {
-      const cell = document.createElement('div');
-      cell.className = 'grid-cell step-cell';
-      cell.dataset.type = 'step';
-      cell.dataset.lane = String(lane);
-      cell.dataset.col = String(col);
-      stepZone.appendChild(cell);
-    }
-  }
-  container.appendChild(stepZone);
-
-  // ---- Zone divider with page toggle ----
-  const divider = document.createElement('div');
-  divider.className = 'zone-divider';
-
-  const pageLabel = document.createElement('span');
-  pageLabel.className = 'page-label';
-  pageLabel.id = 'step-page-label';
-  pageLabel.textContent = '1–8';
-
-  const pageBtn = document.createElement('button');
-  pageBtn.className = 'page-toggle-btn';
-  pageBtn.textContent = '▶';
-  pageBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    togglePage();
-  });
-
-  divider.appendChild(pageLabel);
-  divider.appendChild(pageBtn);
-  container.appendChild(divider);
-
-  // ---- Note zone (bottom 4 rows × 8 cols) ----
+  // ---- Note zone (4 rows × 8 cols) ----
   const noteZone = document.createElement('div');
   noteZone.className = 'note-zone';
 
@@ -199,9 +164,8 @@ function _createGrid() {
   }
   container.appendChild(noteZone);
 
-  // Initial step display and pad coloring
+  // Initial pad coloring
   requestAnimationFrame(() => {
-    _updateStepDisplay();
     _applyPadColors();
   });
 
@@ -267,72 +231,16 @@ function _applyPadColors() {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Step cell visual update — called on every 'melodic-update' event
-// ---------------------------------------------------------------------------
+// Listen for melodic sequencer updates — update selected pad visual
+document.addEventListener('melodic-update', _onMelodicUpdate);
 
-function _updateStepDisplay() {
-  const lanesArr = getLanes();
-  const page = getPage();
-  const selected = getSelectedNote();
-  const playStep = getCurrentMelodicStep();
-
-  // Update page label
-  const pageLabel = document.getElementById('step-page-label');
-  if (pageLabel) pageLabel.textContent = page === 0 ? '1–8' : '9–16';
-
-  const stepCells = document.querySelectorAll('.step-cell');
-  stepCells.forEach(cell => {
-    const lane = parseInt(cell.dataset.lane);
-    const col = parseInt(cell.dataset.col);
-    const actualStep = page * STEPS_PER_PAGE + col;
-    const laneNote = lanesArr[lane];
-
-    // Reset classes
-    cell.classList.remove('step-active', 'step-selected-lane', 'step-playhead', 'step-empty');
-
-    // Remove old lane label
-    const oldLabel = cell.querySelector('.lane-label');
-    if (oldLabel) oldLabel.remove();
-
-    if (!laneNote) {
-      cell.classList.add('step-empty');
-      return;
-    }
-
-    // Lane label on first column
-    if (col === 0) {
-      const label = document.createElement('span');
-      label.className = 'lane-label';
-      label.textContent = laneNote;
-      cell.appendChild(label);
-    }
-
-    // Selected note's lane
-    if (laneNote === selected) {
-      cell.classList.add('step-selected-lane');
-    }
-
-    // Note active at this step
-    if (hasNoteAtStep(actualStep, laneNote)) {
-      cell.classList.add('step-active');
-    }
-
-    // Playhead
-    if (actualStep === playStep) {
-      cell.classList.add('step-playhead');
-    }
-  });
-
-  // Update selected pad visual
+function _onMelodicUpdate() {
+  // Update which pad shows as selected (last tapped note)
   const selectedNote = getSelectedNote();
   document.querySelectorAll('.note-cell').forEach(cell => {
     cell.classList.toggle('selected', cell.dataset.note === selectedNote);
   });
 }
-
-// Listen for melodic sequencer updates
-document.addEventListener('melodic-update', _updateStepDisplay);
 
 // ---------------------------------------------------------------------------
 // Public API
