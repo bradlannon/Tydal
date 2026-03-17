@@ -10,8 +10,8 @@ Requirements for Move-inspired redesign. Phases 6+.
 ### Move Visual Design
 
 - [x] **MVIS-01**: Matte black canvas aesthetic — pure black body (#000) where only illuminated elements have visual presence
-- [ ] **MVIS-02**: RGB pad coloring — root notes in track color, in-scale notes light gray, out-of-scale notes dark/unlit
-- [ ] **MVIS-03**: Green playhead indicator on step sequencer (replacing current teal), white for active steps
+- [x] **MVIS-02**: RGB pad coloring — root notes in track color, in-scale notes light gray, out-of-scale notes dark/unlit
+- [x] **MVIS-03**: Green playhead indicator on step sequencer (replacing current teal), white for active steps
 - [x] **MVIS-04**: No visible text labels on controls — contextual backlit icons that appear/disappear based on current mode
 - [ ] **MVIS-05**: OLED-style contextual display — small monochrome white-on-black info panel showing parameter name + value when touching a control
 - [ ] **MVIS-06**: Track color coding — each of 4 tracks has a distinct color that propagates to pads, steps, and buttons
@@ -20,7 +20,7 @@ Requirements for Move-inspired redesign. Phases 6+.
 
 - [ ] **MLAY-01**: 9 rotary encoder controls in a row above the pad grid (replacing slider-based panels) with touch-to-reveal parameter display
 - [ ] **MLAY-02**: 16 step buttons in a single horizontal row below encoders (replacing 4×8 step grid) with beat grouping markers
-- [ ] **MLAY-03**: 4×8 note pad grid below step buttons (32 pads — already matches, needs visual update)
+- [x] **MLAY-03**: 4×8 note pad grid below step buttons (32 pads — already matches, needs visual update)
 - [ ] **MLAY-04**: 4 track selection buttons on the left side with track color indicators
 - [ ] **MLAY-05**: Jog wheel / scroll browser element paired with OLED display for preset and sound browsing
 
@@ -228,14 +228,14 @@ Deferred to future releases. Tracked but not in current roadmap.
 | EXPR-04 | Phase 5 | Complete |
 | EXPR-05 | Phase 5 | Complete |
 | MVIS-01 | Phase 6 | Complete |
-| MVIS-02 | Phase 6 | Pending |
-| MVIS-03 | Phase 6 | Pending |
+| MVIS-02 | Phase 6 | Complete |
+| MVIS-03 | Phase 6 | Complete |
 | MVIS-04 | Phase 6 | Complete |
 | MVIS-05 | Phase 7 | Pending |
 | MVIS-06 | Phase 8 | Pending |
 | MLAY-01 | Phase 7 | Pending |
 | MLAY-02 | Phase 7 | Pending |
-| MLAY-03 | Phase 6 | Pending |
+| MLAY-03 | Phase 6 | Complete |
 | MLAY-04 | Phase 8 | Pending |
 | MLAY-05 | Phase 7 | Pending |
 | MTRK-01 | Phase 8 | Pending |
