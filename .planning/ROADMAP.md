@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 3. Composition Surface | 4/4 | Complete | 2026-03-15 |
 | 4. Differentiators | 3/4 | In Progress | -- |
 | 5. Performance Features | 5/5 | Complete | 2026-03-16 |
-| 6. Move Visual Aesthetic | 0/2 | Not started | -- |
+| 6. Move Visual Aesthetic | 1/2 | In Progress|  |
 | 7. Encoder Layout & Contextual Display | 0/? | Not started | -- |
 | 8. Multi-Track System | 0/? | Not started | -- |
 | 9. Move Performance Features | 0/? | Not started | -- |

@@ -9,10 +9,10 @@ Requirements for Move-inspired redesign. Phases 6+.
 
 ### Move Visual Design
 
-- [ ] **MVIS-01**: Matte black canvas aesthetic — pure black body (#000) where only illuminated elements have visual presence
+- [x] **MVIS-01**: Matte black canvas aesthetic — pure black body (#000) where only illuminated elements have visual presence
 - [ ] **MVIS-02**: RGB pad coloring — root notes in track color, in-scale notes light gray, out-of-scale notes dark/unlit
 - [ ] **MVIS-03**: Green playhead indicator on step sequencer (replacing current teal), white for active steps
-- [ ] **MVIS-04**: No visible text labels on controls — contextual backlit icons that appear/disappear based on current mode
+- [x] **MVIS-04**: No visible text labels on controls — contextual backlit icons that appear/disappear based on current mode
 - [ ] **MVIS-05**: OLED-style contextual display — small monochrome white-on-black info panel showing parameter name + value when touching a control
 - [ ] **MVIS-06**: Track color coding — each of 4 tracks has a distinct color that propagates to pads, steps, and buttons
 
@@ -227,10 +227,10 @@ Deferred to future releases. Tracked but not in current roadmap.
 | EXPR-03 | Phase 5 | Complete |
 | EXPR-04 | Phase 5 | Complete |
 | EXPR-05 | Phase 5 | Complete |
-| MVIS-01 | Phase 6 | Pending |
+| MVIS-01 | Phase 6 | Complete |
 | MVIS-02 | Phase 6 | Pending |
 | MVIS-03 | Phase 6 | Pending |
-| MVIS-04 | Phase 6 | Pending |
+| MVIS-04 | Phase 6 | Complete |
 | MVIS-05 | Phase 7 | Pending |
 | MVIS-06 | Phase 8 | Pending |
 | MLAY-01 | Phase 7 | Pending |
