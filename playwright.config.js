@@ -4,12 +4,12 @@ module.exports = defineConfig({
   testDir: './tests',
   timeout: 30000,
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3737',
     headless: true,
   },
   webServer: {
-    command: 'npm start',
-    port: 3000,
+    command: 'PORT=3737 npm start',
+    port: 3737,
     reuseExistingServer: true,
   },
   projects: [

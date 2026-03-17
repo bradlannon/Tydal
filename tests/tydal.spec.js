@@ -31,12 +31,12 @@ test.describe('App Shell', () => {
 // -----------------------------------------------------------------------
 
 test.describe('Pad Grid', () => {
-  test('32 note pads and 32 step cells rendered', async ({ page }) => {
+  test('32 note pads and 16 step buttons rendered', async ({ page }) => {
     const pads = page.locator('.note-cell');
     expect(await pads.count()).toBe(32);
 
-    const steps = page.locator('.step-cell');
-    expect(await steps.count()).toBe(32);
+    const steps = page.locator('.step-btn');
+    expect(await steps.count()).toBe(16);
   });
 
   test('octave buttons update display', async ({ page }) => {
@@ -341,5 +341,171 @@ test.describe('Stability', () => {
       (e) => !e.includes('AudioContext') && !e.includes('user gesture') && !e.includes('NotAllowedError')
     );
     expect(critical).toHaveLength(0);
+  });
+});
+
+// -----------------------------------------------------------------------
+// 13. Encoder Row + OLED Display (Phase 7)
+// -----------------------------------------------------------------------
+
+test.describe('Encoder Row + OLED', () => {
+  test('9 encoders rendered with labels', async ({ page }) => {
+    const encoders = page.locator('.encoder');
+    expect(await encoders.count()).toBe(9);
+
+    const labels = page.locator('.encoder-label');
+    expect(await labels.count()).toBe(9);
+
+    // First encoder should be Cutoff
+    await expect(labels.first()).toHaveText('Cutoff');
+    // Last encoder should be Volume
+    await expect(labels.last()).toHaveText('Volume');
+  });
+
+  test('OLED display exists and starts hidden', async ({ page }) => {
+    const oled = page.locator('.oled-display');
+    await expect(oled).toBeAttached();
+    // Should start at opacity 0 (no .active class)
+    await expect(oled).not.toHaveClass(/active/);
+  });
+
+  test('encoder drag activates OLED', async ({ page }) => {
+    const encoder = page.locator('.encoder').first();
+    const oled = page.locator('.oled-display');
+
+    // Simulate pointerdown to start drag
+    const box = await encoder.boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await encoder.dispatchEvent('pointerdown', { pointerId: 1, clientY: box.y + box.height / 2, bubbles: true });
+
+    // OLED should become active
+    await expect(oled).toHaveClass(/active/, { timeout: 3000 });
+    // OLED should show encoder name
+    await expect(oled.locator('.oled-name')).toHaveText('Cutoff');
+  });
+
+  test('encoder dot lights up on drag', async ({ page }) => {
+    const encoder = page.locator('.encoder').first();
+
+    // Dispatch pointerdown
+    await encoder.dispatchEvent('pointerdown', { pointerId: 1, clientY: 200, bubbles: true });
+    await expect(encoder).toHaveClass(/active/, { timeout: 3000 });
+
+    // Dot should be white during drag
+    const dot = encoder.locator('.encoder-dot');
+    const bg = await dot.evaluate(el => el.style.background);
+    expect(bg).toMatch(/#fff|rgb\(255,\s*255,\s*255\)/);
+  });
+});
+
+// -----------------------------------------------------------------------
+// 14. Step Buttons (Phase 7)
+// -----------------------------------------------------------------------
+
+test.describe('Step Buttons', () => {
+  test('16 step buttons in a single row', async ({ page }) => {
+    const row = page.locator('.step-button-row');
+    await expect(row).toBeVisible();
+
+    const buttons = row.locator('.step-btn');
+    expect(await buttons.count()).toBe(16);
+  });
+
+  test('beat grouping markers every 4 steps', async ({ page }) => {
+    // Steps at index 4, 8, 12 should have .beat-start class
+    const beatStarts = page.locator('.step-btn.beat-start');
+    expect(await beatStarts.count()).toBe(3);
+  });
+
+  test('step button toggles active on tap', async ({ page }) => {
+    // First select a pad to have a note context
+    const pad = page.locator('.note-cell').first();
+    await pad.dispatchEvent('pointerdown', { pointerId: 1, bubbles: true });
+    await page.waitForTimeout(100);
+    await pad.dispatchEvent('pointerup', { pointerId: 1, bubbles: true });
+
+    // Now tap a step button
+    const stepBtn = page.locator('.step-btn').first();
+    await stepBtn.dispatchEvent('pointerdown', { bubbles: true });
+
+    // Check it becomes active
+    await expect(stepBtn).toHaveClass(/active/, { timeout: 3000 });
+  });
+});
+
+// -----------------------------------------------------------------------
+// 15. Jog Wheel (Phase 7)
+// -----------------------------------------------------------------------
+
+test.describe('Jog Wheel', () => {
+  test('jog wheel rendered with inner and center elements', async ({ page }) => {
+    const wheel = page.locator('.jog-wheel');
+    await expect(wheel).toBeVisible();
+
+    await expect(wheel.locator('.jog-wheel-inner')).toBeVisible();
+    await expect(wheel.locator('.jog-wheel-center')).toBeVisible();
+  });
+
+  test('jog wheel shows preset on OLED during drag', async ({ page }) => {
+    const wheel = page.locator('.jog-wheel');
+    const oled = page.locator('.oled-display');
+
+    // Dispatch pointerdown on jog wheel
+    const box = await wheel.boundingBox();
+    await wheel.dispatchEvent('pointerdown', { pointerId: 1, clientY: box.y + box.height / 2, bubbles: true });
+
+    // OLED should show "Preset" label
+    await expect(oled).toHaveClass(/active/, { timeout: 3000 });
+    await expect(oled.locator('.oled-name')).toHaveText('Preset');
+  });
+
+  test('jog wheel gets active class during drag', async ({ page }) => {
+    const wheel = page.locator('.jog-wheel');
+    await wheel.dispatchEvent('pointerdown', { pointerId: 1, clientY: 200, bubbles: true });
+    await expect(wheel).toHaveClass(/active/, { timeout: 3000 });
+  });
+});
+
+// -----------------------------------------------------------------------
+// 16. Drum Mode Encoder Remapping (Phase 7)
+// -----------------------------------------------------------------------
+
+test.describe('Drum Mode Encoder Remapping', () => {
+  test('DRM button switches encoder labels to drum params', async ({ page }) => {
+    // Open drums sheet — this triggers mode-change to drum
+    await page.locator('button[data-sheet="seq-sheet"]').click();
+    await expect(page.locator('#seq-sheet')).toHaveClass(/open/);
+
+    // Wait for mode-change event to propagate
+    await page.waitForTimeout(300);
+
+    // Encoder labels should now reflect drum mapping
+    const labels = page.locator('.encoder-label');
+    const allLabels = await labels.allTextContents();
+
+    // Drum mapping has BPM, Drum Vol, Master Vol
+    expect(allLabels).toContain('BPM');
+    expect(allLabels).toContain('Drum Vol');
+    expect(allLabels).toContain('Master Vol');
+  });
+
+  test('closing DRM sheet returns to melodic labels', async ({ page }) => {
+    // Open drums sheet
+    await page.locator('button[data-sheet="seq-sheet"]').click();
+    await expect(page.locator('#seq-sheet')).toHaveClass(/open/);
+    await page.waitForTimeout(300);
+
+    // Close via JS dispatch to bypass backdrop overlay issues
+    await page.evaluate(() => {
+      document.querySelector('#sheet-backdrop').click();
+    })
+    await expect(page.locator('#seq-sheet')).not.toHaveClass(/open/);
+    await page.waitForTimeout(500);
+
+    // Should be back to melodic mapping
+    const labels = page.locator('.encoder-label');
+    const allLabels = await labels.allTextContents();
+    expect(allLabels).toContain('Cutoff');
+    expect(allLabels).toContain('Volume');
   });
 });
