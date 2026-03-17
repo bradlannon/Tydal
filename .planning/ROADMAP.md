@@ -2,7 +2,7 @@
 
 ## Overview
 
-Tydal is built across two milestones. v1.0 (phases 1–5) delivered a complete browser instrument — correct audio engine, polyphonic synthesis, drum/step sequencer, expressive performance features, and presets. v1.1 (phases 6–9) transforms the visual design and interaction model to match Ableton Move's hardware aesthetic: matte black canvas, RGB pad coloring, encoder-based controls, a 4-track system, and Move-style performance features.
+Tydal is built across two milestones. v1.0 (phases 1-5) delivered a complete browser instrument — correct audio engine, polyphonic synthesis, drum/step sequencer, expressive performance features, and presets. v1.1 (phases 6-9) transforms the visual design and interaction model to match Ableton Move's hardware aesthetic: matte black canvas, RGB pad coloring, encoder-based controls, a 4-track system, and Move-style performance features.
 
 v1.1 phases are ordered by dependency: the visual aesthetic is the foundation all subsequent phases build on. Encoder layout and contextual display come next (controls exist before multi-track wires them per-track). Multi-track requires the layout to be in place. Performance features go last as they layer on top of a stable multi-track engine.
 
@@ -115,7 +115,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [x] 05-01-PLAN.md — MPE-lite pad slide expression (X→pitch bend, Y→filter sweep)
+- [x] 05-01-PLAN.md — MPE-lite pad slide expression (X->pitch bend, Y->filter sweep)
 - [x] 05-02-PLAN.md — Note repeat at BPM-synced rates with RPT toggle and rate selector
 - [x] 05-03-PLAN.md — 4 macro knobs (Darkness, Grit, Motion, Space) controlling multiple params
 - [x] 05-04-PLAN.md — Randomize with musical constraints and 4 variation snapshot slots
@@ -130,8 +130,12 @@ Plans:
   2. Root note pads glow in the active track color, in-scale pads show dim gray, out-of-scale pads are nearly unlit
   3. The step sequencer playhead indicator is green; active steps are white; inactive steps are dark
   4. No static text labels appear on controls — the surface looks like hardware, not a web form
-  5. The 4×8 pad grid visually matches Move's layout proportions and lighting behavior
-**Plans**: TBD
+  5. The 4x8 pad grid visually matches Move's layout proportions and lighting behavior
+**Plans**: 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Move CSS token system, black canvas overhaul, strip all text labels
+- [ ] 06-02-PLAN.md — RGB pad coloring, green playhead, white active steps, grid proportions
 
 ### Phase 7: Encoder Layout & Contextual Display
 **Goal**: Sliders and panels are replaced by 9 rotary encoders with a small OLED-style info display, a 16-step horizontal button row, and a jog wheel for browsing — the layout matches Move's physical hardware
@@ -171,16 +175,16 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Audio Foundation | 2/2 | Complete | 2026-03-15 |
 | 2. Instrument Quality | 5/5 | Complete | 2026-03-15 |
 | 3. Composition Surface | 4/4 | Complete | 2026-03-15 |
-| 4. Differentiators | 3/4 | In Progress | — |
+| 4. Differentiators | 3/4 | In Progress | -- |
 | 5. Performance Features | 5/5 | Complete | 2026-03-16 |
-| 6. Move Visual Aesthetic | 0/? | Not started | — |
-| 7. Encoder Layout & Contextual Display | 0/? | Not started | — |
-| 8. Multi-Track System | 0/? | Not started | — |
-| 9. Move Performance Features | 0/? | Not started | — |
+| 6. Move Visual Aesthetic | 0/2 | Not started | -- |
+| 7. Encoder Layout & Contextual Display | 0/? | Not started | -- |
+| 8. Multi-Track System | 0/? | Not started | -- |
+| 9. Move Performance Features | 0/? | Not started | -- |
