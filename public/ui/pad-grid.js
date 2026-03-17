@@ -9,10 +9,14 @@
  *   buildNoteMap, getNoteMap, getCurrentOctave
  *   initPadGrid, setPadActive, shiftOctave
  *   setScaleLock, getScaleLock
+ *   TRACK_COLOR
  */
 
 import { releaseAll } from '../engine/instruments.js';
 import { Scale } from 'tonal';
+
+/** Move track 1 default color — orange-amber. Phase 8 can swap per track. */
+export const TRACK_COLOR = '#e87a20';
 import {
   getLanes, getPage, getSelectedNote, getCurrentMelodicStep,
   hasNoteAtStep, togglePage, STEPS_PER_PAGE,
@@ -118,6 +122,8 @@ function _rebuildGrid() {
   const display = document.getElementById('octave-display');
   if (display) display.textContent = `Oct ${currentOctave}`;
   document.dispatchEvent(new CustomEvent('grid-rebuild'));
+  // Re-apply pad colors after rebuild (scale/octave may have changed)
+  requestAnimationFrame(_applyPadColors);
 }
 
 // ---------------------------------------------------------------------------
@@ -193,10 +199,72 @@ function _createGrid() {
   }
   container.appendChild(noteZone);
 
-  // Initial step display
-  requestAnimationFrame(_updateStepDisplay);
+  // Initial step display and pad coloring
+  requestAnimationFrame(() => {
+    _updateStepDisplay();
+    _applyPadColors();
+  });
 
   return container;
+}
+
+// ---------------------------------------------------------------------------
+// Pad RGB coloring — assigns colors based on musical role
+// ---------------------------------------------------------------------------
+
+function _applyPadColors() {
+  const cells = document.querySelectorAll('.note-cell');
+  if (!cells.length) return;
+
+  let scalePCs = null;
+  let rootPC = null;
+
+  if (scaleLock) {
+    const scaleResult = Scale.get(`${scaleLock.key} ${scaleLock.scale}`);
+    scalePCs = (scaleResult.notes || []).map(_normalizePitchClass);
+    rootPC = _normalizePitchClass(scaleLock.key);
+  }
+
+  cells.forEach(cell => {
+    // Skip if currently active (pressed) — don't override white flash
+    if (cell.classList.contains('active')) return;
+
+    const noteStr = cell.dataset.note; // e.g. "C4"
+    if (!noteStr) return;
+
+    // Extract pitch class: handle sharps (e.g. "C#4" -> "C#", "A4" -> "A")
+    const pc = noteStr.length > 2 && noteStr[1] === '#'
+      ? noteStr.slice(0, 2)
+      : noteStr.slice(0, 1);
+
+    let color, glow;
+
+    if (scalePCs && rootPC) {
+      if (pc === rootPC) {
+        // Root note — orange glow
+        color = TRACK_COLOR;
+        glow = '0 0 8px rgba(232, 122, 32, 0.4)';
+      } else if (scalePCs.includes(pc)) {
+        // In-scale (non-root) — dim warm gray
+        color = '#2a2a2a';
+        glow = 'none';
+      } else {
+        // Out-of-scale — nearly black
+        color = '#0d0d0d';
+        glow = 'none';
+      }
+    } else {
+      // Chromatic mode — all pads dim gray, no root distinction
+      color = '#2a2a2a';
+      glow = 'none';
+    }
+
+    cell.style.backgroundColor = color;
+    cell.style.boxShadow = glow;
+    // Store role color so setPadActive can restore it
+    cell.dataset.roleColor = color;
+    cell.dataset.roleGlow = glow;
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -304,4 +372,11 @@ export function setPadActive(note, isActive) {
   const pad = document.querySelector(`.note-cell[data-note="${note}"]`);
   if (!pad) return;
   pad.classList.toggle('active', isActive);
+  if (isActive) {
+    pad.style.backgroundColor = '#fff';
+    pad.style.boxShadow = '0 0 12px rgba(255, 255, 255, 0.5)';
+  } else {
+    pad.style.backgroundColor = pad.dataset.roleColor || '#2a2a2a';
+    pad.style.boxShadow = pad.dataset.roleGlow || 'none';
+  }
 }

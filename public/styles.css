@@ -127,7 +127,7 @@ body {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 4px;
+  gap: 3px;
   flex: 3;
   min-height: 0;
 }
@@ -192,30 +192,17 @@ body {
    Note Cells (pads)
    ------------------------- */
 .note-cell {
-  background: var(--move-dim);
+  /* background set dynamically via JS _applyPadColors() */
+  background: #2a2a2a;
   border: none;
+  border-radius: 3px;
   flex-direction: column;
   transition: background-color 60ms ease, box-shadow 60ms ease;
   touch-action: manipulation;
 }
 
-@media (hover: hover) {
-  .note-cell:hover {
-    background: #222;
-  }
-}
-
-.note-cell.active {
-  background-color: var(--move-glow-white);
-  border-color: transparent;
-}
-
 .note-cell.selected {
   border: 1px solid #444;
-}
-
-.note-cell.active .cell-note {
-  color: rgba(0, 0, 0, 0.7);
 }
 
 .note-cell.expressing {
