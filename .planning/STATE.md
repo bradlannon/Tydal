@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 09-02-PLAN.md
-last_updated: "2026-03-17T04:14:50.734Z"
+stopped_at: Completed 09-01-PLAN.md
+last_updated: "2026-03-17T04:17:44.581Z"
 last_activity: 2026-03-16 — v1.1 roadmap created (phases 6–9)
 progress:
   total_phases: 9
   completed_phases: 7
   total_plans: 31
-  completed_plans: 28
+  completed_plans: 29
   percent: 0
 ---
 
@@ -83,6 +83,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 | Phase 08-multi-track-system P02 | 230 | 2 tasks | 6 files |
 | Phase 08-multi-track-system P03 | 118 | 2 tasks | 4 files |
 | Phase 09-move-performance-features P02 | 5 | 2 tasks | 5 files |
+| Phase 09-move-performance-features P01 | 242 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -152,6 +153,9 @@ Recent decisions affecting current work:
 - [Phase 08-multi-track-system]: setTrackVolume/setTrackMute route all audio mutations through track-manager for single source of truth; mute works at audio channel level
 - [Phase 09-move-performance-features]: feedCapture called unconditionally on every noteOn — retroactive capture requires always-rolling buffer
 - [Phase 09-move-performance-features]: capture.js buffer cleared on track-change and after commitCapture to prevent cross-track contamination
+- [Phase 09-01]: Use _triggerNoteOn/_triggerNoteOff in arpeggiator.js to bypass arp routing and avoid circular recursion
+- [Phase 09-01]: Swing source of truth is sequencer.js getSwing() — melodic-sequencer imports it rather than maintaining duplicate state
+- [Phase 09-01]: Visual playhead is NOT swung — cursor stays on-grid even when swing is applied to audio timing
 
 ### Pending Todos
 
@@ -166,6 +170,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T04:14:50.727Z
-Stopped at: Completed 09-02-PLAN.md
+Last session: 2026-03-17T04:17:44.575Z
+Stopped at: Completed 09-01-PLAN.md
 Resume file: None

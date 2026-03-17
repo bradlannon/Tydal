@@ -34,9 +34,9 @@ Requirements for Move-inspired redesign. Phases 6+.
 
 ### Move Performance
 
-- [ ] **MPERF-01**: Arpeggiator with Up, Down, and Random modes for melodic tracks
+- [x] **MPERF-01**: Arpeggiator with Up, Down, and Random modes for melodic tracks
 - [x] **MPERF-02**: Capture mode — retroactively save the last played performance as a sequence (records into a rolling buffer, commit on demand)
-- [ ] **MPERF-03**: Swing/groove control — adjustable triplet 16th swing 0–100% applied to step playback
+- [x] **MPERF-03**: Swing/groove control — adjustable triplet 16th swing 0–100% applied to step playback
 - [ ] **MPERF-04**: Per-step parameter automation — hold a step button + turn an encoder to set per-step values
 - [x] **MPERF-05**: Contextual encoder mapping — encoders auto-map to relevant parameters based on selected track's instrument type
 
@@ -243,9 +243,9 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MTRK-03 | Phase 8 | Complete |
 | MTRK-04 | Phase 8 | Complete |
 | MTRK-05 | Phase 8 | Complete |
-| MPERF-01 | Phase 9 | Pending |
+| MPERF-01 | Phase 9 | Complete |
 | MPERF-02 | Phase 9 | Complete |
-| MPERF-03 | Phase 9 | Pending |
+| MPERF-03 | Phase 9 | Complete |
 | MPERF-04 | Phase 9 | Pending |
 | MPERF-05 | Phase 7 | Complete |
 
