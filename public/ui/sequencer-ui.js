@@ -75,10 +75,6 @@ export function initSequencerUI(containerEl) {
   const bpmControl = document.createElement('div');
   bpmControl.className = 'bpm-control';
 
-  const bpmLabel = document.createElement('label');
-  bpmLabel.textContent = 'BPM';
-  bpmLabel.htmlFor = 'bpm-slider';
-
   const bpmSlider = document.createElement('input');
   bpmSlider.type = 'range';
   bpmSlider.id = 'bpm-slider';
@@ -97,7 +93,6 @@ export function initSequencerUI(containerEl) {
     bpmDisplay.textContent = String(bpm);
   });
 
-  bpmControl.appendChild(bpmLabel);
   bpmControl.appendChild(bpmSlider);
   bpmControl.appendChild(bpmDisplay);
 
@@ -233,12 +228,6 @@ export function initSequencerUI(containerEl) {
     const rowEl = document.createElement('div');
     rowEl.className = 'seq-row';
     rowEl.dataset.row = row;
-
-    // Row label (capitalize first letter)
-    const label = document.createElement('span');
-    label.className = 'seq-row-label';
-    label.textContent = row.charAt(0).toUpperCase() + row.slice(1);
-    rowEl.appendChild(label);
 
     // 16 step cells
     for (let step = 0; step < NUM_STEPS; step++) {
