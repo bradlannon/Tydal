@@ -15,6 +15,7 @@ import { connectInstrument, disconnectInstrument } from './effects.js';
 import { getActiveTrack } from './track-manager.js';
 import { trackNoteOn, trackNoteOff, stealOldestIfFull, clearAll, getActiveNotes } from './voice-tracker.js';
 import { isRecording, recordNote } from './recorder.js';
+import { feedCapture } from './capture.js';
 
 // ---------------------------------------------------------------------------
 // Subtractive synthesizer definition
@@ -100,6 +101,9 @@ export function noteOn(note, velocity = 0.8) {
   if (isRecording()) {
     recordNote(note, velocity, '8n');
   }
+
+  // Feed rolling capture buffer — always runs so Capture can be retroactive
+  feedCapture(note, velocity);
 }
 
 /**
