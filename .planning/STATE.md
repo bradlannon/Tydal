@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 08-03-PLAN.md
-last_updated: "2026-03-17T04:02:26.915Z"
+stopped_at: Completed 09-02-PLAN.md
+last_updated: "2026-03-17T04:14:50.734Z"
 last_activity: 2026-03-16 — v1.1 roadmap created (phases 6–9)
 progress:
   total_phases: 9
   completed_phases: 7
-  total_plans: 28
-  completed_plans: 27
+  total_plans: 31
+  completed_plans: 28
   percent: 0
 ---
 
@@ -82,6 +82,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 | Phase 08-multi-track-system P01 | 167 | 2 tasks | 5 files |
 | Phase 08-multi-track-system P02 | 230 | 2 tasks | 6 files |
 | Phase 08-multi-track-system P03 | 118 | 2 tasks | 4 files |
+| Phase 09-move-performance-features P02 | 5 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -149,6 +150,8 @@ Recent decisions affecting current work:
 - [Phase 08-multi-track-system]: buildTrackMelodicMapping targets per-track synth.set() and effectsChain; global distortion/vibrato are shared fallbacks
 - [Phase 08-multi-track-system]: DRM sheet open saves lastMelodicTrackId and switches to track 0; close restores it via track-change cascade
 - [Phase 08-multi-track-system]: setTrackVolume/setTrackMute route all audio mutations through track-manager for single source of truth; mute works at audio channel level
+- [Phase 09-move-performance-features]: feedCapture called unconditionally on every noteOn — retroactive capture requires always-rolling buffer
+- [Phase 09-move-performance-features]: capture.js buffer cleared on track-change and after commitCapture to prevent cross-track contamination
 
 ### Pending Todos
 
@@ -163,6 +166,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T03:58:30.739Z
-Stopped at: Completed 08-03-PLAN.md
+Last session: 2026-03-17T04:14:50.727Z
+Stopped at: Completed 09-02-PLAN.md
 Resume file: None
