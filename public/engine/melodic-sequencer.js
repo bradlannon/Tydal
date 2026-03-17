@@ -162,6 +162,13 @@ const sequence = new Tone.Sequence(
     // Trigger notes for all non-muted melodic tracks simultaneously
     for (const track of tracks) {
       if (track.type !== 'melodic' || track.muted) continue;
+
+      // Apply per-step automation BEFORE triggering notes so the synth plays with the automated value
+      const auto = track.automation[step];
+      if (auto) {
+        _applyAutomation(track, auto);
+      }
+
       for (const note of track.grid[step]) {
         track.synth.triggerAttackRelease(note, '16n', audioTime, 0.7);
       }
@@ -184,6 +191,44 @@ document.addEventListener('sequencer-step', (e) => {
     _dispatch();
   }
 });
+
+// ---------------------------------------------------------------------------
+// Automation application
+// ---------------------------------------------------------------------------
+
+/**
+ * Apply per-step automation to a track's synth/effects chain.
+ * Called in the Tone.Sequence callback before note triggers.
+ *
+ * @param {Object} track — melodic track object with synth and effectsChain
+ * @param {{ paramName: string, value: number }} auto — automation data
+ */
+function _applyAutomation(track, auto) {
+  const { paramName, value } = auto;
+  switch (paramName) {
+    case 'Cutoff':
+      track.synth.set({ filter: { frequency: value } });
+      break;
+    case 'Res':
+      track.synth.set({ filter: { Q: value } });
+      break;
+    case 'Reverb':
+      if (track.effectsChain) track.effectsChain.reverb.wet.value = value;
+      break;
+    case 'Delay':
+      if (track.effectsChain) track.effectsChain.delay.wet.value = value;
+      break;
+    case 'Attack':
+      track.synth.set({ envelope: { attack: value } });
+      break;
+    case 'Release':
+      track.synth.set({ envelope: { release: value } });
+      break;
+    default:
+      // Other params (Dist, Swing, Trk Vol) can be added as needed
+      break;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Helpers

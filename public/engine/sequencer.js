@@ -24,9 +24,10 @@
  */
 
 import * as Tone from 'tone';
-import { triggerKick, triggerSnare, triggerHihat, triggerClap } from './drums.js';
+import { triggerKick, triggerSnare, triggerHihat, triggerClap, drumBus } from './drums.js';
 import { ensureAudioStarted } from './audio-engine.js';
 import { getTrackById } from './track-manager.js';
+import { reverb, delay } from './effects.js';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -157,6 +158,12 @@ const sequence = new Tone.Sequence(
     const swingOffset = isOddStep ? swingAmount * (60 / getBPM() / 4) : 0;
     const audioTime = time + swingOffset;
 
+    // Apply per-step drum automation (volume/reverb etc.) before triggering voices
+    const drumAuto = drumTrack && drumTrack.automation && drumTrack.automation[step];
+    if (drumAuto) {
+      _applyDrumAutomation(drumAuto);
+    }
+
     if (!drumsMuted) {
       // Fire active drum voices — audio-thread safe (Tone scheduled time)
       if (grid.kick[step])  triggerKick(audioTime);
@@ -174,6 +181,33 @@ const sequence = new Tone.Sequence(
 );
 
 sequence.loop = true;
+
+// ---------------------------------------------------------------------------
+// Drum automation helper
+// ---------------------------------------------------------------------------
+
+/**
+ * Apply per-step automation for the drum track.
+ * Automation stays applied until the next automated step changes it (step automation model).
+ *
+ * @param {{ paramName: string, value: number }} auto
+ */
+function _applyDrumAutomation(auto) {
+  const { paramName, value } = auto;
+  switch (paramName) {
+    case 'Drum Vol':
+      drumBus.volume.value = value;
+      break;
+    case 'Reverb':
+      reverb.wet.value = value;
+      break;
+    case 'Delay':
+      delay.wet.value = value;
+      break;
+    default:
+      break;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Transport control

@@ -80,6 +80,9 @@ function createMelodicTrack(id, color) {
   // 16-step melodic grid — each step holds a Set of note names
   const grid = Array.from({ length: 16 }, () => new Set());
 
+  // 16-step automation — each step is null or { paramName, value }
+  const automation = Array.from({ length: 16 }, () => null);
+
   return {
     id,
     color,
@@ -87,6 +90,7 @@ function createMelodicTrack(id, color) {
     synth,
     effectsChain,
     grid,
+    automation,
     selectedNote: null,
     muted: false,
     volume: 0,
@@ -99,7 +103,14 @@ function createMelodicTrack(id, color) {
 
 export const tracks = [
   // Track 0: drum track — uses drums.js engine directly
-  { id: 0, color: TRACK_COLORS[0], type: 'drum', muted: false, volume: 0 },
+  {
+    id: 0,
+    color: TRACK_COLORS[0],
+    type: 'drum',
+    muted: false,
+    volume: 0,
+    automation: Array.from({ length: 16 }, () => null),
+  },
 
   // Tracks 1-3: melodic tracks with independent synths and effects chains
   createMelodicTrack(1, TRACK_COLORS[1]),
@@ -193,4 +204,51 @@ export function setTrackMute(trackId, muted) {
     track.effectsChain.channel.mute = muted;
   }
   document.dispatchEvent(new CustomEvent('track-mute', { detail: { trackId, muted } }));
+}
+
+// ---------------------------------------------------------------------------
+// Per-step automation API
+// ---------------------------------------------------------------------------
+
+/**
+ * Write per-step automation for a track.
+ * Stores { paramName, value } at the given step; dispatches 'automation-update'.
+ *
+ * @param {number} trackId — 0-3
+ * @param {number} step — 0-15
+ * @param {string} paramName — encoder parameter name (e.g. 'Cutoff')
+ * @param {number} value — parameter value to apply at this step
+ */
+export function setStepAutomation(trackId, step, paramName, value) {
+  const track = tracks[trackId];
+  if (!track || step < 0 || step >= 16) return;
+  track.automation[step] = { paramName, value };
+  document.dispatchEvent(new CustomEvent('automation-update', { detail: { trackId, step } }));
+}
+
+/**
+ * Get per-step automation for a track.
+ *
+ * @param {number} trackId — 0-3
+ * @param {number} step — 0-15
+ * @returns {{ paramName: string, value: number } | null}
+ */
+export function getStepAutomation(trackId, step) {
+  const track = tracks[trackId];
+  if (!track || step < 0 || step >= 16) return null;
+  return track.automation[step];
+}
+
+/**
+ * Clear per-step automation for a track at a specific step.
+ * Dispatches 'automation-update'.
+ *
+ * @param {number} trackId — 0-3
+ * @param {number} step — 0-15
+ */
+export function clearStepAutomation(trackId, step) {
+  const track = tracks[trackId];
+  if (!track || step < 0 || step >= 16) return;
+  track.automation[step] = null;
+  document.dispatchEvent(new CustomEvent('automation-update', { detail: { trackId, step } }));
 }
