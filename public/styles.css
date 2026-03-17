@@ -93,13 +93,13 @@ body {
   min-height: 0;
 }
 
-/* Zone divider — page controls */
+/* Zone divider — minimal page toggle only */
 .zone-divider {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 3px 0;
+  padding: 2px 0;
   flex-shrink: 0;
 }
 
@@ -151,36 +151,39 @@ body {
    Step Cells (sequencer)
    ------------------------- */
 .step-cell {
-  background: var(--move-dim);
+  background: #111;
   border: none;
+  border-radius: 3px;
   transition: background-color 60ms ease;
 }
 
 .step-cell.step-empty {
-  background: var(--move-dim);
-  border-color: transparent;
+  background: #080808;
+  border: none;
   cursor: default;
 }
 
 /* Selected note's lane — subtle highlight */
 .step-cell.step-selected-lane {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: transparent;
+  background: #1a1a1a;
+  border: none;
 }
 
 /* Step has note active */
 .step-cell.step-active {
-  background: var(--move-glow-white);
-  border-color: transparent;
+  background: #fff;
+  border: none;
 }
 
 /* Playhead column */
 .step-cell.step-playhead {
-  border: 1px solid rgba(0, 255, 90, 0.5);
+  background: var(--move-glow-green);
+  box-shadow: 0 0 6px rgba(0, 255, 90, 0.4);
 }
 
 .step-cell.step-active.step-playhead {
   background: var(--move-glow-green);
+  box-shadow: 0 0 10px rgba(0, 255, 90, 0.5);
 }
 
 /* Lane label — hidden on Move aesthetic */
@@ -740,9 +743,9 @@ input[type="range"]::-moz-range-track {
   width: 100%;
   max-width: 32px;
   aspect-ratio: 1;
-  border-radius: 4px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px;
+  background: #111;
+  border: none;
   cursor: pointer;
   user-select: none;
   touch-action: manipulation;
@@ -750,10 +753,10 @@ input[type="range"]::-moz-range-track {
   flex: 1;
 }
 
-.seq-cell.beat-start { border-left: 2px solid rgba(255,255,255,0.2); }
-.seq-cell.active { background: #fff; border-color: #fff; }
-.seq-cell.playing { box-shadow: 0 0 8px rgba(0, 255, 90, 0.4); border-color: rgba(0, 255, 90, 0.6); }
-.seq-cell.active.playing { background: var(--move-glow-green); box-shadow: 0 0 12px rgba(0, 255, 90, 0.6); }
+.seq-cell.beat-start { border-left: 1px solid #222; }
+.seq-cell.active { background: #fff; border: none; }
+.seq-cell.playing { background: rgba(0, 255, 90, 0.15); box-shadow: 0 0 6px rgba(0, 255, 90, 0.4); }
+.seq-cell.active.playing { background: var(--move-glow-green); box-shadow: 0 0 8px rgba(0, 255, 90, 0.5); border: none; }
 
 .seq-btn.recording { background: rgba(220,50,50,0.6); border-color: rgba(220,50,50,0.8); }
 #overdub-count { color: #555; font-size: 0.7rem; margin-left: 0.25rem; }
