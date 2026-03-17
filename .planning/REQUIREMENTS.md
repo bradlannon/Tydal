@@ -1,11 +1,48 @@
-# Requirements: SoundForge
+# Requirements: Tydal
 
 **Defined:** 2026-03-15
-**Core Value:** When someone opens SoundForge on their phone and plays a few notes, their reaction should be "holy shit, this is in a browser?" — a musician should be able to connect a MIDI keyboard and genuinely jam with it.
+**Core Value:** When someone opens Tydal on their phone and plays a few notes, their reaction should be "holy shit, this is in a browser?" — a musician should be able to connect a MIDI keyboard and genuinely jam with it.
+
+## v1.1 Requirements — Ableton Move Redesign
+
+Requirements for Move-inspired redesign. Phases 6+.
+
+### Move Visual Design
+
+- [ ] **MVIS-01**: Matte black canvas aesthetic — pure black body (#000) where only illuminated elements have visual presence
+- [ ] **MVIS-02**: RGB pad coloring — root notes in track color, in-scale notes light gray, out-of-scale notes dark/unlit
+- [ ] **MVIS-03**: Green playhead indicator on step sequencer (replacing current teal), white for active steps
+- [ ] **MVIS-04**: No visible text labels on controls — contextual backlit icons that appear/disappear based on current mode
+- [ ] **MVIS-05**: OLED-style contextual display — small monochrome white-on-black info panel showing parameter name + value when touching a control
+- [ ] **MVIS-06**: Track color coding — each of 4 tracks has a distinct color that propagates to pads, steps, and buttons
+
+### Move Layout
+
+- [ ] **MLAY-01**: 9 rotary encoder controls in a row above the pad grid (replacing slider-based panels) with touch-to-reveal parameter display
+- [ ] **MLAY-02**: 16 step buttons in a single horizontal row below encoders (replacing 4×8 step grid) with beat grouping markers
+- [ ] **MLAY-03**: 4×8 note pad grid below step buttons (32 pads — already matches, needs visual update)
+- [ ] **MLAY-04**: 4 track selection buttons on the left side with track color indicators
+- [ ] **MLAY-05**: Jog wheel / scroll browser element paired with OLED display for preset and sound browsing
+
+### Multi-Track
+
+- [ ] **MTRK-01**: 4-track system — 1 drum track + 3 melodic tracks, each with independent instrument and effects
+- [ ] **MTRK-02**: Track switching — selecting a track changes which instrument the pads play and which step sequence is shown
+- [ ] **MTRK-03**: Per-track sequencer state — each track has its own 16-step pattern that plays simultaneously
+- [ ] **MTRK-04**: Per-track effects — each track can have up to 2 audio effects from the existing effects library
+- [ ] **MTRK-05**: Track mixing — per-track volume and mute accessible via track buttons
+
+### Move Performance
+
+- [ ] **MPERF-01**: Arpeggiator with Up, Down, and Random modes for melodic tracks
+- [ ] **MPERF-02**: Capture mode — retroactively save the last played performance as a sequence (records into a rolling buffer, commit on demand)
+- [ ] **MPERF-03**: Swing/groove control — adjustable triplet 16th swing 0–100% applied to step playback
+- [ ] **MPERF-04**: Per-step parameter automation — hold a step button + turn an encoder to set per-step values
+- [ ] **MPERF-05**: Contextual encoder mapping — encoders auto-map to relevant parameters based on selected track's instrument type
 
 ## v1 Requirements
 
-Requirements for initial release. Each maps to roadmap phases.
+Requirements for initial release (complete). Mapped to phases 1–5.
 
 ### Audio Core
 
@@ -96,13 +133,12 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INTG-03**: Responsive design — mobile-first with desktop enhancements
 - [x] **INTG-04**: ES modules loaded via import map (no build step), Tone.js from CDN
 
-## v2 Requirements
+## Future Requirements
 
-Deferred to future release. Tracked but not in current roadmap.
+Deferred to future releases. Tracked but not in current roadmap.
 
 ### Composition
 
-- **COMP-V2-01**: Swing/shuffle control (±% delay on even steps)
 - **COMP-V2-02**: Pattern chaining — link multiple step sequencer patterns
 - **COMP-V2-03**: MIDI export of recorded performances
 
@@ -114,6 +150,9 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Platform
 
+- **PLAT-01**: PWA with Web App Manifest — installable to home screen with standalone display mode
+- **PLAT-02**: Service worker with offline caching (Tone.js + all app assets precached)
+- **PLAT-03**: WAV audio export of recordings/loops
 - **PLAT-V2-01**: MIDI output to external instruments
 - **PLAT-V2-02**: MIDI clock sync with external hardware
 
@@ -188,15 +227,34 @@ Deferred to future release. Tracked but not in current roadmap.
 | EXPR-03 | Phase 5 | Complete |
 | EXPR-04 | Phase 5 | Complete |
 | EXPR-05 | Phase 5 | Complete |
-| PLAT-01 | Deferred | Pending |
-| PLAT-02 | Deferred | Pending |
-| PLAT-03 | Deferred | Pending |
+| MVIS-01 | Phase 6 | Pending |
+| MVIS-02 | Phase 6 | Pending |
+| MVIS-03 | Phase 6 | Pending |
+| MVIS-04 | Phase 6 | Pending |
+| MVIS-05 | Phase 7 | Pending |
+| MVIS-06 | Phase 8 | Pending |
+| MLAY-01 | Phase 7 | Pending |
+| MLAY-02 | Phase 7 | Pending |
+| MLAY-03 | Phase 6 | Pending |
+| MLAY-04 | Phase 8 | Pending |
+| MLAY-05 | Phase 7 | Pending |
+| MTRK-01 | Phase 8 | Pending |
+| MTRK-02 | Phase 8 | Pending |
+| MTRK-03 | Phase 8 | Pending |
+| MTRK-04 | Phase 8 | Pending |
+| MTRK-05 | Phase 8 | Pending |
+| MPERF-01 | Phase 9 | Pending |
+| MPERF-02 | Phase 9 | Pending |
+| MPERF-03 | Phase 9 | Pending |
+| MPERF-04 | Phase 9 | Pending |
+| MPERF-05 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 56 total
-- Mapped to phases: 56
+- v1 requirements: 51 complete
+- v1.1 requirements: 21 total
+- Mapped to phases: 72
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-15*
-*Last updated: 2026-03-15 after roadmap creation — all requirements mapped*
+*Last updated: 2026-03-16 after v1.1 milestone requirements*
