@@ -14,20 +14,20 @@ Requirements for Move-inspired redesign. Phases 6+.
 - [x] **MVIS-03**: Green playhead indicator on step sequencer (replacing current teal), white for active steps
 - [x] **MVIS-04**: No visible text labels on controls — contextual backlit icons that appear/disappear based on current mode
 - [x] **MVIS-05**: OLED-style contextual display — small monochrome white-on-black info panel showing parameter name + value when touching a control
-- [ ] **MVIS-06**: Track color coding — each of 4 tracks has a distinct color that propagates to pads, steps, and buttons
+- [x] **MVIS-06**: Track color coding — each of 4 tracks has a distinct color that propagates to pads, steps, and buttons
 
 ### Move Layout
 
 - [x] **MLAY-01**: 9 rotary encoder controls in a row above the pad grid (replacing slider-based panels) with touch-to-reveal parameter display
 - [x] **MLAY-02**: 16 step buttons in a single horizontal row below encoders (replacing 4×8 step grid) with beat grouping markers
 - [x] **MLAY-03**: 4×8 note pad grid below step buttons (32 pads — already matches, needs visual update)
-- [ ] **MLAY-04**: 4 track selection buttons on the left side with track color indicators
+- [x] **MLAY-04**: 4 track selection buttons on the left side with track color indicators
 - [x] **MLAY-05**: Jog wheel / scroll browser element paired with OLED display for preset and sound browsing
 
 ### Multi-Track
 
 - [x] **MTRK-01**: 4-track system — 1 drum track + 3 melodic tracks, each with independent instrument and effects
-- [ ] **MTRK-02**: Track switching — selecting a track changes which instrument the pads play and which step sequence is shown
+- [x] **MTRK-02**: Track switching — selecting a track changes which instrument the pads play and which step sequence is shown
 - [x] **MTRK-03**: Per-track sequencer state — each track has its own 16-step pattern that plays simultaneously
 - [ ] **MTRK-04**: Per-track effects — each track can have up to 2 audio effects from the existing effects library
 - [ ] **MTRK-05**: Track mixing — per-track volume and mute accessible via track buttons
@@ -232,14 +232,14 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MVIS-03 | Phase 6 | Complete |
 | MVIS-04 | Phase 6 | Complete |
 | MVIS-05 | Phase 7 | Complete |
-| MVIS-06 | Phase 8 | Pending |
+| MVIS-06 | Phase 8 | Complete |
 | MLAY-01 | Phase 7 | Complete |
 | MLAY-02 | Phase 7 | Complete |
 | MLAY-03 | Phase 6 | Complete |
-| MLAY-04 | Phase 8 | Pending |
+| MLAY-04 | Phase 8 | Complete |
 | MLAY-05 | Phase 7 | Complete |
 | MTRK-01 | Phase 8 | Complete |
-| MTRK-02 | Phase 8 | Pending |
+| MTRK-02 | Phase 8 | Complete |
 | MTRK-03 | Phase 8 | Complete |
 | MTRK-04 | Phase 8 | Pending |
 | MTRK-05 | Phase 8 | Pending |

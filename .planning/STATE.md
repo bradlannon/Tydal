@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-03-17T03:48:41.531Z"
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-03-17T03:54:39.171Z"
 last_activity: 2026-03-16 — v1.1 roadmap created (phases 6–9)
 progress:
   total_phases: 9
   completed_phases: 6
   total_plans: 28
-  completed_plans: 25
+  completed_plans: 26
   percent: 0
 ---
 
@@ -80,6 +80,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 | Phase 07 P01 | 25min | 2 tasks | 6 files |
 | Phase 07-encoder-layout-contextual-display P03 | 163 | 2 tasks | 4 files |
 | Phase 08-multi-track-system P01 | 167 | 2 tasks | 5 files |
+| Phase 08-multi-track-system P02 | 230 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -144,6 +145,8 @@ Recent decisions affecting current work:
 - [Phase 07-encoder-layout-contextual-display]: mode-change CustomEvent: app.js dispatches on toolbar open/close; encoder-row.js and jog-wheel.js listen independently for clean decoupling
 - [Phase 08-multi-track-system]: Track 1 is default active track at startup so pads play melodic immediately
 - [Phase 08-multi-track-system]: activeSynth fallback retained in instruments.js for backward compat; noteOn/noteOff route to active track synth
+- [Phase 08-multi-track-system]: buildTrackMelodicMapping targets per-track synth.set() and effectsChain; global distortion/vibrato are shared fallbacks
+- [Phase 08-multi-track-system]: DRM sheet open saves lastMelodicTrackId and switches to track 0; close restores it via track-change cascade
 
 ### Pending Todos
 
@@ -158,6 +161,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T03:48:41.525Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-03-17T03:54:39.166Z
+Stopped at: Completed 08-02-PLAN.md
 Resume file: None
