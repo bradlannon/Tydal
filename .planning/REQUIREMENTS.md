@@ -22,7 +22,7 @@ Requirements for Move-inspired redesign. Phases 6+.
 - [x] **MLAY-02**: 16 step buttons in a single horizontal row below encoders (replacing 4×8 step grid) with beat grouping markers
 - [x] **MLAY-03**: 4×8 note pad grid below step buttons (32 pads — already matches, needs visual update)
 - [ ] **MLAY-04**: 4 track selection buttons on the left side with track color indicators
-- [ ] **MLAY-05**: Jog wheel / scroll browser element paired with OLED display for preset and sound browsing
+- [x] **MLAY-05**: Jog wheel / scroll browser element paired with OLED display for preset and sound browsing
 
 ### Multi-Track
 
@@ -38,7 +38,7 @@ Requirements for Move-inspired redesign. Phases 6+.
 - [ ] **MPERF-02**: Capture mode — retroactively save the last played performance as a sequence (records into a rolling buffer, commit on demand)
 - [ ] **MPERF-03**: Swing/groove control — adjustable triplet 16th swing 0–100% applied to step playback
 - [ ] **MPERF-04**: Per-step parameter automation — hold a step button + turn an encoder to set per-step values
-- [ ] **MPERF-05**: Contextual encoder mapping — encoders auto-map to relevant parameters based on selected track's instrument type
+- [x] **MPERF-05**: Contextual encoder mapping — encoders auto-map to relevant parameters based on selected track's instrument type
 
 ## v1 Requirements
 
@@ -237,7 +237,7 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MLAY-02 | Phase 7 | Complete |
 | MLAY-03 | Phase 6 | Complete |
 | MLAY-04 | Phase 8 | Pending |
-| MLAY-05 | Phase 7 | Pending |
+| MLAY-05 | Phase 7 | Complete |
 | MTRK-01 | Phase 8 | Pending |
 | MTRK-02 | Phase 8 | Pending |
 | MTRK-03 | Phase 8 | Pending |
@@ -247,7 +247,7 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MPERF-02 | Phase 9 | Pending |
 | MPERF-03 | Phase 9 | Pending |
 | MPERF-04 | Phase 9 | Pending |
-| MPERF-05 | Phase 7 | Pending |
+| MPERF-05 | Phase 7 | Complete |
 
 **Coverage:**
 - v1 requirements: 51 complete

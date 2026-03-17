@@ -25,7 +25,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **v1.1 — Ableton Move Redesign**
 
 - [x] **Phase 6: Move Visual Aesthetic** - Matte black canvas overhaul, RGB pad coloring, green playhead, step button restyling (completed 2026-03-17)
-- [ ] **Phase 7: Encoder Layout & Contextual Display** - 9 rotary encoders, OLED-style display, 16 step button row, jog wheel browser
+- [x] **Phase 7: Encoder Layout & Contextual Display** - 9 rotary encoders, OLED-style display, 16 step button row, jog wheel browser (completed 2026-03-17)
 - [ ] **Phase 8: Multi-Track System** - 4-track engine, track switching, per-track sequencer/effects, track buttons, track color coding
 - [ ] **Phase 9: Move Performance Features** - Arpeggiator, capture mode, swing/groove control, per-step automation
 
@@ -190,6 +190,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 4. Differentiators | 3/4 | In Progress | -- |
 | 5. Performance Features | 5/5 | Complete | 2026-03-16 |
 | 6. Move Visual Aesthetic | 2/2 | Complete   | 2026-03-17 |
-| 7. Encoder Layout & Contextual Display | 2/3 | In Progress|  |
+| 7. Encoder Layout & Contextual Display | 3/3 | Complete   | 2026-03-17 |
 | 8. Multi-Track System | 0/? | Not started | -- |
 | 9. Move Performance Features | 0/? | Not started | -- |
