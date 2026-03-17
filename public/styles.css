@@ -346,6 +346,22 @@ body {
   background: transparent;
 }
 
+/* Capture button feedback states */
+#capture-btn {
+  transition: color 80ms ease, border-color 80ms ease;
+}
+
+#capture-btn.captured {
+  color: var(--move-glow-green);
+  text-shadow: 0 0 6px var(--move-glow-green);
+  transition: color 80ms ease, text-shadow 80ms ease;
+}
+
+#capture-btn.empty {
+  opacity: 0.3;
+  transition: opacity 80ms ease;
+}
+
 .toolbar-controls {
   display: flex;
   align-items: center;

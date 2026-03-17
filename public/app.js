@@ -29,6 +29,8 @@ import { initEncoderRow, getOLEDElement } from './ui/encoder-row.js';
 import { initJogWheel, setJogWheelMode } from './ui/jog-wheel.js';
 import { initTrackButtons } from './ui/track-buttons.js';
 import { setActiveTrack, getActiveTrackId } from './engine/track-manager.js';
+import { commitCapture, clearCaptureBuffer } from './engine/capture.js';
+import { showOLED, hideOLED } from './ui/oled-display.js';
 
 // Initialize Push 3-style grid
 const instrumentEl = document.getElementById('instrument');
@@ -163,6 +165,35 @@ backdrop.addEventListener('click', closeSheet);
 // Preset browser sheet open/close events (dispatched by synth-panel and preset-browser)
 document.addEventListener('open-preset-browser', () => openSheet('preset-browser-sheet'));
 document.addEventListener('close-preset-browser', () => closeSheet());
+
+// ---------------------------------------------------------------------------
+// CAP (Capture) button — commit rolling buffer to active track step grid
+// ---------------------------------------------------------------------------
+const captureBtn = document.getElementById('capture-btn');
+if (captureBtn) {
+  captureBtn.addEventListener('click', () => {
+    const count = commitCapture();
+
+    if (count > 0) {
+      // Green flash: notes were committed
+      captureBtn.classList.add('captured');
+      setTimeout(() => captureBtn.classList.remove('captured'), 500);
+
+      // OLED feedback
+      showOLED(oledEl, 'Captured', `${count} note${count === 1 ? '' : 's'}`);
+      hideOLED(oledEl);
+    } else {
+      // Dim flash: buffer was empty
+      captureBtn.classList.add('empty');
+      setTimeout(() => captureBtn.classList.remove('empty'), 300);
+    }
+  });
+}
+
+// Clear capture buffer when switching tracks to prevent cross-track contamination
+document.addEventListener('track-change', () => {
+  clearCaptureBuffer();
+});
 
 // Restore shared patch from URL
 const urlPatch = patchFromURL();
