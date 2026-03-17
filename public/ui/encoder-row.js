@@ -272,6 +272,10 @@ export function initEncoderRow(containerEl) {
         const live = liveParams[i];
         live.apply(val);
         showOLED(oledEl, live.name, oledValue(live, val));
+        // Notify listeners (e.g. step-buttons automation capture) of encoder movement
+        document.dispatchEvent(new CustomEvent('encoder-change', {
+          detail: { index: i, name: live.name, value: val },
+        }));
       },
     });
 

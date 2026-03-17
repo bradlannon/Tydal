@@ -216,6 +216,19 @@ body {
   margin-left: 5px;
 }
 
+/* Per-step automation indicator — blue underline */
+.step-btn.has-automation {
+  box-shadow: 0 2px 0 0 #00b3f4;
+}
+
+.step-btn.has-automation.active {
+  box-shadow: 0 2px 0 0 #00b3f4;
+}
+
+.step-btn.has-automation.playhead {
+  box-shadow: 0 0 6px rgba(0, 255, 90, 0.4), 0 2px 0 0 #00b3f4;
+}
+
 /* Note zone — bottom 4 rows × 8 cols */
 .note-zone {
   display: grid;
