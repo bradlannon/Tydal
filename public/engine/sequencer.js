@@ -26,6 +26,7 @@
 import * as Tone from 'tone';
 import { triggerKick, triggerSnare, triggerHihat, triggerClap } from './drums.js';
 import { ensureAudioStarted } from './audio-engine.js';
+import { getTrackById } from './track-manager.js';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -122,13 +123,20 @@ const sequence = new Tone.Sequence(
   (time, step) => {
     currentStep = step;
 
-    // Fire active drum voices — audio-thread safe (Tone scheduled time)
-    if (grid.kick[step])  triggerKick(time);
-    if (grid.snare[step]) triggerSnare(time);
-    if (grid.hihat[step]) triggerHihat('closed', time);
-    if (grid.clap[step])  triggerClap(time);
+    // Check drum track mute state (track 0) before triggering voices
+    const drumTrack = getTrackById(0);
+    const drumsMuted = drumTrack && drumTrack.muted;
+
+    if (!drumsMuted) {
+      // Fire active drum voices — audio-thread safe (Tone scheduled time)
+      if (grid.kick[step])  triggerKick(time);
+      if (grid.snare[step]) triggerSnare(time);
+      if (grid.hihat[step]) triggerHihat('closed', time);
+      if (grid.clap[step])  triggerClap(time);
+    }
 
     // Dispatch visual cursor event via Tone.Draw (never DOM from audio callback)
+    // Always advance playhead even when muted — visual sync continues
     scheduleStepEvent(step);
   },
   Array.from({ length: NUM_STEPS }, (_, i) => i),

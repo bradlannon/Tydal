@@ -18,21 +18,20 @@
  */
 
 import * as Tone from 'tone';
-import { activeSynth } from './instruments.js';
+import { tracks, getActiveTrack, getActiveTrackId } from './track-manager.js';
 
 export const NUM_STEPS = 16;
 export const NUM_LANES = 4;
 export const STEPS_PER_PAGE = 8;
 
-// Grid: 16 steps, each is a Set of note names
-const grid = Array.from({ length: NUM_STEPS }, () => new Set());
-
 // Lanes: which notes are displayed in the step zone (LRU replacement)
+// These are per-session display lanes, not per-track (UI only shows one track at a time)
 const lanes = [null, null, null, null];
 const laneAge = [0, 0, 0, 0];
 let ageCounter = 0;
 
-let selectedNote = null;
+// Module-level fallback for selectedNote (used if track-manager isn't fully initialized)
+let _selectedNote = null;
 let currentStep = -1;
 let currentPage = 0;
 let _drawFallbackWarned = false;
@@ -42,12 +41,22 @@ let _drawFallbackWarned = false;
 // ---------------------------------------------------------------------------
 
 export function setSelectedNote(note) {
-  selectedNote = note;
+  _selectedNote = note;
+  const activeTrack = getActiveTrack();
+  if (activeTrack && activeTrack.type === 'melodic') {
+    activeTrack.selectedNote = note;
+  }
   if (note) _assignLane(note);
   _dispatch();
 }
 
-export function getSelectedNote() { return selectedNote; }
+export function getSelectedNote() {
+  const activeTrack = getActiveTrack();
+  if (activeTrack && activeTrack.type === 'melodic' && activeTrack.selectedNote !== undefined) {
+    return activeTrack.selectedNote;
+  }
+  return _selectedNote;
+}
 
 // ---------------------------------------------------------------------------
 // Lane management (LRU)
@@ -103,6 +112,9 @@ export function togglePage() {
 
 export function toggleStep(step, note) {
   if (!note || step < 0 || step >= NUM_STEPS) return;
+  const activeTrack = getActiveTrack();
+  if (!activeTrack || activeTrack.type !== 'melodic') return;
+  const grid = activeTrack.grid;
   if (grid[step].has(note)) {
     grid[step].delete(note);
   } else {
@@ -112,14 +124,21 @@ export function toggleStep(step, note) {
 }
 
 export function hasNoteAtStep(step, note) {
-  return step >= 0 && step < NUM_STEPS && grid[step].has(note);
+  if (step < 0 || step >= NUM_STEPS) return false;
+  const activeTrack = getActiveTrack();
+  if (!activeTrack || activeTrack.type !== 'melodic') return false;
+  return activeTrack.grid[step].has(note);
 }
 
 export function clearAllMelodic() {
-  for (const s of grid) s.clear();
+  const activeTrack = getActiveTrack();
+  if (activeTrack && activeTrack.type === 'melodic') {
+    for (const s of activeTrack.grid) s.clear();
+    activeTrack.selectedNote = null;
+  }
   for (let i = 0; i < NUM_LANES; i++) { lanes[i] = null; laneAge[i] = 0; }
   ageCounter = 0;
-  selectedNote = null;
+  _selectedNote = null;
   _dispatch();
 }
 
@@ -133,9 +152,12 @@ const sequence = new Tone.Sequence(
   (time, step) => {
     currentStep = step;
 
-    // Trigger all notes at this step
-    for (const note of grid[step]) {
-      activeSynth.triggerAttackRelease(note, '16n', time, 0.7);
+    // Trigger notes for all non-muted melodic tracks simultaneously
+    for (const track of tracks) {
+      if (track.type !== 'melodic' || track.muted) continue;
+      for (const note of track.grid[step]) {
+        track.synth.triggerAttackRelease(note, '16n', time, 0.7);
+      }
     }
 
     // Visual sync via Tone.Draw

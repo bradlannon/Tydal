@@ -12,6 +12,7 @@
 
 import * as Tone from 'tone';
 import { connectInstrument, disconnectInstrument } from './effects.js';
+import { getActiveTrack } from './track-manager.js';
 import { trackNoteOn, trackNoteOff, stealOldestIfFull, clearAll, getActiveNotes } from './voice-tracker.js';
 import { isRecording, recordNote } from './recorder.js';
 
@@ -82,14 +83,18 @@ connectInstrument(activeSynth);
  * @param {number} [velocity=0.8] — 0..1 loudness
  */
 export function noteOn(note, velocity = 0.8) {
+  // Use active track's synth if a melodic track is active
+  const activeTrack = getActiveTrack();
+  const synth = (activeTrack && activeTrack.type === 'melodic') ? activeTrack.synth : activeSynth;
+
   // Voice steal: release oldest note if at polyphony limit
   const stolenNote = stealOldestIfFull();
   if (stolenNote !== null) {
-    activeSynth.triggerRelease(stolenNote, Tone.now());
+    synth.triggerRelease(stolenNote, Tone.now());
   }
 
   trackNoteOn(note);
-  activeSynth.triggerAttack(note, Tone.now(), velocity);
+  synth.triggerAttack(note, Tone.now(), velocity);
 
   // Capture note into active recording pass (all sources: keyboard, touch, MIDI)
   if (isRecording()) {
@@ -102,8 +107,10 @@ export function noteOn(note, velocity = 0.8) {
  * @param {string} note — e.g. 'C4', 'F#3'
  */
 export function noteOff(note) {
+  const activeTrack = getActiveTrack();
+  const synth = (activeTrack && activeTrack.type === 'melodic') ? activeTrack.synth : activeSynth;
   trackNoteOff(note);
-  activeSynth.triggerRelease(note, Tone.now());
+  synth.triggerRelease(note, Tone.now());
 }
 
 /**
@@ -112,8 +119,10 @@ export function noteOff(note) {
  */
 export function releaseAll() {
   const active = getActiveNotes();
+  const activeTrack = getActiveTrack();
+  const synth = (activeTrack && activeTrack.type === 'melodic') ? activeTrack.synth : activeSynth;
   for (const { note } of active) {
-    activeSynth.triggerRelease(note, Tone.now());
+    synth.triggerRelease(note, Tone.now());
   }
   clearAll();
 }
@@ -143,6 +152,10 @@ export function setSynthParam(paramObj) {
  * @returns {Tone.PolySynth}
  */
 export function getActiveSynth() {
+  const activeTrack = getActiveTrack();
+  if (activeTrack && activeTrack.type === 'melodic') {
+    return activeTrack.synth;
+  }
   return activeSynth;
 }
 
@@ -161,7 +174,17 @@ export function getActiveSynth() {
  */
 export function switchInstrument(newSynth) {
   releaseAll();
-  disconnectInstrument(activeSynth);
-  activeSynth = newSynth;
-  connectInstrument(activeSynth);
+  const activeTrack = getActiveTrack();
+  if (activeTrack && activeTrack.type === 'melodic') {
+    // Swap synth on the active track and reconnect to its effects chain
+    disconnectInstrument(activeTrack.synth);
+    activeTrack.synth = newSynth;
+    newSynth.connect(activeTrack.effectsChain.input);
+    // Keep activeSynth in sync for backward compatibility
+    activeSynth = newSynth;
+  } else {
+    disconnectInstrument(activeSynth);
+    activeSynth = newSynth;
+    connectInstrument(activeSynth);
+  }
 }
