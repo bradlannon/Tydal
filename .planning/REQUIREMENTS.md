@@ -26,9 +26,9 @@ Requirements for Move-inspired redesign. Phases 6+.
 
 ### Multi-Track
 
-- [ ] **MTRK-01**: 4-track system — 1 drum track + 3 melodic tracks, each with independent instrument and effects
+- [x] **MTRK-01**: 4-track system — 1 drum track + 3 melodic tracks, each with independent instrument and effects
 - [ ] **MTRK-02**: Track switching — selecting a track changes which instrument the pads play and which step sequence is shown
-- [ ] **MTRK-03**: Per-track sequencer state — each track has its own 16-step pattern that plays simultaneously
+- [x] **MTRK-03**: Per-track sequencer state — each track has its own 16-step pattern that plays simultaneously
 - [ ] **MTRK-04**: Per-track effects — each track can have up to 2 audio effects from the existing effects library
 - [ ] **MTRK-05**: Track mixing — per-track volume and mute accessible via track buttons
 
@@ -238,9 +238,9 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MLAY-03 | Phase 6 | Complete |
 | MLAY-04 | Phase 8 | Pending |
 | MLAY-05 | Phase 7 | Complete |
-| MTRK-01 | Phase 8 | Pending |
+| MTRK-01 | Phase 8 | Complete |
 | MTRK-02 | Phase 8 | Pending |
-| MTRK-03 | Phase 8 | Pending |
+| MTRK-03 | Phase 8 | Complete |
 | MTRK-04 | Phase 8 | Pending |
 | MTRK-05 | Phase 8 | Pending |
 | MPERF-01 | Phase 9 | Pending |
