@@ -19,7 +19,7 @@ Requirements for Move-inspired redesign. Phases 6+.
 ### Move Layout
 
 - [ ] **MLAY-01**: 9 rotary encoder controls in a row above the pad grid (replacing slider-based panels) with touch-to-reveal parameter display
-- [ ] **MLAY-02**: 16 step buttons in a single horizontal row below encoders (replacing 4×8 step grid) with beat grouping markers
+- [x] **MLAY-02**: 16 step buttons in a single horizontal row below encoders (replacing 4×8 step grid) with beat grouping markers
 - [x] **MLAY-03**: 4×8 note pad grid below step buttons (32 pads — already matches, needs visual update)
 - [ ] **MLAY-04**: 4 track selection buttons on the left side with track color indicators
 - [ ] **MLAY-05**: Jog wheel / scroll browser element paired with OLED display for preset and sound browsing
@@ -234,7 +234,7 @@ Deferred to future releases. Tracked but not in current roadmap.
 | MVIS-05 | Phase 7 | Pending |
 | MVIS-06 | Phase 8 | Pending |
 | MLAY-01 | Phase 7 | Pending |
-| MLAY-02 | Phase 7 | Pending |
+| MLAY-02 | Phase 7 | Complete |
 | MLAY-03 | Phase 6 | Complete |
 | MLAY-04 | Phase 8 | Pending |
 | MLAY-05 | Phase 7 | Pending |
