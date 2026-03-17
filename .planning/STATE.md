@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 09-01-PLAN.md
-last_updated: "2026-03-17T04:17:44.581Z"
+stopped_at: Completed 09-03-PLAN.md
+last_updated: "2026-03-17T04:22:59.756Z"
 last_activity: 2026-03-16 — v1.1 roadmap created (phases 6–9)
 progress:
   total_phases: 9
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 31
-  completed_plans: 29
+  completed_plans: 30
   percent: 0
 ---
 
@@ -84,6 +84,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 | Phase 08-multi-track-system P03 | 118 | 2 tasks | 4 files |
 | Phase 09-move-performance-features P02 | 5 | 2 tasks | 5 files |
 | Phase 09-move-performance-features P01 | 242 | 2 tasks | 7 files |
+| Phase 09-move-performance-features P03 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -156,6 +157,7 @@ Recent decisions affecting current work:
 - [Phase 09-01]: Use _triggerNoteOn/_triggerNoteOff in arpeggiator.js to bypass arp routing and avoid circular recursion
 - [Phase 09-01]: Swing source of truth is sequencer.js getSwing() — melodic-sequencer imports it rather than maintaining duplicate state
 - [Phase 09-01]: Visual playhead is NOT swung — cursor stays on-grid even when swing is applied to audio timing
+- [Phase 09-03]: One automation param per step (last encoder turned wins) — matches Move hardware model; apply automation BEFORE triggerAttackRelease; 200ms tap-vs-hold threshold
 
 ### Pending Todos
 
@@ -170,6 +172,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T04:17:44.575Z
-Stopped at: Completed 09-01-PLAN.md
+Last session: 2026-03-17T04:22:59.750Z
+Stopped at: Completed 09-03-PLAN.md
 Resume file: None
