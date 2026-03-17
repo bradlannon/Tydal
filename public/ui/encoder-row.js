@@ -29,7 +29,7 @@ import {
 import { setSynthParam } from '../engine/instruments.js';
 import { drumBus } from '../engine/drums.js';
 import { setBPM, getBPM } from '../engine/sequencer.js';
-import { getActiveTrack } from '../engine/track-manager.js';
+import { getActiveTrack, setTrackVolume } from '../engine/track-manager.js';
 
 // ---------------------------------------------------------------------------
 // Parameter mappings
@@ -160,7 +160,7 @@ export const DRUM_MAPPING = [
   {
     name: 'Drum Vol',
     min: -40,  max: 0,   value: 0,   step: 1,    unit: 'dB',
-    apply(val) { drumBus.volume.rampTo(val, 0.05); },
+    apply(val) { setTrackVolume(0, val); },
   },
   {
     name: 'Master Vol',
@@ -430,13 +430,13 @@ export function buildTrackMelodicMapping(track) {
       },
     },
     {
-      name: 'Volume',
+      name: 'Trk Vol',
       min: -40,
       max: 0,
       value: 0,
       step: 1,
       unit: 'dB',
-      apply(val) { effectsChain.channel.volume.rampTo(val, 0.05); },
+      apply(val) { setTrackVolume(track.id, val); },
     },
   ];
 }

@@ -91,6 +91,7 @@ body {
 }
 
 .track-btn {
+  position: relative;
   width: 32px;
   height: 32px;
   background: #111;
@@ -116,6 +117,17 @@ body {
 
 .track-btn.muted {
   opacity: 0.3;
+}
+
+.track-btn.muted::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 3px;
+  background: transparent;
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 
 .track-color-dot {

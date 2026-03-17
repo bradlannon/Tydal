@@ -15,6 +15,8 @@ import {
   tracks,
   getActiveTrackId,
   setActiveTrack,
+  setTrackMute,
+  getTrackById,
 } from '../engine/track-manager.js';
 
 const LONG_PRESS_MS = 500;
@@ -98,6 +100,14 @@ export function initTrackButtons(containerEl) {
     const trackId = e.detail && e.detail.trackId;
     if (trackId !== undefined) _refreshActive(trackId);
   });
+
+  // Listen for track-mute to keep mute indicator in sync (handles external mute changes)
+  document.addEventListener('track-mute', (e) => {
+    const { trackId, muted } = e.detail || {};
+    if (trackId !== undefined && _buttons[trackId]) {
+      _buttons[trackId].classList.toggle('muted', muted);
+    }
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -111,11 +121,9 @@ function _refreshActive(activeId) {
 }
 
 function _toggleMute(trackId, btn) {
-  const track = tracks[trackId];
+  const track = getTrackById(trackId);
   if (!track) return;
-  track.muted = !track.muted;
-  btn.classList.toggle('muted', track.muted);
-  document.dispatchEvent(new CustomEvent('track-mute', {
-    detail: { trackId, muted: track.muted },
-  }));
+  // setTrackMute updates track.muted, controls audio channel, and dispatches track-mute event
+  // The track-mute listener above will update the button's .muted class
+  setTrackMute(trackId, !track.muted);
 }
