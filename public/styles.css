@@ -942,3 +942,66 @@ input[type="range"]::-moz-range-track {
     max-width: 560px;
   }
 }
+
+/* -------------------------
+   Jog Wheel
+   ------------------------- */
+.jog-wheel {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid #333;
+  cursor: grab;
+  touch-action: none;
+  position: relative;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.jog-wheel-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #151515 0%, #1a1a1a 25%, #151515 50%, #1a1a1a 75%, #151515 100%);
+  border: 1px solid #222;
+}
+
+.jog-wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #444;
+}
+
+.jog-wheel.active {
+  border-color: #555;
+  cursor: grabbing;
+}
+
+.jog-wheel.active .jog-wheel-center {
+  background: #fff;
+}
+
+/* Encoder controls row: encoder row + jog wheel side by side */
+.encoder-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.encoder-controls-row .encoder-row {
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .jog-wheel {
+    width: 64px;
+    height: 64px;
+  }
+}
