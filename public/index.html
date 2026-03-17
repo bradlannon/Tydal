@@ -15,10 +15,6 @@
   </script>
 </head>
 <body>
-  <header class="app-header">
-    <h1 class="app-title">Tydal</h1>
-  </header>
-
   <main class="app-main">
     <div id="instrument" class="instrument-container">
       <!-- Pad grid injected by app.js -->
@@ -65,15 +61,14 @@
 
     <div class="octave-control">
       <button id="octave-down" class="octave-btn" aria-label="Octave down">-</button>
-      <span id="octave-display" class="octave-display">Oct 3</span>
       <button id="octave-up" class="octave-btn" aria-label="Octave up">+</button>
     </div>
 
     <div class="toolbar-panels">
-      <button class="toolbar-btn" data-sheet="synth-sheet" aria-label="Synth panel">Synth</button>
+      <button class="toolbar-btn" data-sheet="synth-sheet" aria-label="Synth panel">SYN</button>
       <button class="toolbar-btn" data-sheet="fx-sheet" aria-label="Effects panel">FX</button>
-      <button class="toolbar-btn" data-sheet="seq-sheet" aria-label="Drums panel">Drums</button>
-      <button class="toolbar-btn" data-sheet="macro-sheet" aria-label="Macro panel">Macro</button>
+      <button class="toolbar-btn" data-sheet="seq-sheet" aria-label="Drums panel">DRM</button>
+      <button class="toolbar-btn" data-sheet="macro-sheet" aria-label="Macro panel">MCR</button>
     </div>
 
     <div id="note-repeat-control" class="note-repeat-control"></div>
@@ -117,36 +112,6 @@
           <option value="pentatonic">Pentatonic</option>
           <option value="blues">Blues</option>
         </select>
-      </div>
-    </div>
-
-    <div class="help-wrapper">
-      <button id="help-btn" class="help-btn" aria-label="Show keyboard shortcuts">?</button>
-      <div id="help-panel" class="help-panel" hidden>
-        <h2 class="help-panel-title">Keyboard Shortcuts</h2>
-        <div class="help-grid">
-          <div class="help-row">
-            <span class="help-row-label">Top row</span>
-            <span class="help-keys">1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4</span>
-            <span class="help-notes">A4 B4 C5 D5</span>
-          </div>
-          <div class="help-row">
-            <span class="help-row-label">Third row</span>
-            <span class="help-keys">Q&nbsp;&nbsp;W&nbsp;&nbsp;E&nbsp;&nbsp;R</span>
-            <span class="help-notes">D4 E4 F4 G4</span>
-          </div>
-          <div class="help-row">
-            <span class="help-row-label">Second row</span>
-            <span class="help-keys">A&nbsp;&nbsp;S&nbsp;&nbsp;D&nbsp;&nbsp;F</span>
-            <span class="help-notes">G3 A3 B3 C4</span>
-          </div>
-          <div class="help-row">
-            <span class="help-row-label">Bottom row</span>
-            <span class="help-keys">Z&nbsp;&nbsp;X&nbsp;&nbsp;C&nbsp;&nbsp;V</span>
-            <span class="help-notes">C3 D3 E3 F3</span>
-          </div>
-        </div>
-        <p class="help-tip">Hold key to sustain &mdash; release to stop</p>
       </div>
     </div>
   </div>
