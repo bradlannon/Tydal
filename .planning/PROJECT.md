@@ -1,8 +1,19 @@
-# SoundForge
+# Tydal
 
 ## What This Is
 
-A professional-grade browser musical instrument that lives within Brad Lannon's portfolio site. Mobile-first, PWA-enabled, built on Tone.js. It combines multi-oscillator synthesis, FM-based realistic instruments, and 808/909-style drum machines with an effects chain, MIDI support, velocity sensitivity, and a real-time visualizer. The instrument should feel unique across visuals, interaction, and sound — not a clone of any existing web instrument.
+A browser-based musical instrument inspired by Ableton Move. Mobile-first, built on Tone.js. Combines multi-oscillator synthesis, FM voices, 808/909-style drum machines, effects chain, MIDI support, and expressive performance features. Deployed at tydal.bradlannon.ca.
+
+## Current Milestone: v1.1 — Ableton Move Redesign
+
+**Goal:** Transform Tydal's visual design and interaction model to match Ableton Move's hardware aesthetic — matte black canvas with contextual RGB lighting, encoder-based controls, 4-track system, and Move-style layout.
+
+**Target features:**
+- Move's dark canvas visual aesthetic with RGB pad coloring and contextual backlit controls
+- 9 rotary encoders + OLED-style contextual display replacing slider panels
+- 16-step button row + 4×8 pad grid matching Move's physical layout
+- 4-track system (1 drum + 3 melodic) with track color coding
+- Arpeggiator, capture mode, swing/groove control
 
 ## Core Value
 
@@ -86,4 +97,4 @@ When someone opens SoundForge on their phone and plays a few notes, their reacti
 | Single-page app in /sound-pad/ directory | Clean separation from monolithic single-file. JS modules for maintainability. | — Pending |
 
 ---
-*Last updated: 2026-03-14 after initialization*
+*Last updated: 2026-03-16 after v1.1 milestone start*
